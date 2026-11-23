@@ -1,0 +1,7 @@
+{
+ "source": "public blocklist (simulated for the demo)",
+ "domains": [
+  "salik-pay-uae.test",
+  "adcb-secure-verify.test"
+ ]
+}

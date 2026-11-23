@@ -1,0 +1,329 @@
+{
+ "case_id": "c_careers_visa",
+ "kind": "site",
+ "label": "Fake airline careers",
+ "input_url": "http://emirates-careers-visa.test/",
+ "final_url": "http://emirates-careers-visa.test/",
+ "host": "emirates-careers-visa.test",
+ "source": "ct",
+ "observed_at": "2026-11-24",
+ "redirect_chain": [
+  {
+   "url": "http://emirates-careers-visa.test/",
+   "status": 200
+  }
+ ],
+ "pages": [
+  {
+   "page_id": "p1",
+   "url": "http://emirates-careers-visa.test/",
+   "title": "EMIRATES CAREERS - Vacancies",
+   "lang": "en",
+   "elements": [
+    {
+     "id": "e1",
+     "kind": "header",
+     "text": "EMIRATES CAREERS"
+    },
+    {
+     "id": "e2",
+     "kind": "heading",
+     "text": "Hiring now in Abu Dhabi: warehouse and office staff, salary AED 6,500 + free visa"
+    },
+    {
+     "id": "e3",
+     "kind": "button",
+     "text": "Apply now"
+    },
+    {
+     "id": "e4",
+     "kind": "footer",
+     "text": "HR on WhatsApp: +971581116040",
+     "whatsapp": "+971581116040",
+     "email": "hr.recruit.uae@mailbox.test"
+    }
+   ],
+   "forms": [],
+   "scripts": [
+    {
+     "src": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "sha256": "edcefb750891278f9a3e679fdb10db4765d3313c61c538fa34be5be8d4b42047",
+     "size": 89501,
+     "library": true,
+     "iocs": {}
+    },
+    {
+     "src": "js/main.js",
+     "sha256": "189dbcd4f526d0fbd5634ab40b458c95f05b0ed40f22cc01b879e81198c51a8b",
+     "size": 4800,
+     "iocs": {},
+     "kit": "jobbait-v1"
+    }
+   ],
+   "assets": [],
+   "meta": {
+    "analytics_ids": [
+     "G-4F7Q2LM9XA"
+    ]
+   },
+   "network": [
+    {
+     "method": "GET",
+     "url": "http://emirates-careers-visa.test/",
+     "status": 200,
+     "type": "document"
+    },
+    {
+     "method": "GET",
+     "url": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "status": 200,
+     "type": "script"
+    },
+    {
+     "method": "GET",
+     "url": "http://emirates-careers-visa.test/js/main.js",
+     "status": 200,
+     "type": "script",
+     "flag": "kit"
+    },
+    {
+     "method": "GET",
+     "url": "http://emirates-careers-visa.test/favicon.ico",
+     "status": 200,
+     "type": "image"
+    }
+   ]
+  },
+  {
+   "page_id": "p2",
+   "url": "http://emirates-careers-visa.test/apply.html",
+   "title": "EMIRATES CAREERS - Apply",
+   "lang": "en",
+   "elements": [
+    {
+     "id": "e1",
+     "kind": "header",
+     "text": "EMIRATES CAREERS"
+    },
+    {
+     "id": "e2",
+     "kind": "text",
+     "text": "Selected candidates pay a visa processing fee of AED 750 before the offer letter is issued."
+    },
+    {
+     "id": "e3",
+     "kind": "input",
+     "text": "Full name",
+     "form": "applyForm",
+     "field": {
+      "name": "fullname",
+      "type": "text",
+      "autocomplete": "name",
+      "placeholder": "",
+      "inputmode": "",
+      "label": "Full name"
+     }
+    },
+    {
+     "id": "e4",
+     "kind": "input",
+     "text": "Passport number",
+     "form": "applyForm",
+     "field": {
+      "name": "passport",
+      "type": "text",
+      "autocomplete": "",
+      "placeholder": "",
+      "inputmode": "",
+      "label": "Passport number"
+     }
+    },
+    {
+     "id": "e5",
+     "kind": "input",
+     "text": "Email",
+     "form": "applyForm",
+     "field": {
+      "name": "email",
+      "type": "email",
+      "autocomplete": "email",
+      "placeholder": "",
+      "inputmode": "",
+      "label": "Email"
+     }
+    },
+    {
+     "id": "e6",
+     "kind": "button",
+     "text": "Submit application"
+    }
+   ],
+   "forms": [
+    {
+     "id": "applyForm",
+     "action": "",
+     "method": "post"
+    }
+   ],
+   "scripts": [
+    {
+     "src": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "sha256": "edcefb750891278f9a3e679fdb10db4765d3313c61c538fa34be5be8d4b42047",
+     "size": 89501,
+     "library": true,
+     "iocs": {}
+    },
+    {
+     "src": "js/main.js",
+     "sha256": "189dbcd4f526d0fbd5634ab40b458c95f05b0ed40f22cc01b879e81198c51a8b",
+     "size": 4800,
+     "iocs": {},
+     "kit": "jobbait-v1"
+    }
+   ],
+   "assets": [],
+   "meta": {
+    "analytics_ids": [
+     "G-4F7Q2LM9XA"
+    ]
+   },
+   "network": [
+    {
+     "method": "GET",
+     "url": "http://emirates-careers-visa.test/apply.html",
+     "status": 200,
+     "type": "document"
+    },
+    {
+     "method": "GET",
+     "url": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "status": 200,
+     "type": "script"
+    },
+    {
+     "method": "GET",
+     "url": "http://emirates-careers-visa.test/js/main.js",
+     "status": 200,
+     "type": "script",
+     "flag": "kit"
+    },
+    {
+     "method": "GET",
+     "url": "http://emirates-careers-visa.test/favicon.ico",
+     "status": 200,
+     "type": "image"
+    }
+   ]
+  }
+ ],
+ "infra": {
+  "ip": "198.51.100.121",
+  "asn": "AS64506",
+  "asn_org": "VeloHost",
+  "country": "US",
+  "registrar": "BlueGate Registrar",
+  "domain_created": "2026-11-10",
+  "cert_issued": "2026-11-11",
+  "cert_issuer": "R11",
+  "nameservers": [
+   "dns-a.hostmesh.test",
+   "dns-b.hostmesh.test"
+  ],
+  "cdn": false
+ },
+ "contacts": {},
+ "targeting": {
+  "emirates": [
+   "Dubai"
+  ]
+ },
+ "on_blocklist": false,
+ "ground_truth": {
+  "label": "scam",
+  "family": "D"
+ },
+ "script": [
+  {
+   "type": "note",
+   "text": "Opening the link in an isolated browser (mobile profile, UAE locale, no stored data).",
+   "text_ar": "فتح الرابط داخل متصفح معزول بملف جوال إماراتي…"
+  },
+  {
+   "type": "navigate",
+   "page_index": 0
+  },
+  {
+   "type": "note",
+   "text": "Loaded “EMIRATES CAREERS - Vacancies”.",
+   "text_ar": "تم تحميل الصفحة: EMIRATES CAREERS - Vacancies"
+  },
+  {
+   "type": "note",
+   "text": "Inspecting the page's scripts for known indicators.",
+   "text_ar": "تحليل سكربتات الصفحة بحثاً عن مؤشرات…"
+  },
+  {
+   "type": "cursor",
+   "action": "scroll",
+   "target": "e1",
+   "label": "scroll"
+  },
+  {
+   "type": "analyze",
+   "page_index": 0
+  },
+  {
+   "type": "note",
+   "text": "Clicking “Apply now” to follow the victim's path.",
+   "text_ar": "الضغط على «Apply now» لمتابعة مسار الضحية."
+  },
+  {
+   "type": "cursor",
+   "action": "click",
+   "target": "e3",
+   "label": "Apply now"
+  },
+  {
+   "type": "navigate",
+   "page_index": 1
+  },
+  {
+   "type": "note",
+   "text": "Loaded “EMIRATES CAREERS - Apply”.",
+   "text_ar": "تم تحميل الصفحة: EMIRATES CAREERS - Apply"
+  },
+  {
+   "type": "note",
+   "text": "Inspecting the page's scripts for known indicators.",
+   "text_ar": "تحليل سكربتات الصفحة بحثاً عن مؤشرات…"
+  },
+  {
+   "type": "cursor",
+   "action": "scroll",
+   "target": "e1",
+   "label": "scroll"
+  },
+  {
+   "type": "cursor",
+   "action": "type",
+   "target": "e3",
+   "label": "Full name"
+  },
+  {
+   "type": "cursor",
+   "action": "type",
+   "target": "e4",
+   "label": "Passport number"
+  },
+  {
+   "type": "cursor",
+   "action": "type",
+   "target": "e5",
+   "label": "Email"
+  },
+  {
+   "type": "analyze",
+   "page_index": 1
+  }
+ ]
+}

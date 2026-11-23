@@ -1,0 +1,290 @@
+{
+ "generated_for": "demo",
+ "queries": [
+  {
+   "query": "salik recharge",
+   "lang": "en",
+   "location": "Abu Dhabi, UAE",
+   "results": [
+    {
+     "rank": 1,
+     "type": "ad",
+     "title": "Salik Account Top-up | Pay Toll Balance Online",
+     "url": "http://salik-topup-ae.test/",
+     "display_url": "salik-topup-ae.test",
+     "snippet": "Your Salik account balance is low. Top up securely now."
+    },
+    {
+     "rank": 2,
+     "type": "organic",
+     "title": "Salik - Dubai's Toll Gate System",
+     "url": "https://www.salik.ae/",
+     "display_url": "www.salik.ae",
+     "snippet": ""
+    },
+    {
+     "rank": 3,
+     "type": "ad",
+     "title": "Salik Pay UAE - Instant Recharge",
+     "url": "http://salik-pay-uae.test/",
+     "display_url": "salik-pay-uae.test",
+     "snippet": "Recharge your Salik tag in 60 seconds."
+    }
+   ]
+  },
+  {
+   "query": "pay rta fine",
+   "lang": "en",
+   "location": "Abu Dhabi, UAE",
+   "results": [
+    {
+     "rank": 1,
+     "type": "ad",
+     "title": "RTA Traffic Fines Payment - Pay Now",
+     "url": "http://rta-fines-payment.test/",
+     "display_url": "rta-fines-payment.test",
+     "snippet": "Check and pay your RTA fines online. 50% penalty after 24h."
+    },
+    {
+     "rank": 2,
+     "type": "ad",
+     "title": "Pay RTA Fine Online | Fast & Secure",
+     "url": "http://rta-ae-payfine.test/",
+     "display_url": "rta-ae-payfine.test",
+     "snippet": "Search by plate number and pay instantly."
+    },
+    {
+     "rank": 3,
+     "type": "organic",
+     "title": "RTA - Roads & Transport Authority",
+     "url": "https://www.rta.ae/",
+     "display_url": "www.rta.ae",
+     "snippet": ""
+    }
+   ]
+  },
+  {
+   "query": "traffic fines dubai police",
+   "lang": "en",
+   "location": "Abu Dhabi, UAE",
+   "results": [
+    {
+     "rank": 1,
+     "type": "ad",
+     "title": "Dubai Police Fines - Pay Your Fine Online",
+     "url": "http://dubai-fines-gov.test/",
+     "display_url": "dubai-fines-gov.test",
+     "snippet": "Official online payment for traffic fines."
+    },
+    {
+     "rank": 2,
+     "type": "organic",
+     "title": "Dubai Police",
+     "url": "https://www.dubaipolice.gov.ae/",
+     "display_url": "www.dubaipolice.gov.ae",
+     "snippet": ""
+    }
+   ]
+  },
+  {
+   "query": "emirates post track parcel",
+   "lang": "en",
+   "location": "Abu Dhabi, UAE",
+   "results": [
+    {
+     "rank": 1,
+     "type": "ad",
+     "title": "Emirates Post Redelivery - Reschedule Your Parcel",
+     "url": "http://emiratespost-redelivery.test/",
+     "display_url": "emiratespost-redelivery.test",
+     "snippet": "Parcel on hold? Update your address and pay a small fee."
+    },
+    {
+     "rank": 2,
+     "type": "organic",
+     "title": "Emirates Post Group",
+     "url": "https://www.emiratespost.ae/",
+     "display_url": "www.emiratespost.ae",
+     "snippet": ""
+    },
+    {
+     "rank": 3,
+     "type": "organic",
+     "title": "Gulf Courier Express - Track Your Parcel",
+     "url": "http://gulf-courier-express.test/",
+     "display_url": "gulf-courier-express.test",
+     "snippet": "Track a shipment in seconds."
+    }
+   ]
+  },
+  {
+   "query": "aramex parcel on hold",
+   "lang": "en",
+   "location": "Abu Dhabi, UAE",
+   "results": [
+    {
+     "rank": 1,
+     "type": "ad",
+     "title": "Aramex Parcel Hold - Confirm Delivery",
+     "url": "http://aramex-parcel-hold.test/",
+     "display_url": "aramex-parcel-hold.test",
+     "snippet": "Confirm delivery details to release your parcel."
+    },
+    {
+     "rank": 2,
+     "type": "organic",
+     "title": "Aramex",
+     "url": "https://www.aramex.com/",
+     "display_url": "www.aramex.com",
+     "snippet": ""
+    }
+   ]
+  },
+  {
+   "query": "adcb account blocked",
+   "lang": "en",
+   "location": "Abu Dhabi, UAE",
+   "results": [
+    {
+     "rank": 1,
+     "type": "organic",
+     "title": "ADCB Secure Verification Portal",
+     "url": "http://adcb-secure-verify.test/",
+     "display_url": "adcb-secure-verify.test",
+     "snippet": "Verify your identity to restore access."
+    },
+    {
+     "rank": 2,
+     "type": "organic",
+     "title": "Abu Dhabi Commercial Bank",
+     "url": "https://www.adcb.com/",
+     "display_url": "www.adcb.com",
+     "snippet": ""
+    }
+   ]
+  },
+  {
+   "query": "instant loan uae no salary certificate",
+   "lang": "en",
+   "location": "Abu Dhabi, UAE",
+   "results": [
+    {
+     "rank": 1,
+     "type": "ad",
+     "title": "QuickLoan UAE - Up to AED 250,000",
+     "url": "http://quickloan-uae-now.test/",
+     "display_url": "quickloan-uae-now.test",
+     "snippet": "No salary certificate. Approval in 10 minutes."
+    },
+    {
+     "rank": 2,
+     "type": "organic",
+     "title": "Personal loans in the UAE | Compare rates",
+     "url": "https://www.bank-compare-uae.test/loans",
+     "display_url": "www.bank-compare-uae.test",
+     "snippet": ""
+    }
+   ]
+  },
+  {
+   "query": "gold investment uae guaranteed return",
+   "lang": "en",
+   "location": "Abu Dhabi, UAE",
+   "results": [
+    {
+     "rank": 1,
+     "type": "ad",
+     "title": "GoldTrade Capital - AI Gold Trading",
+     "url": "http://goldtrade-invest-ae.test/",
+     "display_url": "goldtrade-invest-ae.test",
+     "snippet": "Guaranteed monthly returns. Licensed and regulated."
+    },
+    {
+     "rank": 2,
+     "type": "ad",
+     "title": "CryptoMax UAE - Signals & Auto-Trading",
+     "url": "http://cryptomax-uae-signal.test/",
+     "display_url": "cryptomax-uae-signal.test",
+     "snippet": "Join 4,000+ UAE investors."
+    }
+   ]
+  },
+  {
+   "query": "jobs in abu dhabi with visa",
+   "lang": "en",
+   "location": "Abu Dhabi, UAE",
+   "results": [
+    {
+     "rank": 1,
+     "type": "ad",
+     "title": "MOHRE Jobs UAE - Apply Now",
+     "url": "http://mohre-jobs-uae.test/",
+     "display_url": "mohre-jobs-uae.test",
+     "snippet": "Free visa. Salary AED 6,500."
+    },
+    {
+     "rank": 2,
+     "type": "ad",
+     "title": "Emirates Careers - Cabin Crew & Ground Staff",
+     "url": "http://emirates-careers-visa.test/",
+     "display_url": "emirates-careers-visa.test",
+     "snippet": "Apply today, visa provided."
+    },
+    {
+     "rank": 3,
+     "type": "organic",
+     "title": "Jobs in Abu Dhabi | Careers portal",
+     "url": "https://www.job-board-ae.test/abu-dhabi",
+     "display_url": "www.job-board-ae.test",
+     "snippet": ""
+    }
+   ]
+  },
+  {
+   "query": "دفع مخالفات المرور",
+   "lang": "ar",
+   "location": "Abu Dhabi, UAE",
+   "results": [
+    {
+     "rank": 1,
+     "type": "ad",
+     "title": "دفع مخالفات هيئة الطرق والمواصلات",
+     "url": "http://rta-fines-payment.test/",
+     "display_url": "rta-fines-payment.test",
+     "snippet": "ادفع مخالفاتك الآن بأمان."
+    },
+    {
+     "rank": 2,
+     "type": "organic",
+     "title": "هيئة الطرق والمواصلات",
+     "url": "https://www.rta.ae/",
+     "display_url": "www.rta.ae",
+     "snippet": ""
+    }
+   ]
+  },
+  {
+   "query": "تتبع شحنة بريد الإمارات",
+   "lang": "ar",
+   "location": "Abu Dhabi, UAE",
+   "results": [
+    {
+     "rank": 1,
+     "type": "ad",
+     "title": "بريد الإمارات - إعادة جدولة التوصيل",
+     "url": "http://emiratespost-redelivery.test/",
+     "display_url": "emiratespost-redelivery.test",
+     "snippet": "طردك معلّق، حدّث العنوان."
+    },
+    {
+     "rank": 2,
+     "type": "organic",
+     "title": "بريد الإمارات",
+     "url": "https://www.emiratespost.ae/",
+     "display_url": "www.emiratespost.ae",
+     "snippet": ""
+    }
+   ]
+  }
+ ]
+}

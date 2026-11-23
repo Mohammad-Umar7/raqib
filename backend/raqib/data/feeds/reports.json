@@ -1,0 +1,36 @@
+{
+ "reports": [
+  {
+   "id": "r01",
+   "channel": "sms",
+   "received": "2026-11-23T08:14:00Z",
+   "emirate": "Dubai",
+   "url": "http://track-parcel-ae.test/?id=AE7781-20",
+   "text": "Emirates Post: your parcel AE7781-20 is on hold, update address: http://track-parcel-ae.test/?id=AE7781-20"
+  },
+  {
+   "id": "r02",
+   "channel": "sms",
+   "received": "2026-11-23T09:41:00Z",
+   "emirate": "Sharjah",
+   "url": "http://aramex-parcel-hold.test/",
+   "text": "Aramex: confirm delivery of your shipment http://aramex-parcel-hold.test/"
+  },
+  {
+   "id": "r03",
+   "channel": "sms",
+   "received": "2026-11-23T11:02:00Z",
+   "emirate": "Abu Dhabi",
+   "url": "http://adcb-secure-verify.test/",
+   "text": "Your bank account has been restricted. Verify now: http://adcb-secure-verify.test/"
+  },
+  {
+   "id": "r04",
+   "channel": "hotline",
+   "received": "2026-11-23T13:30:00Z",
+   "emirate": "Abu Dhabi",
+   "url": "http://bankfab-verify-login.test/",
+   "text": "Caller received an SMS asking to verify a banking login: http://bankfab-verify-login.test/"
+  }
+ ]
+}

@@ -1,0 +1,1924 @@
+{
+ "entries": [
+  {
+   "host": "gulf-courier-express.test",
+   "issued_at": "2026-09-11T04:31:00Z",
+   "issuer": "R11",
+   "case_id": "c_courier"
+  },
+  {
+   "host": "alnoor-bakery.test",
+   "issued_at": "2026-10-02T01:39:00Z",
+   "issuer": "E6",
+   "case_id": "c_bakery"
+  },
+  {
+   "host": "emirates-careers-visa.test",
+   "issued_at": "2026-11-11T02:35:00Z",
+   "issuer": "R11",
+   "case_id": "c_careers_visa"
+  },
+  {
+   "host": "mohre-jobs-uae.test",
+   "issued_at": "2026-11-11T04:23:00Z",
+   "issuer": "R11",
+   "case_id": "c_mohre_jobs"
+  },
+  {
+   "host": "quickloan-uae-now.test",
+   "issued_at": "2026-11-13T05:35:00Z",
+   "issuer": "WE1",
+   "case_id": "c_quickloan"
+  },
+  {
+   "host": "goldtrade-invest-ae.test",
+   "issued_at": "2026-11-13T09:07:00Z",
+   "issuer": "R11",
+   "case_id": "c_goldtrade"
+  },
+  {
+   "host": "dune-garage-ae.test",
+   "issued_at": "2026-11-14T00:12:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "saffron-bakery-ae.test",
+   "issued_at": "2026-11-14T00:22:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "falcon-bakery.test",
+   "issued_at": "2026-11-14T00:34:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "desert-tours-ae.test",
+   "issued_at": "2026-11-14T00:39:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "wadi-cafe-uae.test",
+   "issued_at": "2026-11-14T02:39:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "palm-tutoring.test",
+   "issued_at": "2026-11-14T03:00:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "cryptomax-uae-signal.test",
+   "issued_at": "2026-11-14T03:06:00Z",
+   "issuer": "R11",
+   "case_id": "c_cryptomax"
+  },
+  {
+   "host": "desert-florist-ae.test",
+   "issued_at": "2026-11-14T04:26:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "dune-salon-ae.test",
+   "issued_at": "2026-11-14T04:31:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "pearl-tutoring-uae.test",
+   "issued_at": "2026-11-14T06:16:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "jasmine-repairs.test",
+   "issued_at": "2026-11-14T07:06:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "harbor-garage-uae.test",
+   "issued_at": "2026-11-14T10:26:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "noor-studio-dubai.test",
+   "issued_at": "2026-11-14T10:35:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "jasmine-garage.test",
+   "issued_at": "2026-11-14T11:37:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "jasmine-tours-dubai.test",
+   "issued_at": "2026-11-14T12:02:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "wadi-tours-ae.test",
+   "issued_at": "2026-11-14T12:53:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "date-cafe-uae.test",
+   "issued_at": "2026-11-14T13:57:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "oasis-garage-ae.test",
+   "issued_at": "2026-11-14T14:11:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "coral-fitness.test",
+   "issued_at": "2026-11-14T15:29:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "desert-bakery-uae.test",
+   "issued_at": "2026-11-14T15:53:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "marina-design.test",
+   "issued_at": "2026-11-14T19:35:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "saffron-salon.test",
+   "issued_at": "2026-11-14T20:08:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "date-design-dubai.test",
+   "issued_at": "2026-11-14T20:26:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "date-fitness.test",
+   "issued_at": "2026-11-14T20:50:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "jasmine-salon.test",
+   "issued_at": "2026-11-14T21:37:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "harbor-dental-dubai.test",
+   "issued_at": "2026-11-14T22:03:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "marina-yoga-uae.test",
+   "issued_at": "2026-11-14T22:04:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "harbor-garage-dubai.test",
+   "issued_at": "2026-11-14T23:15:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "falcon-yoga.test",
+   "issued_at": "2026-11-14T23:32:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "skyline-garage-uae.test",
+   "issued_at": "2026-11-15T00:02:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "noor-catering-dubai.test",
+   "issued_at": "2026-11-15T01:45:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "wadi-catering-uae.test",
+   "issued_at": "2026-11-15T02:16:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "date-dental-dubai.test",
+   "issued_at": "2026-11-15T02:40:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "dune-fitness-ae.test",
+   "issued_at": "2026-11-15T02:59:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "desert-yoga.test",
+   "issued_at": "2026-11-15T03:39:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "saffron-bakery-uae.test",
+   "issued_at": "2026-11-15T05:21:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "palm-florist.test",
+   "issued_at": "2026-11-15T06:06:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "dune-yoga-uae.test",
+   "issued_at": "2026-11-15T06:28:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "harbor-fitness-ae.test",
+   "issued_at": "2026-11-15T08:03:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "wadi-tours-dubai.test",
+   "issued_at": "2026-11-15T08:14:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "oasis-salon.test",
+   "issued_at": "2026-11-15T08:52:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "oasis-tours.test",
+   "issued_at": "2026-11-15T10:57:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "saffron-dental.test",
+   "issued_at": "2026-11-15T12:31:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "pearl-catering.test",
+   "issued_at": "2026-11-15T12:50:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "desert-tutoring-ae.test",
+   "issued_at": "2026-11-15T14:14:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "noor-bakery-uae.test",
+   "issued_at": "2026-11-15T14:27:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "coral-dental.test",
+   "issued_at": "2026-11-15T15:50:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "coral-legal-dubai.test",
+   "issued_at": "2026-11-15T15:58:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "wadi-design-uae.test",
+   "issued_at": "2026-11-15T16:00:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "harbor-tutoring-ae.test",
+   "issued_at": "2026-11-15T16:22:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "date-tours-dubai.test",
+   "issued_at": "2026-11-15T17:49:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "desert-tours-dubai.test",
+   "issued_at": "2026-11-15T18:39:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "saffron-repairs-uae.test",
+   "issued_at": "2026-11-15T18:52:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "dune-repairs.test",
+   "issued_at": "2026-11-15T18:58:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "harbor-tours-uae.test",
+   "issued_at": "2026-11-15T19:09:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "jasmine-design-ae.test",
+   "issued_at": "2026-11-15T19:31:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "oasis-tutoring-ae.test",
+   "issued_at": "2026-11-15T23:23:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "date-fitness-uae.test",
+   "issued_at": "2026-11-16T00:02:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "coral-catering-uae.test",
+   "issued_at": "2026-11-16T00:03:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "date-dental-uae.test",
+   "issued_at": "2026-11-16T00:09:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "desert-design-dubai.test",
+   "issued_at": "2026-11-16T00:51:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "dune-florist.test",
+   "issued_at": "2026-11-16T01:27:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "desert-florist.test",
+   "issued_at": "2026-11-16T01:52:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "coral-bakery-uae.test",
+   "issued_at": "2026-11-16T02:51:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "pearl-repairs-dubai.test",
+   "issued_at": "2026-11-16T04:00:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "palm-garage-dubai.test",
+   "issued_at": "2026-11-16T07:06:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "coral-garage-dubai.test",
+   "issued_at": "2026-11-16T07:08:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "marina-legal-ae.test",
+   "issued_at": "2026-11-16T07:17:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "harbor-salon-ae.test",
+   "issued_at": "2026-11-16T07:20:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "date-bakery.test",
+   "issued_at": "2026-11-16T08:03:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "falcon-fitness.test",
+   "issued_at": "2026-11-16T08:22:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "falcon-design-dubai.test",
+   "issued_at": "2026-11-16T08:32:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "skyline-design-ae.test",
+   "issued_at": "2026-11-16T09:54:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "harbor-legal.test",
+   "issued_at": "2026-11-16T10:29:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "harbor-catering-ae.test",
+   "issued_at": "2026-11-16T10:57:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "date-salon-uae.test",
+   "issued_at": "2026-11-16T11:18:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "pearl-yoga-uae.test",
+   "issued_at": "2026-11-16T12:10:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "jasmine-bakery-dubai.test",
+   "issued_at": "2026-11-16T13:50:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "pearl-dental-ae.test",
+   "issued_at": "2026-11-16T14:14:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "desert-legal-uae.test",
+   "issued_at": "2026-11-16T14:22:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "coral-florist.test",
+   "issued_at": "2026-11-16T15:22:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "jasmine-repairs-dubai.test",
+   "issued_at": "2026-11-16T15:25:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "dune-legal.test",
+   "issued_at": "2026-11-16T17:09:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "saffron-yoga-dubai.test",
+   "issued_at": "2026-11-16T19:00:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "skyline-cafe.test",
+   "issued_at": "2026-11-16T20:10:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "skyline-garage-ae.test",
+   "issued_at": "2026-11-16T20:16:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "jasmine-cafe.test",
+   "issued_at": "2026-11-16T20:34:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "palm-design.test",
+   "issued_at": "2026-11-16T20:50:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "falcon-garage.test",
+   "issued_at": "2026-11-16T21:06:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "palm-cafe-dubai.test",
+   "issued_at": "2026-11-16T21:53:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "palm-repairs.test",
+   "issued_at": "2026-11-16T21:57:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "falcon-catering.test",
+   "issued_at": "2026-11-16T22:41:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "dune-legal-uae.test",
+   "issued_at": "2026-11-17T00:16:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "palm-dental-uae.test",
+   "issued_at": "2026-11-17T01:56:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "falcon-catering-uae.test",
+   "issued_at": "2026-11-17T02:53:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "skyline-design-dubai.test",
+   "issued_at": "2026-11-17T04:05:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "date-legal.test",
+   "issued_at": "2026-11-17T04:56:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "falcon-design-uae.test",
+   "issued_at": "2026-11-17T05:47:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "coral-florist-dubai.test",
+   "issued_at": "2026-11-17T06:04:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "dune-studio-uae.test",
+   "issued_at": "2026-11-17T06:07:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "wadi-salon.test",
+   "issued_at": "2026-11-17T06:17:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "skyline-florist-dubai.test",
+   "issued_at": "2026-11-17T09:30:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "adcb-secure-verify.test",
+   "issued_at": "2026-11-17T09:54:00Z",
+   "issuer": "R11",
+   "case_id": "c_adcb_verify"
+  },
+  {
+   "host": "saffron-florist-uae.test",
+   "issued_at": "2026-11-17T10:12:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "wadi-studio.test",
+   "issued_at": "2026-11-17T12:22:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "oasis-salon-dubai.test",
+   "issued_at": "2026-11-17T14:06:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "oasis-florist-uae.test",
+   "issued_at": "2026-11-17T14:14:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "pearl-florist-ae.test",
+   "issued_at": "2026-11-17T14:15:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "dune-design-ae.test",
+   "issued_at": "2026-11-17T15:02:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "harbor-cafe.test",
+   "issued_at": "2026-11-17T15:11:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "palm-bakery.test",
+   "issued_at": "2026-11-17T15:12:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "skyline-yoga.test",
+   "issued_at": "2026-11-17T15:16:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "coral-florist-ae.test",
+   "issued_at": "2026-11-17T15:33:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "jasmine-tours-ae.test",
+   "issued_at": "2026-11-17T15:44:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "noor-cafe-uae.test",
+   "issued_at": "2026-11-17T16:31:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "palm-cafe-ae.test",
+   "issued_at": "2026-11-17T16:33:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "oasis-dental-dubai.test",
+   "issued_at": "2026-11-17T16:38:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "marina-catering-uae.test",
+   "issued_at": "2026-11-17T18:58:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "oasis-studio.test",
+   "issued_at": "2026-11-17T19:52:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "oasis-garage-uae.test",
+   "issued_at": "2026-11-17T23:41:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "desert-cafe.test",
+   "issued_at": "2026-11-18T00:40:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "palm-tutoring-dubai.test",
+   "issued_at": "2026-11-18T01:17:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "coral-fitness-dubai.test",
+   "issued_at": "2026-11-18T02:09:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "pearl-dental.test",
+   "issued_at": "2026-11-18T02:13:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "salik-pay-uae.test",
+   "issued_at": "2026-11-18T02:14:00Z",
+   "issuer": "WE1",
+   "case_id": "c_salik_pay"
+  },
+  {
+   "host": "palm-yoga.test",
+   "issued_at": "2026-11-18T02:22:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "saffron-studio-dubai.test",
+   "issued_at": "2026-11-18T02:54:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "enbd-account-restore.test",
+   "issued_at": "2026-11-18T03:18:00Z",
+   "issuer": "E6",
+   "case_id": "c_enbd_restore"
+  },
+  {
+   "host": "noor-tours.test",
+   "issued_at": "2026-11-18T03:45:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "marina-design-uae.test",
+   "issued_at": "2026-11-18T04:52:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "falcon-repairs-uae.test",
+   "issued_at": "2026-11-18T06:44:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "palm-catering.test",
+   "issued_at": "2026-11-18T06:47:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "skyline-design.test",
+   "issued_at": "2026-11-18T06:56:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "jasmine-legal-ae.test",
+   "issued_at": "2026-11-18T08:36:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "dune-tutoring-ae.test",
+   "issued_at": "2026-11-18T08:47:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "marina-florist-ae.test",
+   "issued_at": "2026-11-18T09:00:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "falcon-yoga-ae.test",
+   "issued_at": "2026-11-18T09:03:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "marina-cafe.test",
+   "issued_at": "2026-11-18T09:40:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "palm-catering-uae.test",
+   "issued_at": "2026-11-18T10:21:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "date-yoga-ae.test",
+   "issued_at": "2026-11-18T11:04:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "palm-dental.test",
+   "issued_at": "2026-11-18T11:08:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "date-catering-ae.test",
+   "issued_at": "2026-11-18T12:23:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "skyline-yoga-ae.test",
+   "issued_at": "2026-11-18T12:25:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "skyline-dental-dubai.test",
+   "issued_at": "2026-11-18T13:18:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "date-garage-uae.test",
+   "issued_at": "2026-11-18T13:30:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "date-fitness-dubai.test",
+   "issued_at": "2026-11-18T13:52:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "marina-legal.test",
+   "issued_at": "2026-11-18T15:06:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "date-yoga.test",
+   "issued_at": "2026-11-18T15:16:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "palm-legal.test",
+   "issued_at": "2026-11-18T15:44:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "pearl-salon.test",
+   "issued_at": "2026-11-18T16:04:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "harbor-garage.test",
+   "issued_at": "2026-11-18T16:16:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "dune-studio-dubai.test",
+   "issued_at": "2026-11-18T16:41:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "oasis-design-ae.test",
+   "issued_at": "2026-11-18T16:48:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "date-design.test",
+   "issued_at": "2026-11-18T17:40:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "saffron-bakery.test",
+   "issued_at": "2026-11-18T17:57:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "oasis-cafe.test",
+   "issued_at": "2026-11-18T18:08:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "oasis-bakery-uae.test",
+   "issued_at": "2026-11-18T18:12:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "wadi-tutoring-dubai.test",
+   "issued_at": "2026-11-18T19:04:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "oasis-studio-ae.test",
+   "issued_at": "2026-11-18T19:06:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "marina-bakery-uae.test",
+   "issued_at": "2026-11-18T19:40:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "wadi-yoga.test",
+   "issued_at": "2026-11-18T20:55:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "coral-yoga-dubai.test",
+   "issued_at": "2026-11-18T21:06:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "noor-cafe.test",
+   "issued_at": "2026-11-18T22:26:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "oasis-tours-dubai.test",
+   "issued_at": "2026-11-18T22:33:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "dune-dental-uae.test",
+   "issued_at": "2026-11-18T23:19:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "falcon-cafe.test",
+   "issued_at": "2026-11-18T23:36:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "falcon-garage-dubai.test",
+   "issued_at": "2026-11-19T00:29:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "emiratespost-redelivery.test",
+   "issued_at": "2026-11-19T01:52:00Z",
+   "issuer": "E6",
+   "case_id": "c_epost_redelivery"
+  },
+  {
+   "host": "noor-catering.test",
+   "issued_at": "2026-11-19T03:24:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "dune-tutoring-dubai.test",
+   "issued_at": "2026-11-19T03:53:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "pearl-repairs.test",
+   "issued_at": "2026-11-19T04:44:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "marina-bakery.test",
+   "issued_at": "2026-11-19T04:44:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "saffron-cafe-uae.test",
+   "issued_at": "2026-11-19T04:59:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "wadi-florist-uae.test",
+   "issued_at": "2026-11-19T05:00:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "bankfab-verify-login.test",
+   "issued_at": "2026-11-19T07:09:00Z",
+   "issuer": "WE1",
+   "case_id": "c_fab_login"
+  },
+  {
+   "host": "wadi-repairs-ae.test",
+   "issued_at": "2026-11-19T08:21:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "palm-tutoring-uae.test",
+   "issued_at": "2026-11-19T08:51:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "track-parcel-ae.test",
+   "issued_at": "2026-11-19T09:12:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "falcon-tours-dubai.test",
+   "issued_at": "2026-11-19T10:28:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "saffron-catering.test",
+   "issued_at": "2026-11-19T11:06:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "saffron-tutoring-uae.test",
+   "issued_at": "2026-11-19T13:56:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "saffron-bakery-dubai.test",
+   "issued_at": "2026-11-19T14:27:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "pearl-bakery-ae.test",
+   "issued_at": "2026-11-19T15:31:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "dune-salon.test",
+   "issued_at": "2026-11-19T15:45:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "desert-salon.test",
+   "issued_at": "2026-11-19T19:01:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "oasis-design-dubai.test",
+   "issued_at": "2026-11-19T19:15:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "dune-cafe.test",
+   "issued_at": "2026-11-19T20:12:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "pearl-garage-dubai.test",
+   "issued_at": "2026-11-19T21:25:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "date-bakery-uae.test",
+   "issued_at": "2026-11-19T21:40:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "skyline-legal.test",
+   "issued_at": "2026-11-19T23:00:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "oasis-fitness-dubai.test",
+   "issued_at": "2026-11-20T00:10:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "marina-repairs-uae.test",
+   "issued_at": "2026-11-20T01:13:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "pearl-studio-uae.test",
+   "issued_at": "2026-11-20T02:13:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "noor-fitness-uae.test",
+   "issued_at": "2026-11-20T03:25:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "dune-cafe-dubai.test",
+   "issued_at": "2026-11-20T03:30:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "marina-tutoring-ae.test",
+   "issued_at": "2026-11-20T03:59:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "noor-design-ae.test",
+   "issued_at": "2026-11-20T04:34:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "noor-bakery.test",
+   "issued_at": "2026-11-20T04:40:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "marina-studio-ae.test",
+   "issued_at": "2026-11-20T05:03:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "palm-salon-uae.test",
+   "issued_at": "2026-11-20T05:15:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "wadi-florist-ae.test",
+   "issued_at": "2026-11-20T05:50:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "date-repairs.test",
+   "issued_at": "2026-11-20T07:42:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "falcon-tours.test",
+   "issued_at": "2026-11-20T07:50:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "saffron-studio-ae.test",
+   "issued_at": "2026-11-20T07:52:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "noor-tours-ae.test",
+   "issued_at": "2026-11-20T08:00:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "coral-salon-ae.test",
+   "issued_at": "2026-11-20T09:37:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "coral-tours-dubai.test",
+   "issued_at": "2026-11-20T09:46:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "jasmine-design.test",
+   "issued_at": "2026-11-20T10:46:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "date-tours-uae.test",
+   "issued_at": "2026-11-20T11:03:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "palm-dental-ae.test",
+   "issued_at": "2026-11-20T11:05:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "oasis-design.test",
+   "issued_at": "2026-11-20T12:26:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "palm-florist-uae.test",
+   "issued_at": "2026-11-20T12:41:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "desert-garage-uae.test",
+   "issued_at": "2026-11-20T12:58:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "noor-fitness-ae.test",
+   "issued_at": "2026-11-20T13:43:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "coral-yoga.test",
+   "issued_at": "2026-11-20T13:44:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "skyline-tutoring.test",
+   "issued_at": "2026-11-20T14:35:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "palm-bakery-ae.test",
+   "issued_at": "2026-11-20T16:14:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "palm-dental-dubai.test",
+   "issued_at": "2026-11-20T17:17:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "oasis-florist-ae.test",
+   "issued_at": "2026-11-20T17:32:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "dune-studio.test",
+   "issued_at": "2026-11-20T18:56:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "wadi-cafe.test",
+   "issued_at": "2026-11-20T20:01:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "marina-studio-dubai.test",
+   "issued_at": "2026-11-20T20:44:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "saffron-tours-ae.test",
+   "issued_at": "2026-11-21T00:09:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "oasis-florist.test",
+   "issued_at": "2026-11-21T00:18:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "skyline-catering.test",
+   "issued_at": "2026-11-21T01:06:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "desert-repairs.test",
+   "issued_at": "2026-11-21T01:13:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "rta-ae-fines.test",
+   "issued_at": "2026-11-21T01:36:00Z",
+   "issuer": "R11",
+   "case_id": "c_rta_ae_fines"
+  },
+  {
+   "host": "skyline-legal-ae.test",
+   "issued_at": "2026-11-21T01:58:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "jasmine-fitness.test",
+   "issued_at": "2026-11-21T02:26:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "pearl-repairs-ae.test",
+   "issued_at": "2026-11-21T03:07:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "aramex-parcel-hold.test",
+   "issued_at": "2026-11-21T04:02:00Z",
+   "issuer": "WE1",
+   "case_id": "c_aramex_hold"
+  },
+  {
+   "host": "salik-topup-ae.test",
+   "issued_at": "2026-11-21T04:05:00Z",
+   "issuer": "E6",
+   "case_id": "c_salik_topup"
+  },
+  {
+   "host": "dune-design-uae.test",
+   "issued_at": "2026-11-21T04:34:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "oasis-tutoring.test",
+   "issued_at": "2026-11-21T06:20:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "saffron-tutoring-dubai.test",
+   "issued_at": "2026-11-21T06:43:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "falcon-tutoring.test",
+   "issued_at": "2026-11-21T08:36:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "rta-fines-payment.test",
+   "issued_at": "2026-11-21T09:27:00Z",
+   "issuer": "R11",
+   "case_id": "c_rta_fines"
+  },
+  {
+   "host": "falcon-dental.test",
+   "issued_at": "2026-11-21T10:03:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "coral-design-uae.test",
+   "issued_at": "2026-11-21T11:02:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "rta-gov-fine.test",
+   "issued_at": "2026-11-21T11:36:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "adcb-verify-account.test",
+   "issued_at": "2026-11-21T12:44:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "pearl-studio-dubai.test",
+   "issued_at": "2026-11-21T12:47:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "desert-design-uae.test",
+   "issued_at": "2026-11-21T13:58:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "dune-design.test",
+   "issued_at": "2026-11-21T14:15:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "marina-yoga.test",
+   "issued_at": "2026-11-21T14:15:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "wadi-legal.test",
+   "issued_at": "2026-11-21T15:53:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "dune-cafe-ae.test",
+   "issued_at": "2026-11-21T16:28:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "jasmine-studio.test",
+   "issued_at": "2026-11-21T17:01:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "marina-tours-ae.test",
+   "issued_at": "2026-11-21T17:33:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "palm-tours.test",
+   "issued_at": "2026-11-21T17:34:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "noor-tours-dubai.test",
+   "issued_at": "2026-11-21T17:53:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "palm-fitness-uae.test",
+   "issued_at": "2026-11-21T18:22:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "pearl-salon-uae.test",
+   "issued_at": "2026-11-21T19:16:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "palm-yoga-dubai.test",
+   "issued_at": "2026-11-21T19:48:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "marina-design-ae.test",
+   "issued_at": "2026-11-21T21:37:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "harbor-tours.test",
+   "issued_at": "2026-11-21T21:51:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "pearl-salon-dubai.test",
+   "issued_at": "2026-11-21T22:01:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "date-tutoring-ae.test",
+   "issued_at": "2026-11-21T22:10:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "date-repairs-ae.test",
+   "issued_at": "2026-11-21T23:22:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "wadi-garage-dubai.test",
+   "issued_at": "2026-11-22T00:24:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "wadi-garage-ae.test",
+   "issued_at": "2026-11-22T02:03:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "marina-catering-ae.test",
+   "issued_at": "2026-11-22T02:13:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "rta-ae-payfine.test",
+   "issued_at": "2026-11-22T02:36:00Z",
+   "issuer": "E6",
+   "case_id": "c_rta_copy"
+  },
+  {
+   "host": "wadi-salon-dubai.test",
+   "issued_at": "2026-11-22T04:58:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "oasis-yoga-dubai.test",
+   "issued_at": "2026-11-22T05:24:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "coral-tours-uae.test",
+   "issued_at": "2026-11-22T06:17:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "dubai-fines-gov.test",
+   "issued_at": "2026-11-22T07:03:00Z",
+   "issuer": "R11",
+   "case_id": "c_dp_fines"
+  },
+  {
+   "host": "skyline-salon-dubai.test",
+   "issued_at": "2026-11-22T08:18:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "falcon-tutoring-ae.test",
+   "issued_at": "2026-11-22T10:15:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "date-legal-ae.test",
+   "issued_at": "2026-11-22T11:58:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "desert-garage-dubai.test",
+   "issued_at": "2026-11-22T12:21:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "coral-catering.test",
+   "issued_at": "2026-11-22T17:05:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "wadi-tutoring-uae.test",
+   "issued_at": "2026-11-22T17:08:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "jasmine-catering-dubai.test",
+   "issued_at": "2026-11-22T17:13:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "marina-tutoring.test",
+   "issued_at": "2026-11-22T17:30:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "pearl-catering-uae.test",
+   "issued_at": "2026-11-22T17:49:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "date-florist-dubai.test",
+   "issued_at": "2026-11-22T17:51:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "palm-studio-ae.test",
+   "issued_at": "2026-11-22T18:12:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "dubai-police-payfine.test",
+   "issued_at": "2026-11-22T18:31:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "dune-yoga.test",
+   "issued_at": "2026-11-22T18:50:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "coral-tutoring.test",
+   "issued_at": "2026-11-22T19:32:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "desert-tours.test",
+   "issued_at": "2026-11-22T20:50:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "jasmine-tutoring-uae.test",
+   "issued_at": "2026-11-22T21:04:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "oasis-dental-uae.test",
+   "issued_at": "2026-11-22T21:06:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "skyline-legal-dubai.test",
+   "issued_at": "2026-11-22T21:18:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "marina-repairs-dubai.test",
+   "issued_at": "2026-11-22T21:42:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "coral-repairs-uae.test",
+   "issued_at": "2026-11-22T21:48:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "saffron-dental-dubai.test",
+   "issued_at": "2026-11-22T23:20:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "pearl-bakery-uae.test",
+   "issued_at": "2026-11-22T23:29:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "marina-catering.test",
+   "issued_at": "2026-11-22T23:59:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "oasis-fitness.test",
+   "issued_at": "2026-11-23T00:30:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "saffron-legal-ae.test",
+   "issued_at": "2026-11-23T00:42:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "wadi-design-ae.test",
+   "issued_at": "2026-11-23T04:02:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "saffron-tours-dubai.test",
+   "issued_at": "2026-11-23T05:32:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "pearl-tours-uae.test",
+   "issued_at": "2026-11-23T06:51:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "jasmine-florist.test",
+   "issued_at": "2026-11-23T07:04:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "coral-fitness-ae.test",
+   "issued_at": "2026-11-23T07:08:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "falcon-legal-uae.test",
+   "issued_at": "2026-11-23T07:20:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "dune-garage-uae.test",
+   "issued_at": "2026-11-23T09:50:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "falcon-salon-uae.test",
+   "issued_at": "2026-11-23T10:16:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "marina-studio.test",
+   "issued_at": "2026-11-23T11:13:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "saffron-tutoring.test",
+   "issued_at": "2026-11-23T14:34:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "wadi-tutoring.test",
+   "issued_at": "2026-11-23T14:38:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "jasmine-design-dubai.test",
+   "issued_at": "2026-11-23T15:00:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "emiratespost-ae-track.test",
+   "issued_at": "2026-11-23T15:19:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "salik-recharge-ae.test",
+   "issued_at": "2026-11-23T15:29:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "pearl-garage-ae.test",
+   "issued_at": "2026-11-23T15:37:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "oasis-repairs-ae.test",
+   "issued_at": "2026-11-23T16:15:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "jasmine-tutoring-ae.test",
+   "issued_at": "2026-11-23T16:30:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "falcon-tours-ae.test",
+   "issued_at": "2026-11-23T18:08:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "wadi-fitness-uae.test",
+   "issued_at": "2026-11-23T19:30:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  },
+  {
+   "host": "palm-yoga-ae.test",
+   "issued_at": "2026-11-23T21:52:00Z",
+   "issuer": "E6",
+   "case_id": null
+  },
+  {
+   "host": "jasmine-salon-uae.test",
+   "issued_at": "2026-11-23T22:38:00Z",
+   "issuer": "R11",
+   "case_id": null
+  },
+  {
+   "host": "desert-dental-dubai.test",
+   "issued_at": "2026-11-23T23:07:00Z",
+   "issuer": "WE1",
+   "case_id": null
+  }
+ ]
+}

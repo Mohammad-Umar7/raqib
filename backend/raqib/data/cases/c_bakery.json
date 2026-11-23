@@ -1,0 +1,167 @@
+{
+ "case_id": "c_bakery",
+ "kind": "site",
+ "label": "Local bakery (benign)",
+ "input_url": "http://alnoor-bakery.test/",
+ "final_url": "http://alnoor-bakery.test/",
+ "host": "alnoor-bakery.test",
+ "source": "ct",
+ "observed_at": "2026-11-24",
+ "redirect_chain": [
+  {
+   "url": "http://alnoor-bakery.test/",
+   "status": 200
+  }
+ ],
+ "pages": [
+  {
+   "page_id": "p1",
+   "url": "http://alnoor-bakery.test/",
+   "title": "Al Noor Bakery - Abu Dhabi",
+   "lang": "en",
+   "elements": [
+    {
+     "id": "e1",
+     "kind": "header",
+     "text": "Al Noor Bakery"
+    },
+    {
+     "id": "e2",
+     "kind": "heading",
+     "text": "Fresh bread and Arabic sweets since 2011"
+    },
+    {
+     "id": "e3",
+     "kind": "text",
+     "text": "Open daily 6am to 11pm. Al Khalidiyah, Abu Dhabi."
+    },
+    {
+     "id": "e4",
+     "kind": "address",
+     "text": "Street 14, Al Khalidiyah, Abu Dhabi"
+    },
+    {
+     "id": "e5",
+     "kind": "footer",
+     "text": "Call us: +971 2 667 4410",
+     "phone": "+971 2 667 4410"
+    },
+    {
+     "id": "e6",
+     "kind": "input",
+     "text": "Email for our newsletter",
+     "form": "newsletter",
+     "field": {
+      "name": "email",
+      "type": "email",
+      "autocomplete": "email",
+      "placeholder": "",
+      "inputmode": "",
+      "label": "Email for our newsletter"
+     }
+    },
+    {
+     "id": "e7",
+     "kind": "button",
+     "text": "Subscribe"
+    }
+   ],
+   "forms": [
+    {
+     "id": "newsletter",
+     "action": "",
+     "method": "post"
+    }
+   ],
+   "scripts": [
+    {
+     "src": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "sha256": "edcefb750891278f9a3e679fdb10db4765d3313c61c538fa34be5be8d4b42047",
+     "size": 89501,
+     "library": true,
+     "iocs": {}
+    }
+   ],
+   "assets": [],
+   "meta": {},
+   "network": [
+    {
+     "method": "GET",
+     "url": "http://alnoor-bakery.test/",
+     "status": 200,
+     "type": "document"
+    },
+    {
+     "method": "GET",
+     "url": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "status": 200,
+     "type": "script"
+    },
+    {
+     "method": "GET",
+     "url": "http://alnoor-bakery.test/favicon.ico",
+     "status": 200,
+     "type": "image"
+    }
+   ]
+  }
+ ],
+ "infra": {
+  "ip": "192.0.2.14",
+  "asn": "AS64508",
+  "asn_org": "GulfWeb Hosting",
+  "country": "AE",
+  "registrar": "DomainPlus",
+  "domain_created": "2021-03-04",
+  "cert_issued": "2026-10-02",
+  "cert_issuer": "E6",
+  "nameservers": [
+   "ns1.gulfweb.test",
+   "ns2.gulfweb.test"
+  ],
+  "cdn": false
+ },
+ "contacts": {},
+ "targeting": {
+  "emirates": [
+   "Abu Dhabi"
+  ]
+ },
+ "on_blocklist": false,
+ "ground_truth": {
+  "label": "benign",
+  "family": null
+ },
+ "script": [
+  {
+   "type": "note",
+   "text": "Opening the link in an isolated browser (mobile profile, UAE locale, no stored data).",
+   "text_ar": "فتح الرابط داخل متصفح معزول بملف جوال إماراتي…"
+  },
+  {
+   "type": "navigate",
+   "page_index": 0
+  },
+  {
+   "type": "note",
+   "text": "Loaded “Al Noor Bakery - Abu Dhabi”.",
+   "text_ar": "تم تحميل الصفحة: Al Noor Bakery - Abu Dhabi"
+  },
+  {
+   "type": "cursor",
+   "action": "scroll",
+   "target": "e1",
+   "label": "scroll"
+  },
+  {
+   "type": "cursor",
+   "action": "type",
+   "target": "e6",
+   "label": "Email for our newsletter"
+  },
+  {
+   "type": "analyze",
+   "page_index": 0
+  }
+ ]
+}

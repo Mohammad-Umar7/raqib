@@ -1,0 +1,167 @@
+{
+ "case_id": "c_courier",
+ "kind": "site",
+ "label": "Genuine courier (benign look-alike)",
+ "input_url": "http://gulf-courier-express.test/",
+ "final_url": "http://gulf-courier-express.test/",
+ "host": "gulf-courier-express.test",
+ "source": "search",
+ "observed_at": "2026-11-24",
+ "redirect_chain": [
+  {
+   "url": "http://gulf-courier-express.test/",
+   "status": 200
+  }
+ ],
+ "pages": [
+  {
+   "page_id": "p1",
+   "url": "http://gulf-courier-express.test/",
+   "title": "GULF COURIER EXPRESS - Track your parcel",
+   "lang": "en",
+   "elements": [
+    {
+     "id": "e1",
+     "kind": "header",
+     "text": "GULF COURIER EXPRESS"
+    },
+    {
+     "id": "e2",
+     "kind": "banner",
+     "text": "Track a shipment in seconds"
+    },
+    {
+     "id": "e3",
+     "kind": "text",
+     "text": "Enter your tracking number to see where your parcel is. Pay on delivery, no online payment."
+    },
+    {
+     "id": "e4",
+     "kind": "input",
+     "text": "Tracking number",
+     "form": "trackForm",
+     "field": {
+      "name": "tracking",
+      "type": "text",
+      "autocomplete": "",
+      "placeholder": "",
+      "inputmode": "",
+      "label": "Tracking number"
+     }
+    },
+    {
+     "id": "e5",
+     "kind": "button",
+     "text": "Track"
+    },
+    {
+     "id": "e6",
+     "kind": "address",
+     "text": "Warehouse 7, Mussafah Industrial Area, Abu Dhabi"
+    },
+    {
+     "id": "e7",
+     "kind": "footer",
+     "text": "Customer service: +971 2 555 0148",
+     "phone": "+971 2 555 0148"
+    }
+   ],
+   "forms": [
+    {
+     "id": "trackForm",
+     "action": "",
+     "method": "post"
+    }
+   ],
+   "scripts": [
+    {
+     "src": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "sha256": "edcefb750891278f9a3e679fdb10db4765d3313c61c538fa34be5be8d4b42047",
+     "size": 89501,
+     "library": true,
+     "iocs": {}
+    }
+   ],
+   "assets": [],
+   "meta": {},
+   "network": [
+    {
+     "method": "GET",
+     "url": "http://gulf-courier-express.test/",
+     "status": 200,
+     "type": "document"
+    },
+    {
+     "method": "GET",
+     "url": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "status": 200,
+     "type": "script"
+    },
+    {
+     "method": "GET",
+     "url": "http://gulf-courier-express.test/favicon.ico",
+     "status": 200,
+     "type": "image"
+    }
+   ]
+  }
+ ],
+ "infra": {
+  "ip": "192.0.2.15",
+  "asn": "AS64508",
+  "asn_org": "GulfWeb Hosting",
+  "country": "AE",
+  "registrar": "DomainPlus",
+  "domain_created": "2019-08-21",
+  "cert_issued": "2026-09-11",
+  "cert_issuer": "R11",
+  "nameservers": [
+   "ns1.gulfweb.test",
+   "ns2.gulfweb.test"
+  ],
+  "cdn": false
+ },
+ "contacts": {},
+ "targeting": {
+  "emirates": [
+   "Abu Dhabi"
+  ]
+ },
+ "on_blocklist": false,
+ "ground_truth": {
+  "label": "benign",
+  "family": null
+ },
+ "script": [
+  {
+   "type": "note",
+   "text": "Opening the link in an isolated browser (mobile profile, UAE locale, no stored data).",
+   "text_ar": "فتح الرابط داخل متصفح معزول بملف جوال إماراتي…"
+  },
+  {
+   "type": "navigate",
+   "page_index": 0
+  },
+  {
+   "type": "note",
+   "text": "Loaded “GULF COURIER EXPRESS - Track your parcel”.",
+   "text_ar": "تم تحميل الصفحة: GULF COURIER EXPRESS - Track your parcel"
+  },
+  {
+   "type": "cursor",
+   "action": "scroll",
+   "target": "e1",
+   "label": "scroll"
+  },
+  {
+   "type": "cursor",
+   "action": "type",
+   "target": "e4",
+   "label": "Tracking number"
+  },
+  {
+   "type": "analyze",
+   "page_index": 0
+  }
+ ]
+}

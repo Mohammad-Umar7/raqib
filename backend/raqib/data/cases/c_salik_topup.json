@@ -1,0 +1,538 @@
+{
+ "case_id": "c_salik_topup",
+ "kind": "site",
+ "label": "Salik top-up lure",
+ "input_url": "http://salik-topup-ae.test/",
+ "final_url": "http://salik-topup-ae.test/",
+ "host": "salik-topup-ae.test",
+ "source": "search_ad",
+ "observed_at": "2026-11-24",
+ "redirect_chain": [
+  {
+   "url": "http://salik-topup-ae.test/",
+   "status": 200
+  }
+ ],
+ "pages": [
+  {
+   "page_id": "p1",
+   "url": "http://salik-topup-ae.test/",
+   "title": "SALIK - Account balance",
+   "lang": "en",
+   "elements": [
+    {
+     "id": "e1",
+     "kind": "header",
+     "text": "SALIK"
+    },
+    {
+     "id": "e2",
+     "kind": "banner",
+     "text": "Insufficient balance: your SALIK account will be suspended"
+    },
+    {
+     "id": "e3",
+     "kind": "text",
+     "text": "Vehicle Dubai A 48213 has unpaid toll charges of AED 50.00."
+    },
+    {
+     "id": "e4",
+     "kind": "timer",
+     "text": "23:59:41"
+    },
+    {
+     "id": "e5",
+     "kind": "button",
+     "text": "Top up now"
+    },
+    {
+     "id": "e6",
+     "kind": "badge",
+     "text": "Secure payment"
+    },
+    {
+     "id": "e7",
+     "kind": "footer",
+     "text": "Customer care on WhatsApp: +971524187730",
+     "whatsapp": "+971524187730"
+    }
+   ],
+   "forms": [],
+   "scripts": [
+    {
+     "src": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "sha256": "edcefb750891278f9a3e679fdb10db4765d3313c61c538fa34be5be8d4b42047",
+     "size": 89501,
+     "library": true,
+     "iocs": {}
+    },
+    {
+     "src": "assets/kit.js",
+     "sha256": "8c7cea172b833d102ba0f5eda3af2b191ca19225b353c6d7cfe382dd53275fc4",
+     "size": 4800,
+     "iocs": {
+      "telegram_bot_ids": [
+       "7139462058"
+      ]
+     },
+     "kit": "tolltrap-v1"
+    }
+   ],
+   "assets": [],
+   "meta": {
+    "favicon_hash": "46f90fc3eab6216d5ac1635cc432978e86afc6479cb29de169ae1b49a1696bb0"
+   },
+   "network": [
+    {
+     "method": "GET",
+     "url": "http://salik-topup-ae.test/",
+     "status": 200,
+     "type": "document"
+    },
+    {
+     "method": "GET",
+     "url": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "status": 200,
+     "type": "script"
+    },
+    {
+     "method": "GET",
+     "url": "http://salik-topup-ae.test/assets/kit.js",
+     "status": 200,
+     "type": "script",
+     "flag": "kit"
+    },
+    {
+     "method": "GET",
+     "url": "http://salik-topup-ae.test/favicon.ico",
+     "status": 200,
+     "type": "image"
+    }
+   ]
+  },
+  {
+   "page_id": "p2",
+   "url": "http://salik-topup-ae.test/pay.html",
+   "title": "SALIK - Pay securely",
+   "lang": "en",
+   "elements": [
+    {
+     "id": "e1",
+     "kind": "header",
+     "text": "SALIK"
+    },
+    {
+     "id": "e2",
+     "kind": "text",
+     "text": "Amount due: AED 50.00"
+    },
+    {
+     "id": "e3",
+     "kind": "input",
+     "text": "Cardholder name",
+     "form": "payForm",
+     "field": {
+      "name": "cardholder",
+      "type": "text",
+      "autocomplete": "cc-name",
+      "placeholder": "",
+      "inputmode": "",
+      "label": "Cardholder name"
+     }
+    },
+    {
+     "id": "e4",
+     "kind": "input",
+     "text": "Card number",
+     "form": "payForm",
+     "field": {
+      "name": "cardnumber",
+      "type": "text",
+      "autocomplete": "cc-number",
+      "placeholder": "1234 5678 9012 3456",
+      "inputmode": "numeric",
+      "label": "Card number",
+      "maxlength": 19
+     }
+    },
+    {
+     "id": "e5",
+     "kind": "input",
+     "text": "Expiry date",
+     "form": "payForm",
+     "field": {
+      "name": "exp",
+      "type": "text",
+      "autocomplete": "cc-exp",
+      "placeholder": "MM/YY",
+      "inputmode": "numeric",
+      "label": "Expiry date",
+      "maxlength": 5
+     }
+    },
+    {
+     "id": "e6",
+     "kind": "input",
+     "text": "CVV",
+     "form": "payForm",
+     "field": {
+      "name": "cvv",
+      "type": "text",
+      "autocomplete": "cc-csc",
+      "placeholder": "CVV",
+      "inputmode": "numeric",
+      "label": "CVV",
+      "maxlength": 4
+     }
+    },
+    {
+     "id": "e7",
+     "kind": "button",
+     "text": "Pay securely"
+    },
+    {
+     "id": "e8",
+     "kind": "footer",
+     "text": "Customer care on WhatsApp: +971524187730",
+     "whatsapp": "+971524187730"
+    }
+   ],
+   "forms": [
+    {
+     "id": "payForm",
+     "action": "",
+     "method": "post"
+    }
+   ],
+   "scripts": [
+    {
+     "src": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "sha256": "edcefb750891278f9a3e679fdb10db4765d3313c61c538fa34be5be8d4b42047",
+     "size": 89501,
+     "library": true,
+     "iocs": {}
+    },
+    {
+     "src": "assets/kit.js",
+     "sha256": "8c7cea172b833d102ba0f5eda3af2b191ca19225b353c6d7cfe382dd53275fc4",
+     "size": 4800,
+     "iocs": {
+      "telegram_bot_ids": [
+       "7139462058"
+      ]
+     },
+     "kit": "tolltrap-v1"
+    }
+   ],
+   "assets": [],
+   "meta": {
+    "favicon_hash": "46f90fc3eab6216d5ac1635cc432978e86afc6479cb29de169ae1b49a1696bb0"
+   },
+   "network": [
+    {
+     "method": "GET",
+     "url": "http://salik-topup-ae.test/pay.html",
+     "status": 200,
+     "type": "document"
+    },
+    {
+     "method": "GET",
+     "url": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "status": 200,
+     "type": "script"
+    },
+    {
+     "method": "GET",
+     "url": "http://salik-topup-ae.test/assets/kit.js",
+     "status": 200,
+     "type": "script",
+     "flag": "kit"
+    },
+    {
+     "method": "GET",
+     "url": "http://salik-topup-ae.test/favicon.ico",
+     "status": 200,
+     "type": "image"
+    }
+   ]
+  },
+  {
+   "page_id": "p3",
+   "url": "http://salik-topup-ae.test/otp.html",
+   "title": "SALIK - Verification",
+   "lang": "en",
+   "elements": [
+    {
+     "id": "e1",
+     "kind": "header",
+     "text": "SALIK"
+    },
+    {
+     "id": "e2",
+     "kind": "text",
+     "text": "Enter the 6-digit verification code sent to your mobile number to complete the payment."
+    },
+    {
+     "id": "e3",
+     "kind": "input",
+     "text": "Verification code",
+     "form": "otpForm",
+     "field": {
+      "name": "otp",
+      "type": "text",
+      "autocomplete": "one-time-code",
+      "placeholder": "000000",
+      "inputmode": "numeric",
+      "label": "Verification code",
+      "maxlength": 6
+     }
+    },
+    {
+     "id": "e4",
+     "kind": "button",
+     "text": "Verify"
+    }
+   ],
+   "forms": [
+    {
+     "id": "otpForm",
+     "action": "",
+     "method": "post"
+    }
+   ],
+   "scripts": [
+    {
+     "src": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "sha256": "edcefb750891278f9a3e679fdb10db4765d3313c61c538fa34be5be8d4b42047",
+     "size": 89501,
+     "library": true,
+     "iocs": {}
+    },
+    {
+     "src": "assets/kit.js",
+     "sha256": "8c7cea172b833d102ba0f5eda3af2b191ca19225b353c6d7cfe382dd53275fc4",
+     "size": 4800,
+     "iocs": {
+      "telegram_bot_ids": [
+       "7139462058"
+      ]
+     },
+     "kit": "tolltrap-v1"
+    }
+   ],
+   "assets": [],
+   "meta": {
+    "favicon_hash": "46f90fc3eab6216d5ac1635cc432978e86afc6479cb29de169ae1b49a1696bb0"
+   },
+   "network": [
+    {
+     "method": "GET",
+     "url": "http://salik-topup-ae.test/otp.html",
+     "status": 200,
+     "type": "document"
+    },
+    {
+     "method": "GET",
+     "url": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "status": 200,
+     "type": "script"
+    },
+    {
+     "method": "GET",
+     "url": "http://salik-topup-ae.test/assets/kit.js",
+     "status": 200,
+     "type": "script",
+     "flag": "kit"
+    },
+    {
+     "method": "GET",
+     "url": "http://salik-topup-ae.test/favicon.ico",
+     "status": 200,
+     "type": "image"
+    }
+   ]
+  }
+ ],
+ "infra": {
+  "ip": "203.0.113.17",
+  "asn": "AS64500",
+  "asn_org": "ExampleHost B.V.",
+  "country": "NL",
+  "registrar": "NameHub Ltd",
+  "domain_created": "2026-11-20",
+  "cert_issued": "2026-11-21",
+  "cert_issuer": "E6",
+  "nameservers": [
+   "ns1.example-dns.test",
+   "ns2.example-dns.test"
+  ],
+  "cdn": false
+ },
+ "contacts": {},
+ "targeting": {
+  "emirates": [
+   "Dubai"
+  ]
+ },
+ "on_blocklist": false,
+ "ground_truth": {
+  "label": "scam",
+  "family": "A"
+ },
+ "script": [
+  {
+   "type": "note",
+   "text": "Opening the link in an isolated browser (mobile profile, UAE locale, no stored data).",
+   "text_ar": "فتح الرابط داخل متصفح معزول بملف جوال إماراتي…"
+  },
+  {
+   "type": "navigate",
+   "page_index": 0
+  },
+  {
+   "type": "note",
+   "text": "Loaded “SALIK - Account balance”.",
+   "text_ar": "تم تحميل الصفحة: SALIK - Account balance"
+  },
+  {
+   "type": "note",
+   "text": "Inspecting the page's scripts for known indicators.",
+   "text_ar": "تحليل سكربتات الصفحة بحثاً عن مؤشرات…"
+  },
+  {
+   "type": "cursor",
+   "action": "scroll",
+   "target": "e1",
+   "label": "scroll"
+  },
+  {
+   "type": "analyze",
+   "page_index": 0
+  },
+  {
+   "type": "note",
+   "text": "Clicking “Top up now” to follow the victim's path.",
+   "text_ar": "الضغط على «Top up now» لمتابعة مسار الضحية."
+  },
+  {
+   "type": "cursor",
+   "action": "click",
+   "target": "e5",
+   "label": "Top up now"
+  },
+  {
+   "type": "navigate",
+   "page_index": 1
+  },
+  {
+   "type": "note",
+   "text": "Loaded “SALIK - Pay securely”.",
+   "text_ar": "تم تحميل الصفحة: SALIK - Pay securely"
+  },
+  {
+   "type": "note",
+   "text": "Inspecting the page's scripts for known indicators.",
+   "text_ar": "تحليل سكربتات الصفحة بحثاً عن مؤشرات…"
+  },
+  {
+   "type": "cursor",
+   "action": "scroll",
+   "target": "e1",
+   "label": "scroll"
+  },
+  {
+   "type": "cursor",
+   "action": "move",
+   "target": "e3",
+   "label": "Cardholder name"
+  },
+  {
+   "type": "note",
+   "text": "“Cardholder name” is a sensitive field. The agent does not enter any data.",
+   "text_ar": "حقل «Cardholder name» حساس: الوكيل لا يدخل أي بيانات."
+  },
+  {
+   "type": "cursor",
+   "action": "move",
+   "target": "e4",
+   "label": "Card number"
+  },
+  {
+   "type": "note",
+   "text": "“Card number” is a sensitive field. The agent does not enter any data.",
+   "text_ar": "حقل «Card number» حساس: الوكيل لا يدخل أي بيانات."
+  },
+  {
+   "type": "cursor",
+   "action": "move",
+   "target": "e5",
+   "label": "Expiry date"
+  },
+  {
+   "type": "note",
+   "text": "“Expiry date” is a sensitive field. The agent does not enter any data.",
+   "text_ar": "حقل «Expiry date» حساس: الوكيل لا يدخل أي بيانات."
+  },
+  {
+   "type": "cursor",
+   "action": "move",
+   "target": "e6",
+   "label": "CVV"
+  },
+  {
+   "type": "note",
+   "text": "“CVV” is a sensitive field. The agent does not enter any data.",
+   "text_ar": "حقل «CVV» حساس: الوكيل لا يدخل أي بيانات."
+  },
+  {
+   "type": "analyze",
+   "page_index": 1
+  },
+  {
+   "type": "note",
+   "text": "Clicking “Pay securely” to follow the victim's path.",
+   "text_ar": "الضغط على «Pay securely» لمتابعة مسار الضحية."
+  },
+  {
+   "type": "cursor",
+   "action": "click",
+   "target": "e7",
+   "label": "Pay securely"
+  },
+  {
+   "type": "navigate",
+   "page_index": 2
+  },
+  {
+   "type": "note",
+   "text": "Loaded “SALIK - Verification”.",
+   "text_ar": "تم تحميل الصفحة: SALIK - Verification"
+  },
+  {
+   "type": "note",
+   "text": "Inspecting the page's scripts for known indicators.",
+   "text_ar": "تحليل سكربتات الصفحة بحثاً عن مؤشرات…"
+  },
+  {
+   "type": "cursor",
+   "action": "scroll",
+   "target": "e1",
+   "label": "scroll"
+  },
+  {
+   "type": "cursor",
+   "action": "move",
+   "target": "e3",
+   "label": "Verification code"
+  },
+  {
+   "type": "note",
+   "text": "“Verification code” is a sensitive field. The agent does not enter any data.",
+   "text_ar": "حقل «Verification code» حساس: الوكيل لا يدخل أي بيانات."
+  },
+  {
+   "type": "analyze",
+   "page_index": 2
+  }
+ ]
+}

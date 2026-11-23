@@ -1,0 +1,21 @@
+# secrets
+.env
+.env.*
+!.env.example
+
+# python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# node
+node_modules/
+frontend/dist/
+
+# runtime output
+backend/raqib/data/runs/
+backend/raqib/data/evidence/
+*.log
+.DS_Store
+.claude/

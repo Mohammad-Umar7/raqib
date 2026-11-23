@@ -1,0 +1,33 @@
+{
+ "case_id": "m_adcb_support",
+ "kind": "maps_listing",
+ "label": "ADCB Account Support 24/7",
+ "input_url": "maps://m_adcb_support",
+ "final_url": "",
+ "host": "ADCB Account Support 24/7",
+ "source": "maps",
+ "observed_at": "2026-11-24",
+ "redirect_chain": [],
+ "pages": [],
+ "infra": {},
+ "contacts": {
+  "phones": [
+   "+971557301194"
+  ],
+  "whatsapp": []
+ },
+ "listing": {
+  "name": "ADCB Account Support 24/7",
+  "area": "Al Markaziyah",
+  "emirate": "Abu Dhabi"
+ },
+ "targeting": {
+  "emirates": [
+   "Abu Dhabi"
+  ]
+ },
+ "ground_truth": {
+  "label": "scam",
+  "family": "B"
+ }
+}

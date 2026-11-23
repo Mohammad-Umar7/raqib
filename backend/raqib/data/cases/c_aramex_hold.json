@@ -1,0 +1,714 @@
+{
+ "case_id": "c_aramex_hold",
+ "kind": "site",
+ "label": "Aramex parcel lure",
+ "input_url": "http://aramex-parcel-hold.test/",
+ "final_url": "http://aramex-parcel-hold.test/",
+ "host": "aramex-parcel-hold.test",
+ "source": "sms",
+ "observed_at": "2026-11-24",
+ "redirect_chain": [
+  {
+   "url": "http://aramex-parcel-hold.test/",
+   "status": 200
+  }
+ ],
+ "pages": [
+  {
+   "page_id": "p1",
+   "url": "http://aramex-parcel-hold.test/",
+   "title": "ARAMEX - Parcel on hold",
+   "lang": "en",
+   "elements": [
+    {
+     "id": "e1",
+     "kind": "header",
+     "text": "ARAMEX"
+    },
+    {
+     "id": "e2",
+     "kind": "banner",
+     "text": "Your parcel AX90417 is on hold: incomplete address"
+    },
+    {
+     "id": "e3",
+     "kind": "text",
+     "text": "A redelivery fee of AED 9.00 applies. Reschedule within 24 hours or the parcel is returned."
+    },
+    {
+     "id": "e4",
+     "kind": "button",
+     "text": "Reschedule delivery"
+    },
+    {
+     "id": "e5",
+     "kind": "footer",
+     "text": "Support: +971504418802",
+     "whatsapp": "+971504418802"
+    }
+   ],
+   "forms": [],
+   "scripts": [
+    {
+     "src": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "sha256": "edcefb750891278f9a3e679fdb10db4765d3313c61c538fa34be5be8d4b42047",
+     "size": 89501,
+     "library": true,
+     "iocs": {}
+    },
+    {
+     "src": "assets/pay.js",
+     "sha256": "57aee63e9a945309c9ad7c52445ab06fe5234f27698202338c70bb127210c838",
+     "size": 4800,
+     "iocs": {
+      "telegram_bot_ids": [
+       "7139462058"
+      ]
+     },
+     "kit": "tolltrap-v1b"
+    }
+   ],
+   "assets": [],
+   "meta": {
+    "favicon_hash": "46f90fc3eab6216d5ac1635cc432978e86afc6479cb29de169ae1b49a1696bb0"
+   },
+   "network": [
+    {
+     "method": "GET",
+     "url": "http://aramex-parcel-hold.test/",
+     "status": 200,
+     "type": "document"
+    },
+    {
+     "method": "GET",
+     "url": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "status": 200,
+     "type": "script"
+    },
+    {
+     "method": "GET",
+     "url": "http://aramex-parcel-hold.test/assets/pay.js",
+     "status": 200,
+     "type": "script",
+     "flag": "kit"
+    },
+    {
+     "method": "GET",
+     "url": "http://aramex-parcel-hold.test/favicon.ico",
+     "status": 200,
+     "type": "image"
+    }
+   ]
+  },
+  {
+   "page_id": "p2",
+   "url": "http://aramex-parcel-hold.test/address.html",
+   "title": "ARAMEX - Delivery details",
+   "lang": "en",
+   "elements": [
+    {
+     "id": "e1",
+     "kind": "header",
+     "text": "ARAMEX"
+    },
+    {
+     "id": "e2",
+     "kind": "input",
+     "text": "Full name",
+     "form": "addressForm",
+     "field": {
+      "name": "fullname",
+      "type": "text",
+      "autocomplete": "name",
+      "placeholder": "",
+      "inputmode": "",
+      "label": "Full name"
+     }
+    },
+    {
+     "id": "e3",
+     "kind": "input",
+     "text": "Mobile number",
+     "form": "addressForm",
+     "field": {
+      "name": "mobile",
+      "type": "tel",
+      "autocomplete": "tel",
+      "placeholder": "05X XXX XXXX",
+      "inputmode": "tel",
+      "label": "Mobile number"
+     }
+    },
+    {
+     "id": "e4",
+     "kind": "select",
+     "text": "Emirate",
+     "form": "addressForm",
+     "field": {
+      "name": "emirate",
+      "type": "select",
+      "autocomplete": "",
+      "placeholder": "",
+      "inputmode": "",
+      "label": "Emirate"
+     }
+    },
+    {
+     "id": "e5",
+     "kind": "input",
+     "text": "Street / building",
+     "form": "addressForm",
+     "field": {
+      "name": "street",
+      "type": "text",
+      "autocomplete": "street-address",
+      "placeholder": "",
+      "inputmode": "",
+      "label": "Street / building"
+     }
+    },
+    {
+     "id": "e6",
+     "kind": "button",
+     "text": "Continue to payment"
+    }
+   ],
+   "forms": [
+    {
+     "id": "addressForm",
+     "action": "",
+     "method": "post"
+    }
+   ],
+   "scripts": [
+    {
+     "src": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "sha256": "edcefb750891278f9a3e679fdb10db4765d3313c61c538fa34be5be8d4b42047",
+     "size": 89501,
+     "library": true,
+     "iocs": {}
+    },
+    {
+     "src": "assets/pay.js",
+     "sha256": "57aee63e9a945309c9ad7c52445ab06fe5234f27698202338c70bb127210c838",
+     "size": 4800,
+     "iocs": {
+      "telegram_bot_ids": [
+       "7139462058"
+      ]
+     },
+     "kit": "tolltrap-v1b"
+    }
+   ],
+   "assets": [],
+   "meta": {
+    "favicon_hash": "46f90fc3eab6216d5ac1635cc432978e86afc6479cb29de169ae1b49a1696bb0"
+   },
+   "network": [
+    {
+     "method": "GET",
+     "url": "http://aramex-parcel-hold.test/address.html",
+     "status": 200,
+     "type": "document"
+    },
+    {
+     "method": "GET",
+     "url": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "status": 200,
+     "type": "script"
+    },
+    {
+     "method": "GET",
+     "url": "http://aramex-parcel-hold.test/assets/pay.js",
+     "status": 200,
+     "type": "script",
+     "flag": "kit"
+    },
+    {
+     "method": "GET",
+     "url": "http://aramex-parcel-hold.test/favicon.ico",
+     "status": 200,
+     "type": "image"
+    }
+   ]
+  },
+  {
+   "page_id": "p3",
+   "url": "http://aramex-parcel-hold.test/pay.html",
+   "title": "ARAMEX - Pay delivery fee",
+   "lang": "en",
+   "elements": [
+    {
+     "id": "e1",
+     "kind": "header",
+     "text": "ARAMEX"
+    },
+    {
+     "id": "e2",
+     "kind": "text",
+     "text": "Delivery fee: AED 9.00"
+    },
+    {
+     "id": "e3",
+     "kind": "input",
+     "text": "Cardholder name",
+     "form": "payForm",
+     "field": {
+      "name": "cardholder",
+      "type": "text",
+      "autocomplete": "cc-name",
+      "placeholder": "",
+      "inputmode": "",
+      "label": "Cardholder name"
+     }
+    },
+    {
+     "id": "e4",
+     "kind": "input",
+     "text": "Card number",
+     "form": "payForm",
+     "field": {
+      "name": "cardnumber",
+      "type": "text",
+      "autocomplete": "cc-number",
+      "placeholder": "1234 5678 9012 3456",
+      "inputmode": "numeric",
+      "label": "Card number",
+      "maxlength": 19
+     }
+    },
+    {
+     "id": "e5",
+     "kind": "input",
+     "text": "Expiry date",
+     "form": "payForm",
+     "field": {
+      "name": "exp",
+      "type": "text",
+      "autocomplete": "cc-exp",
+      "placeholder": "MM/YY",
+      "inputmode": "numeric",
+      "label": "Expiry date",
+      "maxlength": 5
+     }
+    },
+    {
+     "id": "e6",
+     "kind": "input",
+     "text": "CVV",
+     "form": "payForm",
+     "field": {
+      "name": "cvv",
+      "type": "text",
+      "autocomplete": "cc-csc",
+      "placeholder": "CVV",
+      "inputmode": "numeric",
+      "label": "CVV",
+      "maxlength": 4
+     }
+    },
+    {
+     "id": "e7",
+     "kind": "button",
+     "text": "Pay AED 9.00"
+    }
+   ],
+   "forms": [
+    {
+     "id": "payForm",
+     "action": "",
+     "method": "post"
+    }
+   ],
+   "scripts": [
+    {
+     "src": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "sha256": "edcefb750891278f9a3e679fdb10db4765d3313c61c538fa34be5be8d4b42047",
+     "size": 89501,
+     "library": true,
+     "iocs": {}
+    },
+    {
+     "src": "assets/pay.js",
+     "sha256": "57aee63e9a945309c9ad7c52445ab06fe5234f27698202338c70bb127210c838",
+     "size": 4800,
+     "iocs": {
+      "telegram_bot_ids": [
+       "7139462058"
+      ]
+     },
+     "kit": "tolltrap-v1b"
+    }
+   ],
+   "assets": [],
+   "meta": {
+    "favicon_hash": "46f90fc3eab6216d5ac1635cc432978e86afc6479cb29de169ae1b49a1696bb0"
+   },
+   "network": [
+    {
+     "method": "GET",
+     "url": "http://aramex-parcel-hold.test/pay.html",
+     "status": 200,
+     "type": "document"
+    },
+    {
+     "method": "GET",
+     "url": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "status": 200,
+     "type": "script"
+    },
+    {
+     "method": "GET",
+     "url": "http://aramex-parcel-hold.test/assets/pay.js",
+     "status": 200,
+     "type": "script",
+     "flag": "kit"
+    },
+    {
+     "method": "GET",
+     "url": "http://aramex-parcel-hold.test/favicon.ico",
+     "status": 200,
+     "type": "image"
+    }
+   ]
+  },
+  {
+   "page_id": "p4",
+   "url": "http://aramex-parcel-hold.test/otp.html",
+   "title": "ARAMEX - Verification",
+   "lang": "en",
+   "elements": [
+    {
+     "id": "e1",
+     "kind": "header",
+     "text": "ARAMEX"
+    },
+    {
+     "id": "e2",
+     "kind": "text",
+     "text": "Enter the 6-digit verification code sent to your mobile number to complete the payment."
+    },
+    {
+     "id": "e3",
+     "kind": "input",
+     "text": "Verification code",
+     "form": "otpForm",
+     "field": {
+      "name": "otp",
+      "type": "text",
+      "autocomplete": "one-time-code",
+      "placeholder": "000000",
+      "inputmode": "numeric",
+      "label": "Verification code",
+      "maxlength": 6
+     }
+    },
+    {
+     "id": "e4",
+     "kind": "button",
+     "text": "Verify"
+    }
+   ],
+   "forms": [
+    {
+     "id": "otpForm",
+     "action": "",
+     "method": "post"
+    }
+   ],
+   "scripts": [
+    {
+     "src": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "sha256": "edcefb750891278f9a3e679fdb10db4765d3313c61c538fa34be5be8d4b42047",
+     "size": 89501,
+     "library": true,
+     "iocs": {}
+    },
+    {
+     "src": "assets/pay.js",
+     "sha256": "57aee63e9a945309c9ad7c52445ab06fe5234f27698202338c70bb127210c838",
+     "size": 4800,
+     "iocs": {
+      "telegram_bot_ids": [
+       "7139462058"
+      ]
+     },
+     "kit": "tolltrap-v1b"
+    }
+   ],
+   "assets": [],
+   "meta": {
+    "favicon_hash": "46f90fc3eab6216d5ac1635cc432978e86afc6479cb29de169ae1b49a1696bb0"
+   },
+   "network": [
+    {
+     "method": "GET",
+     "url": "http://aramex-parcel-hold.test/otp.html",
+     "status": 200,
+     "type": "document"
+    },
+    {
+     "method": "GET",
+     "url": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "status": 200,
+     "type": "script"
+    },
+    {
+     "method": "GET",
+     "url": "http://aramex-parcel-hold.test/assets/pay.js",
+     "status": 200,
+     "type": "script",
+     "flag": "kit"
+    },
+    {
+     "method": "GET",
+     "url": "http://aramex-parcel-hold.test/favicon.ico",
+     "status": 200,
+     "type": "image"
+    }
+   ]
+  }
+ ],
+ "infra": {
+  "ip": "198.51.100.71",
+  "asn": "AS64503",
+  "asn_org": "BulkNode Hosting",
+  "country": "TR",
+  "registrar": "QuickReg",
+  "domain_created": "2026-11-21",
+  "cert_issued": "2026-11-21",
+  "cert_issuer": "WE1",
+  "nameservers": [
+   "ns.quickzone.test",
+   "ns2.quickzone.test"
+  ],
+  "cdn": false
+ },
+ "contacts": {},
+ "targeting": {
+  "emirates": [
+   "Dubai",
+   "Abu Dhabi"
+  ]
+ },
+ "on_blocklist": false,
+ "ground_truth": {
+  "label": "scam",
+  "family": "A"
+ },
+ "script": [
+  {
+   "type": "note",
+   "text": "Opening the link in an isolated browser (mobile profile, UAE locale, no stored data).",
+   "text_ar": "فتح الرابط داخل متصفح معزول بملف جوال إماراتي…"
+  },
+  {
+   "type": "navigate",
+   "page_index": 0
+  },
+  {
+   "type": "note",
+   "text": "Loaded “ARAMEX - Parcel on hold”.",
+   "text_ar": "تم تحميل الصفحة: ARAMEX - Parcel on hold"
+  },
+  {
+   "type": "note",
+   "text": "Inspecting the page's scripts for known indicators.",
+   "text_ar": "تحليل سكربتات الصفحة بحثاً عن مؤشرات…"
+  },
+  {
+   "type": "cursor",
+   "action": "scroll",
+   "target": "e1",
+   "label": "scroll"
+  },
+  {
+   "type": "analyze",
+   "page_index": 0
+  },
+  {
+   "type": "note",
+   "text": "Clicking “Reschedule delivery” to follow the victim's path.",
+   "text_ar": "الضغط على «Reschedule delivery» لمتابعة مسار الضحية."
+  },
+  {
+   "type": "cursor",
+   "action": "click",
+   "target": "e4",
+   "label": "Reschedule delivery"
+  },
+  {
+   "type": "navigate",
+   "page_index": 1
+  },
+  {
+   "type": "note",
+   "text": "Loaded “ARAMEX - Delivery details”.",
+   "text_ar": "تم تحميل الصفحة: ARAMEX - Delivery details"
+  },
+  {
+   "type": "note",
+   "text": "Inspecting the page's scripts for known indicators.",
+   "text_ar": "تحليل سكربتات الصفحة بحثاً عن مؤشرات…"
+  },
+  {
+   "type": "cursor",
+   "action": "scroll",
+   "target": "e1",
+   "label": "scroll"
+  },
+  {
+   "type": "cursor",
+   "action": "type",
+   "target": "e2",
+   "label": "Full name"
+  },
+  {
+   "type": "cursor",
+   "action": "type",
+   "target": "e3",
+   "label": "Mobile number"
+  },
+  {
+   "type": "cursor",
+   "action": "type",
+   "target": "e4",
+   "label": "Emirate"
+  },
+  {
+   "type": "cursor",
+   "action": "type",
+   "target": "e5",
+   "label": "Street / building"
+  },
+  {
+   "type": "analyze",
+   "page_index": 1
+  },
+  {
+   "type": "note",
+   "text": "Clicking “Continue to payment” to follow the victim's path.",
+   "text_ar": "الضغط على «Continue to payment» لمتابعة مسار الضحية."
+  },
+  {
+   "type": "cursor",
+   "action": "click",
+   "target": "e6",
+   "label": "Continue to payment"
+  },
+  {
+   "type": "navigate",
+   "page_index": 2
+  },
+  {
+   "type": "note",
+   "text": "Loaded “ARAMEX - Pay delivery fee”.",
+   "text_ar": "تم تحميل الصفحة: ARAMEX - Pay delivery fee"
+  },
+  {
+   "type": "note",
+   "text": "Inspecting the page's scripts for known indicators.",
+   "text_ar": "تحليل سكربتات الصفحة بحثاً عن مؤشرات…"
+  },
+  {
+   "type": "cursor",
+   "action": "scroll",
+   "target": "e1",
+   "label": "scroll"
+  },
+  {
+   "type": "cursor",
+   "action": "move",
+   "target": "e3",
+   "label": "Cardholder name"
+  },
+  {
+   "type": "note",
+   "text": "“Cardholder name” is a sensitive field. The agent does not enter any data.",
+   "text_ar": "حقل «Cardholder name» حساس: الوكيل لا يدخل أي بيانات."
+  },
+  {
+   "type": "cursor",
+   "action": "move",
+   "target": "e4",
+   "label": "Card number"
+  },
+  {
+   "type": "note",
+   "text": "“Card number” is a sensitive field. The agent does not enter any data.",
+   "text_ar": "حقل «Card number» حساس: الوكيل لا يدخل أي بيانات."
+  },
+  {
+   "type": "cursor",
+   "action": "move",
+   "target": "e5",
+   "label": "Expiry date"
+  },
+  {
+   "type": "note",
+   "text": "“Expiry date” is a sensitive field. The agent does not enter any data.",
+   "text_ar": "حقل «Expiry date» حساس: الوكيل لا يدخل أي بيانات."
+  },
+  {
+   "type": "cursor",
+   "action": "move",
+   "target": "e6",
+   "label": "CVV"
+  },
+  {
+   "type": "note",
+   "text": "“CVV” is a sensitive field. The agent does not enter any data.",
+   "text_ar": "حقل «CVV» حساس: الوكيل لا يدخل أي بيانات."
+  },
+  {
+   "type": "analyze",
+   "page_index": 2
+  },
+  {
+   "type": "note",
+   "text": "Clicking “Pay AED 9.00” to follow the victim's path.",
+   "text_ar": "الضغط على «Pay AED 9.00» لمتابعة مسار الضحية."
+  },
+  {
+   "type": "cursor",
+   "action": "click",
+   "target": "e7",
+   "label": "Pay AED 9.00"
+  },
+  {
+   "type": "navigate",
+   "page_index": 3
+  },
+  {
+   "type": "note",
+   "text": "Loaded “ARAMEX - Verification”.",
+   "text_ar": "تم تحميل الصفحة: ARAMEX - Verification"
+  },
+  {
+   "type": "note",
+   "text": "Inspecting the page's scripts for known indicators.",
+   "text_ar": "تحليل سكربتات الصفحة بحثاً عن مؤشرات…"
+  },
+  {
+   "type": "cursor",
+   "action": "scroll",
+   "target": "e1",
+   "label": "scroll"
+  },
+  {
+   "type": "cursor",
+   "action": "move",
+   "target": "e3",
+   "label": "Verification code"
+  },
+  {
+   "type": "note",
+   "text": "“Verification code” is a sensitive field. The agent does not enter any data.",
+   "text_ar": "حقل «Verification code» حساس: الوكيل لا يدخل أي بيانات."
+  },
+  {
+   "type": "analyze",
+   "page_index": 3
+  }
+ ]
+}

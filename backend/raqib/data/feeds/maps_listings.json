@@ -1,0 +1,251 @@
+{
+ "listings": [
+  {
+   "id": "m01",
+   "name": "Emirates Post - Main Post Office",
+   "category": "Government post office",
+   "area": "Al Khalidiyah",
+   "emirate": "Abu Dhabi",
+   "phone": "+97126171555",
+   "whatsapp": null,
+   "website": "https://www.emiratespost.ae/",
+   "rating": 4.1,
+   "reviews": 912,
+   "claimed": true,
+   "tags": [
+    "emirates post"
+   ]
+  },
+  {
+   "id": "m02",
+   "name": "Emirates Post Customer Service Center",
+   "category": "Post office",
+   "area": "Al Nahda",
+   "emirate": "Sharjah",
+   "phone": null,
+   "whatsapp": "+971524187730",
+   "website": "http://emiratespost-redelivery.test/",
+   "rating": 4.8,
+   "reviews": 6,
+   "claimed": false,
+   "tags": [
+    "emirates post",
+    "parcel"
+   ]
+  },
+  {
+   "id": "m03",
+   "name": "RTA Customer Happiness Center",
+   "category": "Government office",
+   "area": "Al Barsha",
+   "emirate": "Dubai",
+   "phone": "+97148009090",
+   "whatsapp": null,
+   "website": "https://www.rta.ae/",
+   "rating": 4.0,
+   "reviews": 2210,
+   "claimed": true,
+   "tags": [
+    "rta"
+   ]
+  },
+  {
+   "id": "m04",
+   "name": "Salik Recharge & Fines Help Desk",
+   "category": "Government service",
+   "area": "Deira",
+   "emirate": "Dubai",
+   "phone": null,
+   "whatsapp": "+971504418802",
+   "website": "http://salik-topup-ae.test/",
+   "rating": 5.0,
+   "reviews": 3,
+   "claimed": false,
+   "tags": [
+    "salik",
+    "rta"
+   ]
+  },
+  {
+   "id": "m05",
+   "name": "ADCB - Al Markaziyah Branch",
+   "category": "Bank",
+   "area": "Al Markaziyah",
+   "emirate": "Abu Dhabi",
+   "phone": "+97126210090",
+   "whatsapp": null,
+   "website": "https://www.adcb.com/",
+   "rating": 4.2,
+   "reviews": 640,
+   "claimed": true,
+   "tags": [
+    "adcb"
+   ]
+  },
+  {
+   "id": "m06",
+   "name": "ADCB Account Support 24/7",
+   "category": "Bank",
+   "area": "Al Markaziyah",
+   "emirate": "Abu Dhabi",
+   "phone": "+971557301194",
+   "whatsapp": null,
+   "website": null,
+   "rating": 4.9,
+   "reviews": 4,
+   "claimed": false,
+   "tags": [
+    "adcb"
+   ]
+  },
+  {
+   "id": "m07",
+   "name": "Quick Loan UAE - Fast Approval",
+   "category": "Loan agency",
+   "area": "Business Bay",
+   "emirate": "Dubai",
+   "phone": null,
+   "whatsapp": "+971569023318",
+   "website": "http://quickloan-uae-now.test/",
+   "rating": 4.9,
+   "reviews": 11,
+   "claimed": false,
+   "tags": [
+    "loan"
+   ]
+  },
+  {
+   "id": "m08",
+   "name": "Gold Investment Advisors Dubai",
+   "category": "Investment service",
+   "area": "DIFC",
+   "emirate": "Dubai",
+   "phone": null,
+   "whatsapp": "+971569023318",
+   "website": "http://goldtrade-invest-ae.test/",
+   "rating": 5.0,
+   "reviews": 7,
+   "claimed": false,
+   "tags": [
+    "gold",
+    "investment"
+   ]
+  },
+  {
+   "id": "m09",
+   "name": "Al Noor Bakery",
+   "category": "Bakery",
+   "area": "Al Khalidiyah",
+   "emirate": "Abu Dhabi",
+   "phone": "+97126674410",
+   "whatsapp": null,
+   "website": "http://alnoor-bakery.test/",
+   "rating": 4.5,
+   "reviews": 233,
+   "claimed": true,
+   "tags": []
+  },
+  {
+   "id": "m10",
+   "name": "Gulf Courier Express",
+   "category": "Courier service",
+   "area": "Mussafah",
+   "emirate": "Abu Dhabi",
+   "phone": "+97125550148",
+   "whatsapp": null,
+   "website": "http://gulf-courier-express.test/",
+   "rating": 4.3,
+   "reviews": 118,
+   "claimed": true,
+   "tags": []
+  },
+  {
+   "id": "m11",
+   "name": "Marina Pharmacy",
+   "category": "Pharmacy",
+   "area": "Dubai Marina",
+   "emirate": "Dubai",
+   "phone": "+97144213377",
+   "whatsapp": null,
+   "website": null,
+   "rating": 4.4,
+   "reviews": 301,
+   "claimed": true,
+   "tags": []
+  },
+  {
+   "id": "m12",
+   "name": "Corniche Cafe",
+   "category": "Cafe",
+   "area": "Corniche",
+   "emirate": "Abu Dhabi",
+   "phone": "+97126760011",
+   "whatsapp": null,
+   "website": null,
+   "rating": 4.6,
+   "reviews": 872,
+   "claimed": true,
+   "tags": []
+  },
+  {
+   "id": "m13",
+   "name": "Sparkle Car Wash",
+   "category": "Car wash",
+   "area": "Mussafah",
+   "emirate": "Abu Dhabi",
+   "phone": "+97125559090",
+   "whatsapp": null,
+   "website": null,
+   "rating": 4.1,
+   "reviews": 96,
+   "claimed": true,
+   "tags": []
+  },
+  {
+   "id": "m14",
+   "name": "Al Majaz Dental Clinic",
+   "category": "Dental clinic",
+   "area": "Al Majaz",
+   "emirate": "Sharjah",
+   "phone": "+97165551234",
+   "whatsapp": null,
+   "website": null,
+   "rating": 4.7,
+   "reviews": 204,
+   "claimed": true,
+   "tags": []
+  },
+  {
+   "id": "m15",
+   "name": "Etisalat Business Center",
+   "category": "Telecom",
+   "area": "Al Ain",
+   "emirate": "Abu Dhabi",
+   "phone": "+97137555900",
+   "whatsapp": null,
+   "website": "https://www.etisalat.ae/",
+   "rating": 3.9,
+   "reviews": 344,
+   "claimed": true,
+   "tags": [
+    "etisalat"
+   ]
+  },
+  {
+   "id": "m16",
+   "name": "DEWA Customer Service",
+   "category": "Utility",
+   "area": "Al Quoz",
+   "emirate": "Dubai",
+   "phone": "+97148009000",
+   "whatsapp": null,
+   "website": "https://www.dewa.gov.ae/",
+   "rating": 3.8,
+   "reviews": 489,
+   "claimed": true,
+   "tags": [
+    "dewa"
+   ]
+  }
+ ]
+}

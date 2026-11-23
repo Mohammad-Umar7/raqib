@@ -1,0 +1,35 @@
+# Hardened runtime for investigating real scam URLs.
+# - published on the loopback interface only (nobody on the venue Wi-Fi can reach the dashboard)
+# - no host folders are mounted; evidence lives in a named volume
+# - all Linux capabilities dropped, no privilege escalation, read-only root filesystem
+# - memory and CPU capped so a hostile page cannot starve the host
+services:
+  raqib:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "127.0.0.1:8600:8600"
+    env_file:
+      - ../.env
+    environment:
+      RAQIB_MODE: live
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp:size=512m
+      - /home/raqib/.cache:size=256m
+    volumes:
+      - raqib-evidence:/app/backend/raqib/data/evidence
+      - raqib-runs:/app/backend/raqib/data/runs
+    mem_limit: 3g
+    cpus: 2
+    pids_limit: 512
+    ipc: private
+    restart: "no"
+
+volumes:
+  raqib-evidence:
+  raqib-runs:

@@ -1,0 +1,33 @@
+{
+ "case_id": "m_salik_desk",
+ "kind": "maps_listing",
+ "label": "Salik Recharge & Fines Help Desk",
+ "input_url": "maps://m_salik_desk",
+ "final_url": "",
+ "host": "Salik Recharge & Fines Help Desk",
+ "source": "maps",
+ "observed_at": "2026-11-24",
+ "redirect_chain": [],
+ "pages": [],
+ "infra": {},
+ "contacts": {
+  "phones": [],
+  "whatsapp": [
+   "+971504418802"
+  ]
+ },
+ "listing": {
+  "name": "Salik Recharge & Fines Help Desk",
+  "area": "Deira",
+  "emirate": "Dubai"
+ },
+ "targeting": {
+  "emirates": [
+   "Dubai"
+  ]
+ },
+ "ground_truth": {
+  "label": "scam",
+  "family": "A"
+ }
+}

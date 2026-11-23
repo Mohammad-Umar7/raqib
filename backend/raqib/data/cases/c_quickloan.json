@@ -1,0 +1,356 @@
+{
+ "case_id": "c_quickloan",
+ "kind": "site",
+ "label": "QuickLoan advance-fee scam",
+ "input_url": "http://quickloan-uae-now.test/",
+ "final_url": "http://quickloan-uae-now.test/",
+ "host": "quickloan-uae-now.test",
+ "source": "search_ad",
+ "observed_at": "2026-11-24",
+ "redirect_chain": [
+  {
+   "url": "http://quickloan-uae-now.test/",
+   "status": 200
+  }
+ ],
+ "pages": [
+  {
+   "page_id": "p1",
+   "url": "http://quickloan-uae-now.test/",
+   "title": "QUICKLOAN UAE - Instant loans",
+   "lang": "en",
+   "elements": [
+    {
+     "id": "e1",
+     "kind": "header",
+     "text": "QUICKLOAN UAE"
+    },
+    {
+     "id": "e2",
+     "kind": "heading",
+     "text": "Instant personal loan up to AED 250,000. No salary certificate, approval in 10 minutes."
+    },
+    {
+     "id": "e3",
+     "kind": "input",
+     "text": "Full name",
+     "form": "loanForm",
+     "field": {
+      "name": "fullname",
+      "type": "text",
+      "autocomplete": "name",
+      "placeholder": "",
+      "inputmode": "",
+      "label": "Full name"
+     }
+    },
+    {
+     "id": "e4",
+     "kind": "input",
+     "text": "Mobile",
+     "form": "loanForm",
+     "field": {
+      "name": "mobile",
+      "type": "tel",
+      "autocomplete": "tel",
+      "placeholder": "",
+      "inputmode": "tel",
+      "label": "Mobile"
+     }
+    },
+    {
+     "id": "e5",
+     "kind": "input",
+     "text": "Emirates ID",
+     "form": "loanForm",
+     "field": {
+      "name": "emirates_id",
+      "type": "text",
+      "autocomplete": "",
+      "placeholder": "784-XXXX-XXXXXXX-X",
+      "inputmode": "",
+      "label": "Emirates ID"
+     }
+    },
+    {
+     "id": "e6",
+     "kind": "select",
+     "text": "Monthly salary",
+     "form": "loanForm",
+     "field": {
+      "name": "salary",
+      "type": "select",
+      "autocomplete": "",
+      "placeholder": "",
+      "inputmode": "",
+      "label": "Monthly salary"
+     }
+    },
+    {
+     "id": "e7",
+     "kind": "button",
+     "text": "Check eligibility"
+    }
+   ],
+   "forms": [
+    {
+     "id": "loanForm",
+     "action": "",
+     "method": "post"
+    }
+   ],
+   "scripts": [
+    {
+     "src": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "sha256": "edcefb750891278f9a3e679fdb10db4765d3313c61c538fa34be5be8d4b42047",
+     "size": 89501,
+     "library": true,
+     "iocs": {}
+    },
+    {
+     "src": "assets/gr.js",
+     "sha256": "f95cb07c44e2f3e7a4fa3f19467ca012785d10cf9bd294dfd02e262d6dd77a89",
+     "size": 4800,
+     "iocs": {
+      "wallets": [
+       "TQ7hX2mVpR9kLc4sN8wB3yF6dJ1eZ5aGuK"
+      ]
+     },
+     "kit": "goldrush-v3"
+    }
+   ],
+   "assets": [],
+   "meta": {},
+   "network": [
+    {
+     "method": "GET",
+     "url": "http://quickloan-uae-now.test/",
+     "status": 200,
+     "type": "document"
+    },
+    {
+     "method": "GET",
+     "url": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "status": 200,
+     "type": "script"
+    },
+    {
+     "method": "GET",
+     "url": "http://quickloan-uae-now.test/assets/gr.js",
+     "status": 200,
+     "type": "script",
+     "flag": "kit"
+    },
+    {
+     "method": "GET",
+     "url": "http://quickloan-uae-now.test/favicon.ico",
+     "status": 200,
+     "type": "image"
+    }
+   ]
+  },
+  {
+   "page_id": "p2",
+   "url": "http://quickloan-uae-now.test/fee.html",
+   "title": "QUICKLOAN UAE - Approved",
+   "lang": "en",
+   "elements": [
+    {
+     "id": "e1",
+     "kind": "header",
+     "text": "QUICKLOAN UAE"
+    },
+    {
+     "id": "e2",
+     "kind": "banner",
+     "text": "Approved: AED 120,000. Pay the AED 99 refundable processing fee to release the funds."
+    },
+    {
+     "id": "e3",
+     "kind": "wallet",
+     "text": "TQ7hX2mVpR9kLc4sN8wB3yF6dJ1eZ5aGuK",
+     "wallet": "TQ7hX2mVpR9kLc4sN8wB3yF6dJ1eZ5aGuK"
+    },
+    {
+     "id": "e4",
+     "kind": "footer",
+     "text": "Loan officer on WhatsApp: +971569023318",
+     "whatsapp": "+971569023318"
+    }
+   ],
+   "forms": [],
+   "scripts": [
+    {
+     "src": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "sha256": "edcefb750891278f9a3e679fdb10db4765d3313c61c538fa34be5be8d4b42047",
+     "size": 89501,
+     "library": true,
+     "iocs": {}
+    },
+    {
+     "src": "assets/gr.js",
+     "sha256": "f95cb07c44e2f3e7a4fa3f19467ca012785d10cf9bd294dfd02e262d6dd77a89",
+     "size": 4800,
+     "iocs": {
+      "wallets": [
+       "TQ7hX2mVpR9kLc4sN8wB3yF6dJ1eZ5aGuK"
+      ]
+     },
+     "kit": "goldrush-v3"
+    }
+   ],
+   "assets": [],
+   "meta": {},
+   "network": [
+    {
+     "method": "GET",
+     "url": "http://quickloan-uae-now.test/fee.html",
+     "status": 200,
+     "type": "document"
+    },
+    {
+     "method": "GET",
+     "url": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "status": 200,
+     "type": "script"
+    },
+    {
+     "method": "GET",
+     "url": "http://quickloan-uae-now.test/assets/gr.js",
+     "status": 200,
+     "type": "script",
+     "flag": "kit"
+    },
+    {
+     "method": "GET",
+     "url": "http://quickloan-uae-now.test/favicon.ico",
+     "status": 200,
+     "type": "image"
+    }
+   ]
+  }
+ ],
+ "infra": {
+  "ip": "203.0.113.121",
+  "asn": "AS64505",
+  "asn_org": "SwiftServe",
+  "country": "SG",
+  "registrar": "QuickReg",
+  "domain_created": "2026-11-12",
+  "cert_issued": "2026-11-13",
+  "cert_issuer": "WE1",
+  "nameservers": [
+   "ns.quickzone.test",
+   "ns2.quickzone.test"
+  ],
+  "cdn": false
+ },
+ "contacts": {},
+ "targeting": {
+  "emirates": [
+   "Abu Dhabi",
+   "Sharjah",
+   "Ajman"
+  ]
+ },
+ "on_blocklist": false,
+ "ground_truth": {
+  "label": "scam",
+  "family": "C"
+ },
+ "script": [
+  {
+   "type": "note",
+   "text": "Opening the link in an isolated browser (mobile profile, UAE locale, no stored data).",
+   "text_ar": "فتح الرابط داخل متصفح معزول بملف جوال إماراتي…"
+  },
+  {
+   "type": "navigate",
+   "page_index": 0
+  },
+  {
+   "type": "note",
+   "text": "Loaded “QUICKLOAN UAE - Instant loans”.",
+   "text_ar": "تم تحميل الصفحة: QUICKLOAN UAE - Instant loans"
+  },
+  {
+   "type": "note",
+   "text": "Inspecting the page's scripts for known indicators.",
+   "text_ar": "تحليل سكربتات الصفحة بحثاً عن مؤشرات…"
+  },
+  {
+   "type": "cursor",
+   "action": "scroll",
+   "target": "e1",
+   "label": "scroll"
+  },
+  {
+   "type": "cursor",
+   "action": "type",
+   "target": "e3",
+   "label": "Full name"
+  },
+  {
+   "type": "cursor",
+   "action": "type",
+   "target": "e4",
+   "label": "Mobile"
+  },
+  {
+   "type": "cursor",
+   "action": "move",
+   "target": "e5",
+   "label": "Emirates ID"
+  },
+  {
+   "type": "note",
+   "text": "“Emirates ID” is a sensitive field. The agent does not enter any data.",
+   "text_ar": "حقل «Emirates ID» حساس: الوكيل لا يدخل أي بيانات."
+  },
+  {
+   "type": "cursor",
+   "action": "type",
+   "target": "e6",
+   "label": "Monthly salary"
+  },
+  {
+   "type": "analyze",
+   "page_index": 0
+  },
+  {
+   "type": "note",
+   "text": "Clicking “Check eligibility” to follow the victim's path.",
+   "text_ar": "الضغط على «Check eligibility» لمتابعة مسار الضحية."
+  },
+  {
+   "type": "cursor",
+   "action": "click",
+   "target": "e7",
+   "label": "Check eligibility"
+  },
+  {
+   "type": "navigate",
+   "page_index": 1
+  },
+  {
+   "type": "note",
+   "text": "Loaded “QUICKLOAN UAE - Approved”.",
+   "text_ar": "تم تحميل الصفحة: QUICKLOAN UAE - Approved"
+  },
+  {
+   "type": "note",
+   "text": "Inspecting the page's scripts for known indicators.",
+   "text_ar": "تحليل سكربتات الصفحة بحثاً عن مؤشرات…"
+  },
+  {
+   "type": "cursor",
+   "action": "scroll",
+   "target": "e1",
+   "label": "scroll"
+  },
+  {
+   "type": "analyze",
+   "page_index": 1
+  }
+ ]
+}

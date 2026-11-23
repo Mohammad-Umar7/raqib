@@ -1,0 +1,684 @@
+{
+ "case_id": "c_rta_fines",
+ "kind": "site",
+ "label": "RTA fines lure",
+ "input_url": "http://rta-fines-payment.test/",
+ "final_url": "http://rta-fines-payment.test/",
+ "host": "rta-fines-payment.test",
+ "source": "search_ad",
+ "observed_at": "2026-11-24",
+ "redirect_chain": [
+  {
+   "url": "http://rta-fines-payment.test/",
+   "status": 200
+  }
+ ],
+ "pages": [
+  {
+   "page_id": "p1",
+   "url": "http://rta-fines-payment.test/",
+   "title": "RTA - Traffic fines inquiry",
+   "lang": "en",
+   "elements": [
+    {
+     "id": "e1",
+     "kind": "header",
+     "text": "RTA"
+    },
+    {
+     "id": "e2",
+     "kind": "heading",
+     "text": "Traffic fines inquiry"
+    },
+    {
+     "id": "e3",
+     "kind": "input",
+     "text": "Plate code",
+     "form": "plateForm",
+     "field": {
+      "name": "plate_code",
+      "type": "text",
+      "autocomplete": "",
+      "placeholder": "A",
+      "inputmode": "",
+      "label": "Plate code"
+     }
+    },
+    {
+     "id": "e4",
+     "kind": "input",
+     "text": "Plate number",
+     "form": "plateForm",
+     "field": {
+      "name": "plate_number",
+      "type": "text",
+      "autocomplete": "",
+      "placeholder": "e.g. 48213",
+      "inputmode": "",
+      "label": "Plate number"
+     }
+    },
+    {
+     "id": "e5",
+     "kind": "button",
+     "text": "Search fines"
+    }
+   ],
+   "forms": [
+    {
+     "id": "plateForm",
+     "action": "",
+     "method": "post"
+    }
+   ],
+   "scripts": [
+    {
+     "src": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "sha256": "edcefb750891278f9a3e679fdb10db4765d3313c61c538fa34be5be8d4b42047",
+     "size": 89501,
+     "library": true,
+     "iocs": {}
+    },
+    {
+     "src": "assets/kit.js",
+     "sha256": "8c7cea172b833d102ba0f5eda3af2b191ca19225b353c6d7cfe382dd53275fc4",
+     "size": 4800,
+     "iocs": {
+      "telegram_bot_ids": [
+       "7139462058"
+      ]
+     },
+     "kit": "tolltrap-v1"
+    }
+   ],
+   "assets": [],
+   "meta": {
+    "favicon_hash": "46f90fc3eab6216d5ac1635cc432978e86afc6479cb29de169ae1b49a1696bb0"
+   },
+   "network": [
+    {
+     "method": "GET",
+     "url": "http://rta-fines-payment.test/",
+     "status": 200,
+     "type": "document"
+    },
+    {
+     "method": "GET",
+     "url": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "status": 200,
+     "type": "script"
+    },
+    {
+     "method": "GET",
+     "url": "http://rta-fines-payment.test/assets/kit.js",
+     "status": 200,
+     "type": "script",
+     "flag": "kit"
+    },
+    {
+     "method": "GET",
+     "url": "http://rta-fines-payment.test/favicon.ico",
+     "status": 200,
+     "type": "image"
+    }
+   ]
+  },
+  {
+   "page_id": "p2",
+   "url": "http://rta-fines-payment.test/fines.html",
+   "title": "RTA - Fines found",
+   "lang": "en",
+   "elements": [
+    {
+     "id": "e1",
+     "kind": "header",
+     "text": "RTA"
+    },
+    {
+     "id": "e2",
+     "kind": "banner",
+     "text": "Pay within 24 hours to avoid a 50% penalty and vehicle impoundment"
+    },
+    {
+     "id": "e3",
+     "kind": "text",
+     "text": "1 unpaid fine: exceeding the speed limit, AED 400.00"
+    },
+    {
+     "id": "e4",
+     "kind": "timer",
+     "text": "23:12:09"
+    },
+    {
+     "id": "e5",
+     "kind": "button",
+     "text": "Pay now"
+    },
+    {
+     "id": "e6",
+     "kind": "footer",
+     "text": "Support: +971524187730",
+     "whatsapp": "+971524187730"
+    }
+   ],
+   "forms": [],
+   "scripts": [
+    {
+     "src": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "sha256": "edcefb750891278f9a3e679fdb10db4765d3313c61c538fa34be5be8d4b42047",
+     "size": 89501,
+     "library": true,
+     "iocs": {}
+    },
+    {
+     "src": "assets/kit.js",
+     "sha256": "8c7cea172b833d102ba0f5eda3af2b191ca19225b353c6d7cfe382dd53275fc4",
+     "size": 4800,
+     "iocs": {
+      "telegram_bot_ids": [
+       "7139462058"
+      ]
+     },
+     "kit": "tolltrap-v1"
+    }
+   ],
+   "assets": [],
+   "meta": {
+    "favicon_hash": "46f90fc3eab6216d5ac1635cc432978e86afc6479cb29de169ae1b49a1696bb0"
+   },
+   "network": [
+    {
+     "method": "GET",
+     "url": "http://rta-fines-payment.test/fines.html",
+     "status": 200,
+     "type": "document"
+    },
+    {
+     "method": "GET",
+     "url": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "status": 200,
+     "type": "script"
+    },
+    {
+     "method": "GET",
+     "url": "http://rta-fines-payment.test/assets/kit.js",
+     "status": 200,
+     "type": "script",
+     "flag": "kit"
+    },
+    {
+     "method": "GET",
+     "url": "http://rta-fines-payment.test/favicon.ico",
+     "status": 200,
+     "type": "image"
+    }
+   ]
+  },
+  {
+   "page_id": "p3",
+   "url": "http://rta-fines-payment.test/pay.html",
+   "title": "RTA - Payment",
+   "lang": "en",
+   "elements": [
+    {
+     "id": "e1",
+     "kind": "header",
+     "text": "RTA"
+    },
+    {
+     "id": "e2",
+     "kind": "text",
+     "text": "Amount due: AED 400.00"
+    },
+    {
+     "id": "e3",
+     "kind": "input",
+     "text": "Cardholder name",
+     "form": "payForm",
+     "field": {
+      "name": "cardholder",
+      "type": "text",
+      "autocomplete": "cc-name",
+      "placeholder": "",
+      "inputmode": "",
+      "label": "Cardholder name"
+     }
+    },
+    {
+     "id": "e4",
+     "kind": "input",
+     "text": "Card number",
+     "form": "payForm",
+     "field": {
+      "name": "cardnumber",
+      "type": "text",
+      "autocomplete": "cc-number",
+      "placeholder": "1234 5678 9012 3456",
+      "inputmode": "numeric",
+      "label": "Card number",
+      "maxlength": 19
+     }
+    },
+    {
+     "id": "e5",
+     "kind": "input",
+     "text": "Expiry date",
+     "form": "payForm",
+     "field": {
+      "name": "exp",
+      "type": "text",
+      "autocomplete": "cc-exp",
+      "placeholder": "MM/YY",
+      "inputmode": "numeric",
+      "label": "Expiry date",
+      "maxlength": 5
+     }
+    },
+    {
+     "id": "e6",
+     "kind": "input",
+     "text": "CVV",
+     "form": "payForm",
+     "field": {
+      "name": "cvv",
+      "type": "text",
+      "autocomplete": "cc-csc",
+      "placeholder": "CVV",
+      "inputmode": "numeric",
+      "label": "CVV",
+      "maxlength": 4
+     }
+    },
+    {
+     "id": "e7",
+     "kind": "button",
+     "text": "Pay now"
+    }
+   ],
+   "forms": [
+    {
+     "id": "payForm",
+     "action": "",
+     "method": "post"
+    }
+   ],
+   "scripts": [
+    {
+     "src": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "sha256": "edcefb750891278f9a3e679fdb10db4765d3313c61c538fa34be5be8d4b42047",
+     "size": 89501,
+     "library": true,
+     "iocs": {}
+    },
+    {
+     "src": "assets/kit.js",
+     "sha256": "8c7cea172b833d102ba0f5eda3af2b191ca19225b353c6d7cfe382dd53275fc4",
+     "size": 4800,
+     "iocs": {
+      "telegram_bot_ids": [
+       "7139462058"
+      ]
+     },
+     "kit": "tolltrap-v1"
+    }
+   ],
+   "assets": [],
+   "meta": {
+    "favicon_hash": "46f90fc3eab6216d5ac1635cc432978e86afc6479cb29de169ae1b49a1696bb0"
+   },
+   "network": [
+    {
+     "method": "GET",
+     "url": "http://rta-fines-payment.test/pay.html",
+     "status": 200,
+     "type": "document"
+    },
+    {
+     "method": "GET",
+     "url": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "status": 200,
+     "type": "script"
+    },
+    {
+     "method": "GET",
+     "url": "http://rta-fines-payment.test/assets/kit.js",
+     "status": 200,
+     "type": "script",
+     "flag": "kit"
+    },
+    {
+     "method": "GET",
+     "url": "http://rta-fines-payment.test/favicon.ico",
+     "status": 200,
+     "type": "image"
+    }
+   ]
+  },
+  {
+   "page_id": "p4",
+   "url": "http://rta-fines-payment.test/otp.html",
+   "title": "RTA - Verification",
+   "lang": "en",
+   "elements": [
+    {
+     "id": "e1",
+     "kind": "header",
+     "text": "RTA"
+    },
+    {
+     "id": "e2",
+     "kind": "text",
+     "text": "Enter the 6-digit verification code sent to your mobile number to complete the payment."
+    },
+    {
+     "id": "e3",
+     "kind": "input",
+     "text": "Verification code",
+     "form": "otpForm",
+     "field": {
+      "name": "otp",
+      "type": "text",
+      "autocomplete": "one-time-code",
+      "placeholder": "000000",
+      "inputmode": "numeric",
+      "label": "Verification code",
+      "maxlength": 6
+     }
+    },
+    {
+     "id": "e4",
+     "kind": "button",
+     "text": "Verify"
+    }
+   ],
+   "forms": [
+    {
+     "id": "otpForm",
+     "action": "",
+     "method": "post"
+    }
+   ],
+   "scripts": [
+    {
+     "src": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "sha256": "edcefb750891278f9a3e679fdb10db4765d3313c61c538fa34be5be8d4b42047",
+     "size": 89501,
+     "library": true,
+     "iocs": {}
+    },
+    {
+     "src": "assets/kit.js",
+     "sha256": "8c7cea172b833d102ba0f5eda3af2b191ca19225b353c6d7cfe382dd53275fc4",
+     "size": 4800,
+     "iocs": {
+      "telegram_bot_ids": [
+       "7139462058"
+      ]
+     },
+     "kit": "tolltrap-v1"
+    }
+   ],
+   "assets": [],
+   "meta": {
+    "favicon_hash": "46f90fc3eab6216d5ac1635cc432978e86afc6479cb29de169ae1b49a1696bb0"
+   },
+   "network": [
+    {
+     "method": "GET",
+     "url": "http://rta-fines-payment.test/otp.html",
+     "status": 200,
+     "type": "document"
+    },
+    {
+     "method": "GET",
+     "url": "https://code.jquery.com/jquery-3.6.0.min.js",
+     "status": 200,
+     "type": "script"
+    },
+    {
+     "method": "GET",
+     "url": "http://rta-fines-payment.test/assets/kit.js",
+     "status": 200,
+     "type": "script",
+     "flag": "kit"
+    },
+    {
+     "method": "GET",
+     "url": "http://rta-fines-payment.test/favicon.ico",
+     "status": 200,
+     "type": "image"
+    }
+   ]
+  }
+ ],
+ "infra": {
+  "ip": "203.0.113.17",
+  "asn": "AS64500",
+  "asn_org": "ExampleHost B.V.",
+  "country": "NL",
+  "registrar": "NameHub Ltd",
+  "domain_created": "2026-11-20",
+  "cert_issued": "2026-11-21",
+  "cert_issuer": "R11",
+  "nameservers": [
+   "ns1.example-dns.test",
+   "ns2.example-dns.test"
+  ],
+  "cdn": false
+ },
+ "contacts": {},
+ "targeting": {
+  "emirates": [
+   "Dubai",
+   "Sharjah"
+  ]
+ },
+ "on_blocklist": false,
+ "ground_truth": {
+  "label": "scam",
+  "family": "A"
+ },
+ "script": [
+  {
+   "type": "note",
+   "text": "Opening the link in an isolated browser (mobile profile, UAE locale, no stored data).",
+   "text_ar": "فتح الرابط داخل متصفح معزول بملف جوال إماراتي…"
+  },
+  {
+   "type": "navigate",
+   "page_index": 0
+  },
+  {
+   "type": "note",
+   "text": "Loaded “RTA - Traffic fines inquiry”.",
+   "text_ar": "تم تحميل الصفحة: RTA - Traffic fines inquiry"
+  },
+  {
+   "type": "note",
+   "text": "Inspecting the page's scripts for known indicators.",
+   "text_ar": "تحليل سكربتات الصفحة بحثاً عن مؤشرات…"
+  },
+  {
+   "type": "cursor",
+   "action": "scroll",
+   "target": "e1",
+   "label": "scroll"
+  },
+  {
+   "type": "cursor",
+   "action": "type",
+   "target": "e3",
+   "label": "Plate code"
+  },
+  {
+   "type": "cursor",
+   "action": "type",
+   "target": "e4",
+   "label": "Plate number"
+  },
+  {
+   "type": "analyze",
+   "page_index": 0
+  },
+  {
+   "type": "note",
+   "text": "Clicking “Search fines” to follow the victim's path.",
+   "text_ar": "الضغط على «Search fines» لمتابعة مسار الضحية."
+  },
+  {
+   "type": "cursor",
+   "action": "click",
+   "target": "e5",
+   "label": "Search fines"
+  },
+  {
+   "type": "navigate",
+   "page_index": 1
+  },
+  {
+   "type": "note",
+   "text": "Loaded “RTA - Fines found”.",
+   "text_ar": "تم تحميل الصفحة: RTA - Fines found"
+  },
+  {
+   "type": "note",
+   "text": "Inspecting the page's scripts for known indicators.",
+   "text_ar": "تحليل سكربتات الصفحة بحثاً عن مؤشرات…"
+  },
+  {
+   "type": "cursor",
+   "action": "scroll",
+   "target": "e1",
+   "label": "scroll"
+  },
+  {
+   "type": "analyze",
+   "page_index": 1
+  },
+  {
+   "type": "note",
+   "text": "Clicking “Pay now” to follow the victim's path.",
+   "text_ar": "الضغط على «Pay now» لمتابعة مسار الضحية."
+  },
+  {
+   "type": "cursor",
+   "action": "click",
+   "target": "e5",
+   "label": "Pay now"
+  },
+  {
+   "type": "navigate",
+   "page_index": 2
+  },
+  {
+   "type": "note",
+   "text": "Loaded “RTA - Payment”.",
+   "text_ar": "تم تحميل الصفحة: RTA - Payment"
+  },
+  {
+   "type": "note",
+   "text": "Inspecting the page's scripts for known indicators.",
+   "text_ar": "تحليل سكربتات الصفحة بحثاً عن مؤشرات…"
+  },
+  {
+   "type": "cursor",
+   "action": "scroll",
+   "target": "e1",
+   "label": "scroll"
+  },
+  {
+   "type": "cursor",
+   "action": "move",
+   "target": "e3",
+   "label": "Cardholder name"
+  },
+  {
+   "type": "note",
+   "text": "“Cardholder name” is a sensitive field. The agent does not enter any data.",
+   "text_ar": "حقل «Cardholder name» حساس: الوكيل لا يدخل أي بيانات."
+  },
+  {
+   "type": "cursor",
+   "action": "move",
+   "target": "e4",
+   "label": "Card number"
+  },
+  {
+   "type": "note",
+   "text": "“Card number” is a sensitive field. The agent does not enter any data.",
+   "text_ar": "حقل «Card number» حساس: الوكيل لا يدخل أي بيانات."
+  },
+  {
+   "type": "cursor",
+   "action": "move",
+   "target": "e5",
+   "label": "Expiry date"
+  },
+  {
+   "type": "note",
+   "text": "“Expiry date” is a sensitive field. The agent does not enter any data.",
+   "text_ar": "حقل «Expiry date» حساس: الوكيل لا يدخل أي بيانات."
+  },
+  {
+   "type": "cursor",
+   "action": "move",
+   "target": "e6",
+   "label": "CVV"
+  },
+  {
+   "type": "note",
+   "text": "“CVV” is a sensitive field. The agent does not enter any data.",
+   "text_ar": "حقل «CVV» حساس: الوكيل لا يدخل أي بيانات."
+  },
+  {
+   "type": "analyze",
+   "page_index": 2
+  },
+  {
+   "type": "note",
+   "text": "Clicking “Pay now” to follow the victim's path.",
+   "text_ar": "الضغط على «Pay now» لمتابعة مسار الضحية."
+  },
+  {
+   "type": "cursor",
+   "action": "click",
+   "target": "e7",
+   "label": "Pay now"
+  },
+  {
+   "type": "navigate",
+   "page_index": 3
+  },
+  {
+   "type": "note",
+   "text": "Loaded “RTA - Verification”.",
+   "text_ar": "تم تحميل الصفحة: RTA - Verification"
+  },
+  {
+   "type": "note",
+   "text": "Inspecting the page's scripts for known indicators.",
+   "text_ar": "تحليل سكربتات الصفحة بحثاً عن مؤشرات…"
+  },
+  {
+   "type": "cursor",
+   "action": "scroll",
+   "target": "e1",
+   "label": "scroll"
+  },
+  {
+   "type": "cursor",
+   "action": "move",
+   "target": "e3",
+   "label": "Verification code"
+  },
+  {
+   "type": "note",
+   "text": "“Verification code” is a sensitive field. The agent does not enter any data.",
+   "text_ar": "حقل «Verification code» حساس: الوكيل لا يدخل أي بيانات."
+  },
+  {
+   "type": "analyze",
+   "page_index": 3
+  }
+ ]
+}

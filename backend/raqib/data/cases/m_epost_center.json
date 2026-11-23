@@ -1,0 +1,33 @@
+{
+ "case_id": "m_epost_center",
+ "kind": "maps_listing",
+ "label": "Emirates Post Customer Service Center",
+ "input_url": "maps://m_epost_center",
+ "final_url": "",
+ "host": "Emirates Post Customer Service Center",
+ "source": "maps",
+ "observed_at": "2026-11-24",
+ "redirect_chain": [],
+ "pages": [],
+ "infra": {},
+ "contacts": {
+  "phones": [],
+  "whatsapp": [
+   "+971524187730"
+  ]
+ },
+ "listing": {
+  "name": "Emirates Post Customer Service Center",
+  "area": "Al Nahda",
+  "emirate": "Sharjah"
+ },
+ "targeting": {
+  "emirates": [
+   "Sharjah"
+  ]
+ },
+ "ground_truth": {
+  "label": "scam",
+  "family": "A"
+ }
+}
