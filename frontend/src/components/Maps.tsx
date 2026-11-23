@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import { useLang } from '../i18n'
 import { EMIRATE_AR } from '../meta'
 
@@ -22,7 +23,7 @@ export function UaeMap({ counts, unit }: { counts: Record<string, number>; unit?
         const k = n / max
         return (
           <g key={name} className="tile">
-            <rect x={t.x} y={t.y} width={t.w} height={t.h} rx={12} fill={n ? `rgba(251,74,108,${0.14 + 0.5 * k})` : '#101a33'} stroke={n ? '#fb4a6c' : '#243457'} strokeOpacity={n ? 0.5 + 0.5 * k : 1} />
+            <motion.rect x={t.x} y={t.y} width={t.w} height={t.h} rx={12} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1, fill: n ? `rgba(251,74,108,${0.14 + 0.5 * k})` : '#101a33' }} transition={{ duration: 0.5, delay: Object.keys(TILES).indexOf(name) * 0.06 }} style={{ transformOrigin: `${t.x + t.w / 2}px ${t.y + t.h / 2}px` }} stroke={n ? '#fb4a6c' : '#243457'} strokeOpacity={n ? 0.5 + 0.5 * k : 1} />
             <text x={t.x + t.w / 2} y={t.y + t.h / 2 - (n ? 4 : -4)} textAnchor="middle" fontSize={name === 'Umm Al Quwain' || name === 'Ajman' ? 9 : 11} fontWeight={600} fill={n ? '#ffe3e9' : '#7686ab'}>
               {lang === 'ar' ? EMIRATE_AR[name] : name === 'Ras Al Khaimah' ? 'Ras Al Khaimah' : name}
             </text>
@@ -45,7 +46,7 @@ export function HostingBars({ data }: { data: Record<string, number> }) {
         <div key={cc} className="row" style={{ gap: 10 }}>
           <span className="chip mono" style={{ width: 38, justifyContent: 'center' }}>{cc}</span>
           <span className="muted" style={{ width: 118, fontSize: 12.5 }}>{p(NAMES[cc]?.[0] ?? cc, NAMES[cc]?.[1] ?? cc)}</span>
-          <div className="grow f-bar"><i style={{ width: `${(n / max) * 100}%`, background: 'linear-gradient(90deg,#6366f1,#38bdf8)' }} /></div>
+          <div className="grow f-bar"><motion.i initial={{ width: 0 }} animate={{ width: `${(n / max) * 100}%` }} transition={{ duration: 0.8, ease: 'easeOut' }} style={{ background: 'linear-gradient(90deg,#6366f1,#38bdf8)' }} /></div>
           <b style={{ width: 24, textAlign: 'end' }}>{n}</b>
         </div>
       ))}

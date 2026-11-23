@@ -12,7 +12,9 @@
 4. **Link** – every site gets a fingerprint (kit file hashes, bot IDs, wallets, phone/WhatsApp numbers, favicon, layout). Links carry a strength: *strong* (shared operator tooling or contact details), *medium*, *weak* (look-alike only). Two operators copying the same brand are not merged.
 5. **Act** – case file, PDF report (English + Arabic) with SHA-256 chain of custody, takedown drafts (registrar, host, Safe Browsing, Maps), blocklist CSV and a public warning.
 
-The case view is **generative UI**: Claude decides which blocks to show and how to word them (structured JSON), the dashboard renders them from a block registry, and an "Ask Raqib" box answers follow-up questions with blocks. Figures always come from the deterministic pipeline, so the model cannot invent numbers.
+The case view is **generative UI**: Claude chooses which of 13 block types to show, in what order and with what wording (structured JSON): verdict, key figures, the victim's journey step by step, why the score, how the score adds up (waterfall), campaign links, shareable indicators, infrastructure, targets, evidence and actions. The dashboard renders them from a block registry, shows the chosen layout as a strip, suggests follow-up questions, and the "Ask Raqib" box answers with blocks of its own. Figures always come from the deterministic pipeline, so the model cannot invent numbers.
+
+The dashboard is built for a live demo: a hunt radar with a sweeping scan, a funnel that fills as candidates stream in, an isolated-browser view with an animated agent cursor, flagged fields and floating score chips, a gauge that climbs with every signal, and a campaign graph that grows outward from the investigated site.
 
 ## Quick start (Windows PowerShell)
 

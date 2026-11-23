@@ -25,13 +25,14 @@ export interface InvState {
   blocks: Block[] | null
   source: string
   headline: { en: string; ar: string } | null
+  followUps: { q: string; q_ar: string }[]
   done: boolean
   error: string | null
 }
 
 const initial = (runId: string): InvState => ({
   runId, mode: '', phase: 'queued', phaseLabel: '', meta: null, frame: null, cursor: null, notes: [], requests: [], signals: [], flagged: {}, score: 0,
-  verdict: 'no_indicators', indicators: null, evidence: [], fingerprint: null, nodes: [], edges: [], related: [], blocks: null, source: '', headline: null, done: false, error: null,
+  verdict: 'no_indicators', indicators: null, evidence: [], fingerprint: null, nodes: [], edges: [], related: [], blocks: null, source: '', headline: null, followUps: [], done: false, error: null,
 })
 
 const TAGS: Record<string, string> = {
@@ -75,7 +76,7 @@ function reduce(s: InvState, a: Action): InvState {
       return { ...s, nodes, edges }
     }
     case 'related_case': return { ...s, related: [...s.related, d] }
-    case 'ui': return { ...s, blocks: d.blocks, source: d.source, headline: { en: d.headline, ar: d.headline_ar } }
+    case 'ui': return { ...s, blocks: d.blocks, source: d.source, headline: { en: d.headline, ar: d.headline_ar }, followUps: d.follow_ups ?? [] }
     case 'done': return { ...s, done: true, phase: 'done' }
     case 'error': return { ...s, error: d.message, done: true }
     default: return s

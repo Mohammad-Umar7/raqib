@@ -59,6 +59,8 @@ def build_ctx(case: dict | None, analysis: dict, K: knowledge.Knowledge, store: 
         "related": related, "cluster_id": link.get("cluster_id"), "cluster_size": link.get("cluster_size", 1),
         "on_blocklist": (K.on_blocklist(case["case_id"]) if case["case_id"] in K.cases else registrable(host) in hunters.blocklist()) if case else False,
         "evidence": store.items, "manifest": store.manifest(),
+        "journey": ui_spec.journey_steps(case, analysis),
+        "kit_files": ([{"name": n, "sha256": h} for h, n in fingerprint.build(case)["kit_names"].items()] if case else []),
     }
 
 
@@ -176,7 +178,7 @@ async def _finish(run: Run, case: dict, K: knowledge.Knowledge, store: EvidenceS
     run.emit("status", phase="reporting", label=label)
     refined, source = await asyncio.to_thread(claude.refine, ctx)
     blocks = ui_spec.compose(ctx, refined)
-    run.emit("ui", blocks=blocks, source=source, headline=refined["headline"], headline_ar=refined["headline_ar"])
+    run.emit("ui", blocks=blocks, source=source, headline=refined["headline"], headline_ar=refined["headline_ar"], follow_ups=refined.get("follow_ups", []))
 
     run.result = {"run_id": run.id, "case_id": case["case_id"], "ctx": ctx, "refined": refined, "blocks": blocks, "source": source,
                   "graph": {"nodes": [centre] + [{**{k: r[k] for k in ("case_id", "host", "label", "kind", "score", "verdict", "scam_type", "cluster_id", "on_blocklist", "emirates")}, "center": False} for r in link["related"]],
@@ -211,7 +213,7 @@ async def run_static(run: Run, url: str, K: knowledge.Knowledge, speed: float) -
     blocks.insert(1, {"type": "callout", "tone": "warn", "title": "Not browsed", "title_ar": "لم يتم التصفح",
                       "text": "Raqib could only triage this domain. Run it in live mode (isolated Chrome + Claude agent) to capture forms, scripts and evidence.",
                       "text_ar": "اقتصر رقيب على فحص النطاق. شغّل الوضع المباشر (متصفح معزول ووكيل Claude) لالتقاط النماذج والسكربتات والأدلة."})
-    run.emit("ui", blocks=blocks, source="offline", headline=refined["headline"], headline_ar=refined["headline_ar"])
+    run.emit("ui", blocks=blocks, source="offline", headline=refined["headline"], headline_ar=refined["headline_ar"], follow_ups=refined.get("follow_ups", []))
     run.result = {"run_id": run.id, "case_id": "adhoc", "ctx": ctx, "refined": refined, "blocks": blocks, "source": "offline", "graph": {"nodes": [], "edges": []}, "mode": "static"}
     run.emit("done", score=score, verdict=verdict, source="offline")
     _persist(run)

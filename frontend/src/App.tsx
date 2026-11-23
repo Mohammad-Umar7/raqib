@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { AnimatePresence, MotionConfig, motion } from 'framer-motion'
 import { Building2, Languages, LayoutDashboard, Network, Radar, Search, Settings, ShieldCheck, Sparkles, X } from 'lucide-react'
 import { api } from './api'
 import { useLang } from './i18n'
@@ -25,8 +26,8 @@ function SettingsModal({ status, onClose, onChange }: { status: Status | null; o
   }
   const clear = async () => { await api.clearKey(); setMsg(p('Key removed.', 'تمت إزالة المفتاح.')); onChange() }
   return (
-    <div className="modal-back" onClick={onClose}>
-      <div className="card modal" onClick={(e) => e.stopPropagation()}>
+    <motion.div className="modal-back" onClick={onClose} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      <motion.div className="card modal" onClick={(e) => e.stopPropagation()} initial={{ opacity: 0, y: 24, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 12, scale: 0.97 }} transition={{ type: 'spring', stiffness: 380, damping: 30 }}>
         <div className="row between"><h2 style={{ margin: 0, fontSize: 18 }}>{p('Settings', 'الإعدادات')}</h2><button className="btn btn-sm btn-ghost" onClick={onClose}><X size={15} /></button></div>
         <div className="field">
           <label>{p('Claude connection', 'الاتصال بـ Claude')}</label>
@@ -44,8 +45,8 @@ function SettingsModal({ status, onClose, onChange }: { status: Status | null; o
         <div className="faint" style={{ fontSize: 12 }}>
           {p('Mode', 'الوضع')}: <b>{status?.requested_mode}</b> · Playwright: <b>{status?.playwright ? 'yes' : 'no'}</b> · {p('live browsing', 'التصفح المباشر')}: <b>{status?.live_ready ? p('ready', 'جاهز') : p('off (replay mode)', 'متوقف (وضع الإعادة)')}</b>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   )
 }
 
@@ -66,27 +67,40 @@ export default function App() {
   }, [])
 
   const go = useCallback((r: string) => { location.hash = '#' + r }, [])
+  const [busy, setBusy] = useState(false)
   const investigate = useCallback(async (target: string, opts: { mode?: string; speed?: number } = {}) => {
+    setBusy(true)
     try {
-      const r = await api.start(target, opts)
+      const [r] = await Promise.all([api.start(target, opts), new Promise((res) => setTimeout(res, 650))])
       go(`/case/${r.id}`)
-    } catch (e: any) { setToast(e.message); setTimeout(() => setToast(null), 4000) }
+    } catch (e: any) { setToast(e.message); setTimeout(() => setToast(null), 4000) } finally { setBusy(false) }
   }, [go])
+  useEffect(() => {
+    const key = (e: KeyboardEvent) => {
+      if (e.key === '/' && !(e.target instanceof HTMLInputElement) && !(e.target instanceof HTMLTextAreaElement)) { e.preventDefault(); document.getElementById('analyze-input')?.focus() }
+    }
+    window.addEventListener('keydown', key)
+    return () => window.removeEventListener('keydown', key)
+  }, [])
   const nav: Nav = useMemo(() => ({ go, investigate }), [go, investigate])
 
   const nameOf = (n: string) => ({ command: p('Command', 'القيادة'), case: p('Cases', 'القضايا'), campaigns: p('Campaigns', 'الحملات'), registry: p('Brands', 'الجهات') }[n] ?? n)
 
   return (
+    <MotionConfig reducedMotion="user">
     <div className="shell">
       <aside className="rail">
         <div className="logo" title="Raqib">
           <svg width="26" height="26" viewBox="0 0 64 64"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#38bdf8" /><stop offset="1" stopColor="#818cf8" /></linearGradient></defs>
             <path d="M32 8 12 16v15c0 12 8.500 20.500 20 25 11.500-4.500 20-13 20-25V16L32 8Z" fill="none" stroke="url(#lg)" strokeWidth="4" strokeLinejoin="round" /><circle cx="32" cy="30" r="8" fill="none" stroke="url(#lg)" strokeWidth="4" /><circle cx="32" cy="30" r="3" fill="#38bdf8" /></svg>
         </div>
-        <button className={`rail-btn ${route.name === 'command' ? 'active' : ''}`} onClick={() => go('/command')}><LayoutDashboard size={20} />{nameOf('command')}</button>
-        <button className={`rail-btn ${route.name === 'case' ? 'active' : ''}`} onClick={() => url ? investigate(url) : document.getElementById('analyze-input')?.focus()}><Radar size={20} />{nameOf('case')}</button>
-        <button className={`rail-btn ${route.name === 'campaigns' ? 'active' : ''}`} onClick={() => go('/campaigns')}><Network size={20} />{nameOf('campaigns')}</button>
-        <button className={`rail-btn ${route.name === 'registry' ? 'active' : ''}`} onClick={() => go('/registry')}><Building2 size={20} />{nameOf('registry')}</button>
+        {([['command', <LayoutDashboard size={20} key="i" />, () => go('/command')], ['case', <Radar size={20} key="i" />, () => (url ? investigate(url) : document.getElementById('analyze-input')?.focus())],
+          ['campaigns', <Network size={20} key="i" />, () => go('/campaigns')], ['registry', <Building2 size={20} key="i" />, () => go('/registry')]] as const).map(([k, icon, fn]) => (
+          <button key={k} className={`rail-btn ${route.name === k ? 'active' : ''}`} onClick={fn}>
+            {route.name === k && <motion.span layoutId="rail-ind" className="rail-ind" transition={{ type: 'spring', stiffness: 420, damping: 32 }} />}
+            <span className="rail-in">{icon}{nameOf(k)}</span>
+          </button>
+        ))}
         <div className="rail-sp" />
         <button className="rail-btn" onClick={() => setLang(lang === 'en' ? 'ar' : 'en')} title="Language"><Languages size={20} />{lang === 'en' ? 'عربي' : 'EN'}</button>
         <button className="rail-btn" onClick={() => setShowSettings(true)}><Settings size={20} />{p('Settings', 'الإعدادات')}</button>
@@ -107,13 +121,19 @@ export default function App() {
             <span className="chip info">{status?.live_ready ? p('Live mode', 'الوضع المباشر') : p('Replay mode', 'وضع الإعادة')}</span>
           </div>
         </header>
-        {route.name === 'command' && <CommandCenter nav={nav} />}
-        {route.name === 'case' && route.id && <Investigation key={route.id} runId={route.id} nav={nav} initialTab={route.tab} />}
-        {route.name === 'campaigns' && <Campaigns nav={nav} />}
-        {route.name === 'registry' && <Registry />}
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div key={route.name + (route.id ?? '')} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2 }}>
+            {route.name === 'command' && <CommandCenter nav={nav} />}
+            {route.name === 'case' && route.id && <Investigation key={route.id} runId={route.id} nav={nav} initialTab={route.tab} />}
+            {route.name === 'campaigns' && <Campaigns nav={nav} />}
+            {route.name === 'registry' && <Registry />}
+          </motion.div>
+        </AnimatePresence>
       </div>
-      {showSettings && <SettingsModal status={status} onClose={() => setShowSettings(false)} onChange={refresh} />}
-      {toast && <div className="toast">{toast}</div>}
+      <AnimatePresence>{showSettings && <SettingsModal status={status} onClose={() => setShowSettings(false)} onChange={refresh} />}</AnimatePresence>
+      <AnimatePresence>{toast && <motion.div className="toast" initial={{ opacity: 0, y: 20, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10 }}>{toast}</motion.div>}</AnimatePresence>
+      <AnimatePresence>{busy && <motion.div className="launch" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><div className="launch-box"><span className="spinner" /><b>{p('Starting an isolated browser…', 'جارٍ تشغيل متصفح معزول…')}</b><small>{p('fresh profile · UAE locale · destroyed after the run', 'ملف جديد · إعدادات الإمارات · يُحذف بعد التشغيل')}</small></div></motion.div>}</AnimatePresence>
     </div>
+    </MotionConfig>
   )
 }

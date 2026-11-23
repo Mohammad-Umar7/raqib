@@ -49,6 +49,10 @@ REFINE_SCHEMA = {
                 "additionalProperties": False,
             },
         },
+        "follow_ups": {
+            "type": "array",
+            "items": {"type": "object", "properties": {"q": {"type": "string"}, "q_ar": {"type": "string"}}, "required": ["q", "q_ar"], "additionalProperties": False},
+        },
         "recommended_actions": {
             "type": "array",
             "items": {
@@ -65,7 +69,7 @@ REFINE_SCHEMA = {
             },
         },
     },
-    "required": ["headline", "headline_ar", "summary", "summary_ar", "victim_impact", "victim_impact_ar", "layout", "recommended_actions"],
+    "required": ["headline", "headline_ar", "summary", "summary_ar", "victim_impact", "victim_impact_ar", "layout", "follow_ups", "recommended_actions"],
     "additionalProperties": False,
 }
 
@@ -91,7 +95,10 @@ infrastructure facts and links to other sites. Rules:
 - Write short, plain, factual sentences for a busy officer. Provide natural Arabic in every *_ar field.
 - Layout: choose which blocks to show and in what order. Always include 'verdict' first and 'signals'. Add a 'callout' that
   explains how the victim is deceived when the verdict is a scam. Omit 'campaign' when there are no related sites.
-  Allowed blocks: verdict, callout, narrative, signals, campaign, infrastructure, evidence, actions, map."""
+  Blocks: verdict (headline + gauge), stats (key figures), callout (one alert), narrative (short prose), journey (the victim's path step by step),
+  signals (why the score), breakdown (how the score adds up), campaign (linked sites), indicators (IDs to share), infrastructure, evidence, actions, map (emirates targeted).
+  Pick a layout that fits the case: a benign site needs only verdict, stats, signals, infrastructure, evidence; a campaign member should foreground journey and campaign.
+  Also write 3 to 4 follow_ups: questions the officer is likely to ask next, in English and Arabic."""
 
 
 class ClaudeService:
@@ -145,6 +152,7 @@ class ClaudeService:
     def _payload(ctx: dict) -> str:
         slim = {k: ctx[k] for k in ("case_id", "host", "label", "browsed", "score", "verdict", "scam_type", "brand", "contacts", "iocs", "infra", "targeting",
                                    "cluster_id", "cluster_size", "on_blocklist") if k in ctx}
+        slim["victim_journey"] = [{"step": st["title"], "detail": st["detail"]} for st in ctx.get("journey", [])]
         slim["signals"] = [{"id": s["id"], "weight": s["weight"], "label": s["label"]} for s in ctx["signals"]]
         slim["related"] = [{"case_id": r["case_id"], "host": r["host"], "score": r["score"], "strength": r["strength"],
                             "why": [x["text"] for x in r["reasons"][:2]]} for r in ctx.get("related", [])[:12]]
@@ -162,6 +170,8 @@ class ClaudeService:
             self.last_error = None
             if not out.get("layout"):
                 out["layout"] = offline["layout"]
+            if not out.get("follow_ups"):
+                out["follow_ups"] = offline["follow_ups"]
             return out, "claude"
         except Exception as exc:  # network, quota, refusal, bad JSON ...
             self.last_error = f"{type(exc).__name__}: {exc}"[:300]
