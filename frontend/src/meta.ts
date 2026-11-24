@@ -3,19 +3,19 @@ import type { Tone, Verdict } from './types'
 export const VERDICT: Record<Verdict, { en: string; ar: string; tone: Tone; color: string }> = {
   confirmed_scam: { en: 'Confirmed scam', ar: 'احتيال مؤكد', tone: 'danger', color: '#fb4a6c' },
   likely_scam: { en: 'Likely scam', ar: 'احتيال محتمل', tone: 'danger', color: '#fb6a4a' },
-  suspicious: { en: 'Suspicious', ar: 'مشبوه', tone: 'warn', color: '#f5a524' },
+  suspicious: { en: 'Suspicious', ar: 'مشبوه', tone: 'warn', color: '#ff8a3d' },
   no_indicators: { en: 'No scam indicators', ar: 'لا مؤشرات احتيال', tone: 'ok', color: '#34d399' },
   official: { en: 'Official domain', ar: 'نطاق رسمي', tone: 'ok', color: '#34d399' },
 }
 
 export const verdictOf = (v?: string) => VERDICT[(v as Verdict) ?? 'no_indicators'] ?? VERDICT.no_indicators
 
-export const scoreColor = (s: number) => (s >= 85 ? '#fb4a6c' : s >= 60 ? '#fb7a4a' : s >= 30 ? '#f5a524' : '#34d399')
+export const scoreColor = (s: number) => (s >= 85 ? '#fb4a6c' : s >= 60 ? '#fb7a4a' : s >= 30 ? '#ff8a3d' : '#34d399')
 
 export const STRENGTH = {
   strong: { en: 'Strong link', ar: 'ارتباط قوي', color: '#fb4a6c', width: 2.8 },
-  medium: { en: 'Medium link', ar: 'ارتباط متوسط', color: '#f5a524', width: 2 },
-  weak: { en: 'Weak link', ar: 'ارتباط ضعيف', color: '#6b7aa0', width: 1.2 },
+  medium: { en: 'Medium link', ar: 'ارتباط متوسط', color: '#ff8a3d', width: 2 },
+  weak: { en: 'Weak link', ar: 'ارتباط ضعيف', color: '#75737f', width: 1.2 },
 } as const
 
 export const SCAM_TYPES: Record<string, { en: string; ar: string }> = {

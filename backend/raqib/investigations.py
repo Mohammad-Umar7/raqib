@@ -248,12 +248,55 @@ def _persist(run: Run) -> None:
 
 # --------------------------------------------------------------------------- manager
 
+def _summary(rid: str, res: dict, started: float, finished: bool, input_url: str = "", mode: str = "") -> dict:
+    ctx = res.get("ctx", {}) if res else {}
+    return {"id": rid, "started": started, "finished": finished, "input_url": ctx.get("input_url") or input_url, "host": ctx.get("host", ""),
+            "label": ctx.get("label", ""), "score": ctx.get("score"), "verdict": ctx.get("verdict"), "scam_type": ctx.get("scam_type"),
+            "brand": (ctx.get("brand") or {}).get("name"), "cluster_id": ctx.get("cluster_id"), "related": len(ctx.get("related", [])),
+            "mode": res.get("mode") if res else mode, "source": res.get("source") if res else None}
+
+
 class Manager:
     def __init__(self) -> None:
         self.runs: dict[str, Run] = {}
 
     def get(self, run_id: str) -> Run | None:
-        return self.runs.get(run_id)
+        run = self.runs.get(run_id)
+        if run is None:
+            run = self._load(run_id)
+        return run
+
+    def _load(self, run_id: str) -> Run | None:
+        """Re-open a finished investigation saved on disk (survives server restarts)."""
+        if not run_id.isalnum():
+            return None
+        path = config.RUNS_DIR / f"{run_id}.json"
+        if not path.is_file():
+            return None
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return None
+        res = data.get("result", {})
+        run = Run(run_id, res.get("ctx", {}).get("input_url", ""), res.get("mode", "replay"))
+        run.events, run.result, run.finished = data.get("events", []), res, True
+        run.started = path.stat().st_mtime - (run.events[-1]["t"] if run.events else 0)
+        self.runs[run_id] = run
+        return run
+
+    def recent(self, limit: int = 60) -> list[dict]:
+        """Newest investigations first: the ones in memory plus the ones saved on disk."""
+        seen: dict[str, dict] = {}
+        for path in sorted(config.RUNS_DIR.glob("*.json"), key=lambda q: q.stat().st_mtime, reverse=True)[:limit] if config.RUNS_DIR.is_dir() else []:
+            if path.stem not in self.runs:
+                try:
+                    res = json.loads(path.read_text(encoding="utf-8")).get("result", {})
+                except (OSError, ValueError):
+                    continue
+                seen[path.stem] = _summary(path.stem, res, path.stat().st_mtime, True)
+        for rid, run in self.runs.items():
+            seen[rid] = _summary(rid, run.result, run.started, run.finished, run.input_url, run.mode)
+        return sorted(seen.values(), key=lambda r: -r["started"])[:limit]
 
     def start(self, url: str, *, mode: str = "auto", speed: float | None = None) -> Run:
         K = knowledge.get()

@@ -22,6 +22,7 @@ export const api = {
   graph: () => fetch('/api/graph').then((r) => j<{ nodes: GNode[]; edges: GEdge[]; cluster_of: Record<string, string> }>(r)),
   triage: (host: string) => fetch('/api/triage?host=' + encodeURIComponent(host)).then((r) => j<{ score: number; reasons: { text: string; points: number }[]; brand: string | null }>(r)),
   start: (url: string, opts: { mode?: string; speed?: number } = {}) => post('/api/investigations', { url, ...opts }).then((r) => j<{ id: string; mode: string }>(r)),
+  cases: () => fetch('/api/investigations').then((r) => j<{ investigations: any[] }>(r)),
   investigation: (id: string) => fetch(`/api/investigations/${id}`).then((r) => j<any>(r)),
   ask: (id: string, question: string) => post(`/api/investigations/${id}/ask`, { question }).then((r) => j<{ answer: string; answer_ar: string; blocks: any[]; source: string }>(r)),
   pack: (id: string) => fetch(`/api/investigations/${id}/pack`).then((r) => j<any>(r)),

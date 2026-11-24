@@ -3,7 +3,8 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowRight, Globe2, Layers, Map as MapIcon, Megaphone, MessageSquare, Play, Radar as RadarIcon, Search, ShieldCheck, Sparkles, Square } from 'lucide-react'
 import { api, stream } from '../api'
-import { HostingBars, UaeMap } from '../components/Maps'
+import { UaeMap } from '../components/Maps'
+import { WorldMap } from '../components/WorldMap'
 import { Num, Rise, soft, spring } from '../components/fx'
 import { Radar, type Dot } from '../components/Radar'
 import { useLang } from '../i18n'
@@ -19,7 +20,7 @@ function Ring({ value }: { value: number }) {
   const c = scoreColor(value)
   return (
     <svg width="50" height="50" viewBox="0 0 50 50" style={{ flex: 'none' }}>
-      <circle cx="25" cy="25" r={r} fill="none" stroke="#1a2644" strokeWidth="4" />
+      <circle cx="25" cy="25" r={r} fill="none" stroke="#1d1d26" strokeWidth="4" />
       <motion.circle cx="25" cy="25" r={r} fill="none" stroke={c} strokeWidth="4" strokeLinecap="round" transform="rotate(-90 25 25)" strokeDasharray={len}
         initial={{ strokeDashoffset: len }} animate={{ strokeDashoffset: len * (1 - value / 100) }} transition={{ duration: 0.9, ease: 'easeOut' }} />
       <text x="25" y="29.5" textAnchor="middle" fontSize="13" fontWeight="750" fill={c}>{value}</text>
@@ -135,9 +136,9 @@ export function CommandCenter({ nav }: { nav: Nav }) {
 
       {view && (
         <div className="funnel-row">
-          <Step i={0} label={p('Candidates scanned', 'مرشّحون تم فحصهم')} hint={p('search · maps · certificates · reports', 'بحث · خرائط · شهادات · بلاغات')} value={view.scanned} of={view.total} color="#6b7aa0" />
-          <Step i={1} label={p('Flagged by triage', 'مشتبه بهم بعد الفرز')} hint={`${p('score', 'الدرجة')} ≥ ${ov?.threshold ?? 40}`} value={view.flagged} of={view.scanned} color="#f5a524" />
-          <Step i={2} label={p('Investigated in sandbox', 'فُحصوا في البيئة المعزولة')} value={view.investigated} of={view.flagged} color="#38bdf8" />
+          <Step i={0} label={p('Candidates scanned', 'مرشّحون تم فحصهم')} hint={p('search · maps · certificates · reports', 'بحث · خرائط · شهادات · بلاغات')} value={view.scanned} of={view.total} color="#75737f" />
+          <Step i={1} label={p('Flagged by triage', 'مشتبه بهم بعد الفرز')} hint={`${p('score', 'الدرجة')} ≥ ${ov?.threshold ?? 40}`} value={view.flagged} of={view.scanned} color="#ff8a3d" />
+          <Step i={2} label={p('Investigated in sandbox', 'فُحصوا في البيئة المعزولة')} value={view.investigated} of={view.flagged} color="#e5b85c" />
           <Step i={3} label={p('Confirmed scams', 'احتيال مؤكد')} value={view.confirmed} of={view.investigated} color="#fb4a6c" />
           <Step i={4} label={p('Not on any blocklist', 'غير مدرجة في أي قائمة حجب')} hint={p('still live, no public block', 'ما زالت تعمل دون حجب')} value={view.unblocked} of={view.confirmed} color="#a78bfa" />
         </div>
@@ -145,7 +146,7 @@ export function CommandCenter({ nav }: { nav: Nav }) {
 
       <div className="grid-2" style={{ gridTemplateColumns: 'minmax(0,1.6fr) minmax(0,1fr)', alignItems: 'start' }}>
         <div className="card">
-          <div className="card-h"><Sparkles size={16} color="#f5a524" /><h3>{p('Flagged candidates', 'المرشّحون المشتبه بهم')}</h3><span className="chip right"><Num value={cands.length} ms={250} /></span></div>
+          <div className="card-h"><Sparkles size={16} color="#ff8a3d" /><h3>{p('Flagged candidates', 'المرشّحون المشتبه بهم')}</h3><span className="chip right"><Num value={cands.length} ms={250} /></span></div>
           <div className="feed">
             <AnimatePresence initial={false}>
               {cands.map((c) => {
@@ -187,19 +188,22 @@ export function CommandCenter({ nav }: { nav: Nav }) {
               </div>
             </div>
           </Rise>
-          <Rise i={3}>
-            <div className="card">
-              <div className="card-h"><MapIcon size={16} color="#fb4a6c" /><h3>{p('Emirates targeted', 'الإمارات المستهدفة')}</h3></div>
-              <div className="card-b"><UaeMap counts={ov?.emirates ?? {}} /></div>
-            </div>
-          </Rise>
-          <Rise i={4}>
-            <div className="card">
-              <div className="card-h"><Globe2 size={16} color="#38bdf8" /><h3>{p('Hosting indicators', 'مؤشرات الاستضافة')}</h3></div>
-              <div className="card-b"><HostingBars data={ov?.hosting_countries ?? {}} /></div>
-            </div>
-          </Rise>
         </div>
+      </div>
+
+      <div className="grid-2 map-row" style={{ gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.9fr)', marginTop: 18, alignItems: 'stretch' }}>
+        <Rise i={3}>
+          <div className="card" style={{ height: '100%' }}>
+            <div className="card-h"><MapIcon size={16} color="#fb4a6c" /><h3>{p('Emirates targeted', 'الإمارات المستهدفة')}</h3><span className="sub">{p('confirmed scams by emirate', 'الاحتيال المؤكد حسب الإمارة')}</span></div>
+            <div className="card-b"><UaeMap counts={ov?.emirates ?? {}} /></div>
+          </div>
+        </Rise>
+        <Rise i={4}>
+          <div className="card" style={{ height: '100%' }}>
+            <div className="card-h"><Globe2 size={16} color="#e5b85c" /><h3>{p('Scam infrastructure worldwide', 'البنية التحتية للاحتيال حول العالم')}</h3><span className="sub">{p('where the servers are, pointed at who they target', 'مواقع الخوادم ومن تستهدف')}</span></div>
+            <div className="card-b"><WorldMap data={ov?.hosting_countries ?? {}} /></div>
+          </div>
+        </Rise>
       </div>
     </div>
   )

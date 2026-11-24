@@ -131,15 +131,15 @@ export function Graph({ nodes, edges, width = 900, height = 520, selectedNode, s
       <svg ref={svgRef} viewBox={`0 0 ${width} ${height}`} onPointerMove={onMove} onPointerUp={onUp} onPointerLeave={onUp} style={{ touchAction: 'none' }}>
         <defs>
           <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
-          <radialGradient id="nodeFill"><stop offset="0" stopColor="#1a2850" /><stop offset="1" stopColor="#0d1530" /></radialGradient>
+          <radialGradient id="nodeFill"><stop offset="0" stopColor="#22202a" /><stop offset="1" stopColor="#121218" /></radialGradient>
         </defs>
         {centreId && pos(centreId) && [1, 2, 3].map((k) => (
-          <circle key={k} cx={width / 2} cy={height / 2} r={(Math.min(width, height) / 2 - 40) * (0.4 + k * 0.2)} fill="none" stroke="#1b2a4d" strokeDasharray="2 7" opacity="0.6" />
+          <circle key={k} cx={width / 2} cy={height / 2} r={(Math.min(width, height) / 2 - 40) * (0.4 + k * 0.2)} fill="none" stroke="#24242e" strokeDasharray="2 7" opacity="0.6" />
         ))}
         {halos.map((h) => (
           <g key={h.c}>
-            <circle cx={h.cx} cy={h.cy} r={h.r} fill="rgba(99,102,241,0.06)" stroke="rgba(129,140,248,0.28)" strokeDasharray="4 6" />
-            <text x={h.cx} y={h.cy - h.r - 6} textAnchor="middle" className="g-label" style={{ fill: '#a5b4fc', fontWeight: 700, fontSize: 11 }}>{h.c}</text>
+            <circle cx={h.cx} cy={h.cy} r={h.r} fill="rgba(154, 140, 255,0.06)" stroke="rgba(176, 166, 255,0.28)" strokeDasharray="4 6" />
+            <text x={h.cx} y={h.cy - h.r - 6} textAnchor="middle" className="g-label" style={{ fill: '#c4bcff', fontWeight: 700, fontSize: 11 }}>{h.c}</text>
           </g>
         ))}
         {visibleEdges.map((e) => {
@@ -159,7 +159,7 @@ export function Graph({ nodes, edges, width = 900, height = 520, selectedNode, s
               <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="transparent" strokeWidth={16} style={{ cursor: 'pointer' }} onClick={() => onEdge?.(e)} />
               {showLabel && (
                 <motion.g initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 }} style={{ transformOrigin: `${mx}px ${my}px` }}>
-                  <rect x={mx - 46} y={my - 17} width={92} height={15} rx={7.5} fill="#0a1123" stroke={st.color} strokeOpacity="0.5" />
+                  <rect x={mx - 46} y={my - 17} width={92} height={15} rx={7.5} fill="#0d0d12" stroke={st.color} strokeOpacity="0.5" />
                   <text x={mx} y={my - 6} textAnchor="middle" className="g-label" style={{ fill: st.color, fontWeight: 650, stroke: 'none', fontSize: 9.5 }}>{lang === 'ar' ? lab.ar : lab.en}{e.reasons.length > 1 ? ` +${e.reasons.length - 1}` : ''}</text>
                 </motion.g>
               )}
@@ -184,7 +184,7 @@ export function Graph({ nodes, edges, width = 900, height = 520, selectedNode, s
                 {n.kind === 'maps_listing' && <text textAnchor="middle" y={r + 25} className="g-label" style={{ fill: '#c4b5fd', fontSize: 9.5 }}>{p('Maps listing', 'موقع خرائط')}</text>}
                 <text textAnchor="middle" y={r + 14} className="g-label">{short(n.kind === 'maps_listing' ? n.label : n.host, 24)}</text>
                 {n.kind === 'site' && n.verdict !== 'no_indicators' && !n.on_blocklist && n.score >= 60 && (
-                  <g transform={`translate(${r - 4},${-r + 4})`}><circle r="7" fill="#f5a524" stroke="#080d1b" strokeWidth="2" /><text textAnchor="middle" dy="0.35em" style={{ fontSize: 9, fontWeight: 800, fill: '#231600' }}>!</text></g>
+                  <g transform={`translate(${r - 4},${-r + 4})`}><circle r="7" fill="#ff8a3d" stroke="#0a0a0e" strokeWidth="2" /><text textAnchor="middle" dy="0.35em" style={{ fontSize: 9, fontWeight: 800, fill: '#2a1300' }}>!</text></g>
                 )}
               </motion.g>
             </g>
@@ -206,7 +206,7 @@ export function Graph({ nodes, edges, width = 900, height = 520, selectedNode, s
       </AnimatePresence>
       <div className="g-legend">
         {(['strong', 'medium', 'weak'] as const).map((k) => <span key={k}><i style={{ borderColor: STRENGTH[k].color, borderTopStyle: k === 'weak' ? 'dashed' : 'solid' }} />{lang === 'ar' ? STRENGTH[k].ar : STRENGTH[k].en}</span>)}
-        <span><span style={{ color: '#f5a524', fontWeight: 800 }}>!</span> {p('not on a public blocklist', 'غير مدرج في قائمة حجب')}</span>
+        <span><span style={{ color: '#ff8a3d', fontWeight: 800 }}>!</span> {p('not on a public blocklist', 'غير مدرج في قائمة حجب')}</span>
         <span><span style={{ color: '#a78bfa' }}>◆</span> {p('Maps listing', 'موقع خرائط')}</span>
       </div>
     </div>

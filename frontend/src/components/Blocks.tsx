@@ -10,6 +10,7 @@ import type { Block } from '../types'
 import { Gauge } from './Gauge'
 import { Num, Reveal, Scramble, Typewriter, spring } from './fx'
 import { HostingBars, UaeMap } from './Maps'
+import { WorldMap } from './WorldMap'
 
 export interface BlockActions {
   openReport: (topic?: string) => void
@@ -103,7 +104,7 @@ function Callout({ b }: { b: Block }) {
   const { f } = useLang()
   return (
     <div className={`callout ${b.tone}`}>
-      <div style={{ color: b.tone === 'danger' ? '#ff8da4' : b.tone === 'warn' ? '#ffc766' : b.tone === 'ok' ? '#6ee7b7' : '#7dd3fc' }}>{TONE_ICON[b.tone] ?? TONE_ICON.info}</div>
+      <div style={{ color: b.tone === 'danger' ? '#ff8da4' : b.tone === 'warn' ? '#ffb37d' : b.tone === 'ok' ? '#6ee7b7' : '#f2d39a' }}>{TONE_ICON[b.tone] ?? TONE_ICON.info}</div>
       <div>
         {b.title && <h4>{f(b, 'title')}</h4>}
         <p>{f(b, 'text')}</p>
@@ -117,7 +118,7 @@ function Markdown({ b }: { b: Block }) {
   return (
     <div className="card card-p">
       {b.title && <h4 style={{ margin: '0 0 6px' }}>{f(b, 'title')}</h4>}
-      {f(b, 'text').split(/\n\n+/).map((t: string, i: number) => <p key={i} style={{ margin: '0 0 8px', color: '#c3cde6' }}>{t}</p>)}
+      {f(b, 'text').split(/\n\n+/).map((t: string, i: number) => <p key={i} style={{ margin: '0 0 8px', color: '#cfcbd6' }}>{t}</p>)}
     </div>
   )
 }
@@ -154,7 +155,7 @@ function Signals({ b }: { b: Block }) {
   const { f, p } = useLang()
   return (
     <div className="card">
-      <Title b={b} icon={<Radar size={16} color="#38bdf8" />} />
+      <Title b={b} icon={<Radar size={16} color="#e5b85c" />} />
       <div className="card-b col" style={{ gap: 8 }}>
         {b.items.map((s: any, i: number) => (
           <motion.div key={s.id} className={`sig ${s.severity}`} initial={{ opacity: 0, x: -18 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ ...spring, delay: Math.min(i, 8) * 0.05 }}>
@@ -192,7 +193,7 @@ function Breakdown({ b }: { b: Block }) {
         <div className="wf-row total">
           <span className="wf-label"><b>{p('Total risk score', 'درجة الخطورة الإجمالية')}</b></span>
           <div className="wf-track">
-            <motion.i className="total" style={{ insetInlineStart: 0, transformOrigin: 'left', background: `linear-gradient(90deg, #34d399, #f5a524, ${scoreColor(b.score)})` }} initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }}
+            <motion.i className="total" style={{ insetInlineStart: 0, transformOrigin: 'left', background: `linear-gradient(90deg, #34d399, #ff8a3d, ${scoreColor(b.score)})` }} initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.3 + b.items.length * 0.09 }} animate={{ width: `${b.score}%` }} />
           </div>
           <span className="wf-val" style={{ color: scoreColor(b.score) }}><b>{b.score}</b></span>
@@ -208,7 +209,7 @@ function Campaign({ b, act }: { b: Block; act: BlockActions }) {
   return (
     <div className="card">
       <div className="card-h">
-        <Network size={16} color="#6366f1" />
+        <Network size={16} color="#9a8cff" />
         <h3>{f(b, 'title')}</h3>
         {b.cluster_id && <span className="chip violet">{b.cluster_id} · {b.cluster_size} {p('sites', 'موقعاً')}</span>}
         <button className="btn btn-sm right" onClick={act.openCampaign}>{p('Open graph', 'فتح الرسم')} <ArrowUpRight size={14} /></button>
@@ -216,7 +217,7 @@ function Campaign({ b, act }: { b: Block; act: BlockActions }) {
       <div className="card-b col" style={{ gap: 8 }}>
         {b.unblocked > 0 && (
           <div className="callout warn" style={{ padding: '10px 12px' }}>
-            <Megaphone size={18} color="#ffc766" />
+            <Megaphone size={18} color="#ffb37d" />
             <p><b>{b.unblocked}</b> {p('linked scam site(s) are not on any public blocklist yet.', 'من المواقع الاحتيالية المرتبطة غير مدرجة بعد في أي قائمة حجب عامة.')}</p>
           </div>
         )}
@@ -275,7 +276,7 @@ function KV({ b }: { b: Block }) {
   const { f, p } = useLang()
   return (
     <div className="card">
-      <Title b={b} icon={<Server size={16} color="#38bdf8" />} />
+      <Title b={b} icon={<Server size={16} color="#e5b85c" />} />
       <div className="card-b">
         <dl className="kv" style={{ margin: 0 }}>
           {b.rows.map((r: any, i: number) => (
@@ -286,7 +287,8 @@ function KV({ b }: { b: Block }) {
           ))}
           {!b.rows.length && <dd className="muted" style={{ gridColumn: '1/-1' }}>{p('Not browsed, so no infrastructure data was captured.', 'لم يتم التصفح، لذا لم تُجمع بيانات البنية التحتية.')}</dd>}
         </dl>
-        {b.note && <div className="faint" style={{ fontSize: 11.5, marginTop: 10 }}>{f(b, 'note')}</div>}
+        {b.country && <div style={{ marginTop: 12 }}><WorldMap data={{ [b.country]: 1 }} compact /></div>}
+        {b.note && !b.country && <div className="faint" style={{ fontSize: 11.5, marginTop: 10 }}>{f(b, 'note')}</div>}
       </div>
     </div>
   )
@@ -299,10 +301,10 @@ function Evidence({ b }: { b: Block }) {
       <Title b={b} icon={<Landmark size={16} color="#34d399" />} />
       <div className="card-b">
         <div className="callout info" style={{ padding: '10px 12px', marginBottom: 8 }}>
-          <Landmark size={18} color="#7dd3fc" />
+          <Landmark size={18} color="#f2d39a" />
           <div>
             <p style={{ fontSize: 12.5 }}>{p('Manifest SHA-256 (covers every item below). Changing any artefact changes this value.', 'بصمة SHA-256 للبيان (تغطي كل العناصر أدناه). أي تعديل على أي دليل يغيّر هذه القيمة.')}</p>
-            <div className="mono" style={{ fontSize: 11, wordBreak: 'break-all', marginTop: 4, color: '#a5d8ff' }}><Scramble text={b.manifest} ms={1100} /></div>
+            <div className="mono" style={{ fontSize: 11, wordBreak: 'break-all', marginTop: 4, color: '#f2d39a' }}><Scramble text={b.manifest} ms={1100} /></div>
           </div>
         </div>
         <div style={{ maxHeight: 340, overflow: 'auto' }}>

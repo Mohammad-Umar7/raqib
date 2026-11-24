@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { AlertTriangle, ArrowRight, Check, FileText, Fingerprint, LayoutDashboard, Loader2, Network, Radar, Search, Send, Server, Sparkles, UserRoundX, Wallet } from 'lucide-react'
 import { AskPanel } from '../components/AskPanel'
+import { ActivityLog, CrewStrip } from '../components/Crew'
 import { BlockRenderer, LayoutStrip, type BlockActions } from '../components/Blocks'
 import { BrowserPanel } from '../components/BrowserPanel'
 import { Num, Rise, Scramble, Typewriter, soft, spring } from '../components/fx'
@@ -90,7 +91,7 @@ function SignalFeed({ s }: { s: InvState }) {
   const { p, f } = useLang()
   return (
     <div className="card">
-      <div className="card-h"><Radar size={16} color="#38bdf8" /><h3>{p('Detected signals', 'المؤشرات المكتشفة')}</h3><motion.span key={s.signals.length} className="chip info right" initial={{ scale: 1.4 }} animate={{ scale: 1 }} transition={spring}>{s.signals.length}</motion.span></div>
+      <div className="card-h"><Radar size={16} color="#e5b85c" /><h3>{p('Detected signals', 'المؤشرات المكتشفة')}</h3><motion.span key={s.signals.length} className="chip info right" initial={{ scale: 1.4 }} animate={{ scale: 1 }} transition={spring}>{s.signals.length}</motion.span></div>
       <div className="card-b col" style={{ gap: 8, maxHeight: 430, overflow: 'auto' }}>
         <AnimatePresence initial={false}>
           {[...s.signals].reverse().map((g, i) => (
@@ -149,7 +150,7 @@ function CampaignPanel({ s, big, onEdge, sel }: { s: InvState; big?: boolean; on
   return (
     <div className="card">
       <div className="card-h">
-        <Network size={16} color="#6366f1" />
+        <Network size={16} color="#9a8cff" />
         <h3>{p('Campaign graph', 'رسم الحملة')}</h3>
         <span className="sub">{s.nodes.length > 1 ? <><Num value={s.nodes.length - 1} ms={400} /> {p('connected', 'مرتبط')} · <Num value={strongN} ms={400} /> {p('strong', 'قوي')}</> : p('searching for related sites…', 'جارٍ البحث عن مواقع مرتبطة…')}</span>
       </div>
@@ -162,7 +163,7 @@ function RelatedFeed({ s, act }: { s: InvState; act: BlockActions }) {
   const { p, lang } = useLang()
   return (
     <div className="card">
-      <div className="card-h"><Search size={16} color="#38bdf8" /><h3>{p('Related sites, investigated automatically', 'مواقع مرتبطة جرى التحقيق فيها تلقائياً')}</h3></div>
+      <div className="card-h"><Search size={16} color="#e5b85c" /><h3>{p('Related sites, investigated automatically', 'مواقع مرتبطة جرى التحقيق فيها تلقائياً')}</h3></div>
       <div className="card-b col" style={{ gap: 8, maxHeight: 440, overflow: 'auto' }}>
         <AnimatePresence initial={false}>
           {s.related.map((r) => (
@@ -277,7 +278,7 @@ export function Investigation({ runId, nav, initialTab }: { runId: string; nav: 
         </div>
       </div>
 
-      <Stepper s={s} />
+      <div className="crew-wrap"><CrewStrip s={s} /><Stepper s={s} /></div>
       {s.error && <div className="callout danger" style={{ marginBottom: 16 }}><AlertTriangle /> <div><h4>{p('The investigation failed', 'فشل التحقيق')}</h4><p>{s.error}</p></div></div>}
 
       <AnimatePresence mode="wait" initial={false}>
@@ -288,8 +289,8 @@ export function Investigation({ runId, nav, initialTab }: { runId: string; nav: 
                 <BrowserPanel s={s} />
                 <div className="col" style={{ gap: 18 }}>
                   <Rise i={0}><RiskCard s={s} /></Rise>
-                  <Rise i={1}><SignalFeed s={s} /></Rise>
-                  <Rise i={2}><IndicatorsCard s={s} /></Rise>
+                  <Rise i={1}><ActivityLog s={s} /></Rise>
+                  <Rise i={2}><SignalFeed s={s} /></Rise>
                 </div>
               </div>
               {(s.nodes.length > 0 || s.phase === 'linking') && (
@@ -299,7 +300,7 @@ export function Investigation({ runId, nav, initialTab }: { runId: string; nav: 
                 </motion.div>
               )}
               <div style={{ marginTop: 18 }}><ComposeCard s={s} onOpen={() => setTab('case')} /></div>
-              <div style={{ marginTop: 18 }}><EvidenceCard s={s} /></div>
+              <div className="grid-2" style={{ marginTop: 18, gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.4fr)' }}><IndicatorsCard s={s} /><EvidenceCard s={s} /></div>
               <AnimatePresence>
                 {s.done && !s.error && (
                   <motion.div className="banner-done" style={{ marginTop: 18 }} initial={{ opacity: 0, y: 26, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={spring}>

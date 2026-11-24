@@ -50,7 +50,7 @@ export function Registry() {
           </div>
         </div>
         <div className="card">
-          <div className="card-h"><Search size={16} color="#38bdf8" /><h3>{p('Check a domain', 'فحص نطاق')}</h3></div>
+          <div className="card-h"><Search size={16} color="#e5b85c" /><h3>{p('Check a domain', 'فحص نطاق')}</h3></div>
           <div className="card-b">
             <form className="row" onSubmit={check}>
               <input className="input mono" value={host} onChange={(e) => setHost(e.target.value)} placeholder="salik-topup-ae.com" dir="ltr" />

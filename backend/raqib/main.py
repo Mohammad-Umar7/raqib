@@ -194,6 +194,11 @@ async def events(run_id: str, after: int = -1) -> StreamingResponse:
     return StreamingResponse(gen(), media_type="text/event-stream", headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
 
 
+@app.get("/api/investigations")
+def recent_investigations() -> dict:
+    return {"investigations": manager.recent()}
+
+
 @app.get("/api/investigations/{run_id}")
 def investigation(run_id: str) -> dict:
     run = _run(run_id)

@@ -8,6 +8,7 @@ import { Campaigns } from './views/Campaigns'
 import { CommandCenter } from './views/CommandCenter'
 import { Investigation, type Nav } from './views/Investigation'
 import { Registry } from './views/Registry'
+import { Cases } from './views/Cases'
 
 function parseRoute(): { name: string; id?: string; tab?: string } {
   const [path, query] = (location.hash.replace(/^#/, '') || '/command').split('?')
@@ -91,13 +92,13 @@ export default function App() {
     <div className="shell">
       <aside className="rail">
         <div className="logo" title="Raqib">
-          <svg width="26" height="26" viewBox="0 0 64 64"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#38bdf8" /><stop offset="1" stopColor="#818cf8" /></linearGradient></defs>
-            <path d="M32 8 12 16v15c0 12 8.500 20.500 20 25 11.500-4.500 20-13 20-25V16L32 8Z" fill="none" stroke="url(#lg)" strokeWidth="4" strokeLinejoin="round" /><circle cx="32" cy="30" r="8" fill="none" stroke="url(#lg)" strokeWidth="4" /><circle cx="32" cy="30" r="3" fill="#38bdf8" /></svg>
+          <svg width="26" height="26" viewBox="0 0 64 64"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#e5b85c" /><stop offset="1" stopColor="#b0a6ff" /></linearGradient></defs>
+            <path d="M32 8 12 16v15c0 12 8.500 20.500 20 25 11.500-4.500 20-13 20-25V16L32 8Z" fill="none" stroke="url(#lg)" strokeWidth="4" strokeLinejoin="round" /><circle cx="32" cy="30" r="8" fill="none" stroke="url(#lg)" strokeWidth="4" /><circle cx="32" cy="30" r="3" fill="#e5b85c" /></svg>
         </div>
-        {([['command', <LayoutDashboard size={20} key="i" />, () => go('/command')], ['case', <Radar size={20} key="i" />, () => (url ? investigate(url) : document.getElementById('analyze-input')?.focus())],
+        {([['command', <LayoutDashboard size={20} key="i" />, () => go('/command')], ['case', <Radar size={20} key="i" />, () => go('/cases')],
           ['campaigns', <Network size={20} key="i" />, () => go('/campaigns')], ['registry', <Building2 size={20} key="i" />, () => go('/registry')]] as const).map(([k, icon, fn]) => (
-          <button key={k} className={`rail-btn ${route.name === k ? 'active' : ''}`} onClick={fn}>
-            {route.name === k && <motion.span layoutId="rail-ind" className="rail-ind" transition={{ type: 'spring', stiffness: 420, damping: 32 }} />}
+          <button key={k} className={`rail-btn ${route.name === k || (k === 'case' && route.name === 'cases') ? 'active' : ''}`} onClick={fn}>
+            {(route.name === k || (k === 'case' && route.name === 'cases')) && <motion.span layoutId="rail-ind" className="rail-ind" transition={{ type: 'spring', stiffness: 420, damping: 32 }} />}
             <span className="rail-in">{icon}{nameOf(k)}</span>
           </button>
         ))}
@@ -109,7 +110,7 @@ export default function App() {
         <header className="topbar">
           <div className="brand"><b>{p('Raqib', 'رقيب')}</b><span>{p('Scam hunting for police', 'رصد الاحتيال للشرطة')}</span></div>
           <form className="analyze" onSubmit={(e) => { e.preventDefault(); if (url.trim()) investigate(url.trim()) }}>
-            <Search size={16} color="#5f6f94" />
+            <Search size={16} color="#6c6a76" />
             <input id="analyze-input" value={url} onChange={(e) => setUrl(e.target.value)} placeholder={p('Paste a suspicious URL to investigate…', 'الصق رابطاً مشبوهاً للتحقيق…')} dir="ltr" spellCheck={false} />
             <button className="btn btn-primary btn-sm" type="submit"><Sparkles size={14} /> {p('Analyze', 'تحليل')}</button>
           </form>
@@ -125,6 +126,7 @@ export default function App() {
           <motion.div key={route.name + (route.id ?? '')} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2 }}>
             {route.name === 'command' && <CommandCenter nav={nav} />}
             {route.name === 'case' && route.id && <Investigation key={route.id} runId={route.id} nav={nav} initialTab={route.tab} />}
+            {route.name === 'cases' && <Cases nav={nav} />}
             {route.name === 'campaigns' && <Campaigns nav={nav} />}
             {route.name === 'registry' && <Registry />}
           </motion.div>

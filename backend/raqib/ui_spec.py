@@ -336,6 +336,7 @@ def _block_infra(ctx: dict, item: dict) -> dict:
     for w in io.get("wallets", []):
         rows.append({"k": "Crypto wallet", "k_ar": "محفظة رقمية", "v": w, "mono": True, "tone": "danger"})
     return {"type": "kv_table", "title": item.get("title") or "Infrastructure indicators", "title_ar": item.get("title_ar") or "مؤشرات البنية التحتية", "rows": rows,
+            "country": i.get("country") if ctx.get("browsed", True) else None,
             "note": "Hosting location is an infrastructure indicator only. It does not show where the operator is.",
             "note_ar": "موقع الاستضافة مؤشر تقني فقط ولا يدل على مكان وجود المحتال."}
 
