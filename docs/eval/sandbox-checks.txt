@@ -34,3 +34,4 @@ PASS  WebRTC learns no public address via STUN (candidate types: none)
 == 20 passed, 0 failed
 -- host backstop (VM firewall flushed on purpose, then restored)
 PASS  home router 192.168.1.1 still unreachable: Windows Firewall blocks the VirtualBox processes from private networks
+PASS  a laptop-only service (127.0.0.1:8611) is unreachable from the VM even with the VM firewall off (localhostReachable=0)

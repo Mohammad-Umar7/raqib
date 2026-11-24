@@ -1,0 +1,101 @@
+set,expected,predicted,score,verdict,engine,impersonates,url_defanged,top_reasons,seconds
+fraud,fraud,legit,15,no_indicators,browser,,hxxps://about-blank-b9l[.]pages[.]dev/robots.txt/2606%3A4700%3A310c%3A%3Aac42%3A2f59/appeals/subm,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,7.3
+fraud,fraud,legit,15,no_indicators,browser,,hxxp://qavzaro-mpt-felmuni-h7d2pe83[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,10.5
+fraud,fraud,legit,15,no_indicators,browser,,hxxp://sp28ct11-zulvoro-biz-kelmari[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,7.1
+fraud,fraud,legit,15,no_indicators,browser,,hxxps://h0itk-nk3-xam7-i1xuh-01-10-2026-aa[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,10.6
+fraud,fraud,legit,37,suspicious,browser,,hxxps://www[.]frontdeskportal[.]icu/,Domain was registered only 1 days before this investigation | Uses a top-level domain heavily abused for scams (.icu),7.4
+fraud,fraud,legit,15,no_indicators,browser,,hxxps://8s7q0g-qw999agreg-5m2k9p1z8x-qwxk[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,6.8
+fraud,fraud,legit,15,no_indicators,browser,,hxxp://2u19d-hhl-bmem-2gl0a-30-09-2026-aa[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,6.5
+fraud,fraud,legit,15,no_indicators,browser,MetaMask,hxxps://meccamacextnsuin[.]gitbook[.]io/us,Presents itself as MetaMask but is not an official MetaMask domain,11.9
+fraud,fraud,legit,0,official,browser,Meta / Facebook,hxxps://8ovys-p8s-7vc7-rw9nt-23-10-2026-aa[.]pages[.]dev/qaz-wsx-edc-rfv,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,14.1
+fraud,fraud,legit,15,no_indicators,browser,,hxxp://www[.]user7076013[.]weebly[.]com/,Hosted on a free site-builder / hosting platform (weebly.com) that scammers often abuse,16.5
+fraud,fraud,legit,15,no_indicators,browser,,hxxps://ephemeral-squirrel-f84ee4[.]netlify[.]app/,Hosted on a free site-builder / hosting platform (netlify.app) that scammers often abuse,6.8
+fraud,fraud,legit,0,no_indicators,none,,hxxp://cryby[.]xchhx[.]biz[.]id/,,4.7
+fraud,fraud,fraud,71,likely_scam,browser,MetaMask,hxxps://metamask-docs-ctqr7yuof-consensys-ddffed67[.]vercel[.]app/embedded-wallets/sdk/unreal,Presents itself as MetaMask but is not an official MetaMask domain | The domain name imitates the MetaMask name | Hosted on a free site-builder / hosting platform (vercel.app) that scammers often abuse,17.4
+fraud,fraud,legit,15,no_indicators,browser,,hxxp://zt7lu-68z-6ceb-1149i-30-09-2026-aa[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,7.2
+fraud,fraud,legit,15,no_indicators,browser,,hxxps://769x7-l41-xrra-38ld5-01-10-2026-aa[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,6.6
+fraud,fraud,legit,15,no_indicators,browser,,hxxp://zoomconnect-cr5[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,5.9
+fraud,fraud,legit,15,no_indicators,browser,,hxxp://ybmgc-1kl-8atg-jvyy1-23-10-2026-aa[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,4.7
+fraud,fraud,legit,15,no_indicators,browser,,hxxp://cjy6s-x3t-r6ix-9mof3-17-10-2026-aa[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,5.5
+fraud,fraud,fraud,75,likely_scam,browser,Meta / Facebook,hxxps://sp30ct10-zanvemi-biz-kunelo[.]pages[.]dev/send_appeal_request,Presents itself as Meta / Facebook but is not an official Meta / Facebook domain | Asks victims to pay to a cryptocurrency wallet | Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,5.3
+fraud,fraud,legit,15,no_indicators,browser,,hxxps://m0cbt-uhx-o0au-c62vj-17-10-2026-aa[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,5.1
+fraud,fraud,legit,28,no_indicators,browser,Netflix,hxxp://lingesh077[.]github[.]io/wepage,Presents itself as Netflix but is not an official Netflix domain | Hosted on a free site-builder / hosting platform (github.io) that scammers often abuse,4.3
+fraud,fraud,legit,15,no_indicators,browser,,hxxp://sp28ct11-zorkelo-biz-nuvmari[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,5.5
+fraud,fraud,legit,15,no_indicators,browser,,hxxp://eoojm-4et-gpqd-iucfc-29-09-2026-aa[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,7.9
+fraud,fraud,legit,15,no_indicators,browser,,hxxp://sp28ct11-zorkuni-biz-vemrilo[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,4.2
+fraud,fraud,legit,15,no_indicators,browser,,hxxp://ptvd9-f5v-857a-15vyc-29-09-2026-aa-4t1[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,4.4
+fraud,fraud,legit,15,no_indicators,browser,,hxxps://s7liw-lzn-xs1u-r68d1-29-09-2026-aa[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,4.9
+fraud,fraud,legit,15,no_indicators,browser,,hxxps://tlddh-nd8-f6xx-rx3ak-29-09-2026-aa[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,4.2
+fraud,fraud,legit,15,no_indicators,browser,,hxxps://filesxonmnasonorderpdfdocumentsprdlrxszmn[.]pages[.]dev/second.htm,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,4.3
+fraud,fraud,legit,15,no_indicators,browser,,hxxp://7bz5f-g8m-64td-qbcbx-19-10-2026-aa[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,6.5
+fraud,fraud,legit,0,no_indicators,browser,,hxxps://belepes-telekom-hu[.]vh22325[.]vh[.]net[.]pl/,,29.4
+fraud,fraud,legit,12,no_indicators,none,,hxxps://u[.]to/XbPiIg,The link uses a URL shortener (u.to) that hides the real destination,4.2
+fraud,fraud,legit,15,no_indicators,browser,,hxxp://q0but-xed-lgmv-zi0ay-30-09-2026-aa[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,9.5
+fraud,fraud,legit,15,no_indicators,browser,,hxxp://h6ckc-42y-croo-4smka-23-10-2026-aa[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,6.5
+fraud,fraud,legit,15,no_indicators,browser,,hxxps://sp28ct11-melruni-biz-zorkavo[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,7.2
+fraud,fraud,legit,0,no_indicators,none,,hxxp://member084[.]agencyconnectnetwork[.]com/,,2.3
+fraud,fraud,legit,15,no_indicators,browser,,hxxps://hledk-cr0-yihy-sq5fd-17-10-2026-aa[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,6.3
+fraud,fraud,legit,15,no_indicators,browser,,hxxp://sp11ct-kolvar-biz8-drasik-hemlor[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,5.8
+fraud,fraud,legit,15,no_indicators,browser,,hxxps://raqfelo-mpt-zumqani-k7x5pe92[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,4.9
+fraud,fraud,legit,15,no_indicators,browser,,hxxps://raqvuri-mpt-felqeni-r6d5me84[.]pages[.]dev/,Hosted on a free site-builder / hosting platform (pages.dev) that scammers often abuse,5.1
+fraud,fraud,fraud,75,likely_scam,browser,Meta / Facebook,hxxps://sso-auth[.]com/E.bGYjM2SvWMNs4g,Presents itself as Meta / Facebook but is not an official Meta / Facebook domain | Asks for online-banking username and password on a non-official domain,6.8
+legit,legit,legit,10,no_indicators,browser,,hxxps://tradedir[.]ru/,Uses a top-level domain heavily abused for scams (.ru),23.6
+legit,legit,legit,0,no_indicators,browser,,hxxps://pubgen[.]ai/,,13.7
+legit,legit,legit,0,no_indicators,none,,hxxps://knockporn[.]com/,,4.1
+legit,legit,legit,0,no_indicators,browser,,hxxps://adj[.]st/,,8.4
+legit,legit,legit,0,no_indicators,browser,,hxxps://rembrandmedia[.]com/,,10.0
+legit,legit,legit,0,no_indicators,browser,,hxxps://umidigi[.]com/,,18.8
+legit,legit,legit,0,no_indicators,none,,hxxps://tempojp[.]asia/,,2.3
+legit,legit,legit,0,no_indicators,browser,,hxxps://zohostatic[.]eu/,,5.8
+legit,legit,legit,0,no_indicators,browser,,hxxps://thomsonlocal[.]com/,,5.5
+legit,legit,legit,10,no_indicators,browser,,hxxps://mediapronet[.]ru/,Uses a top-level domain heavily abused for scams (.ru),23.2
+legit,legit,legit,0,no_indicators,browser,,hxxps://lucu123b[.]com/,,6.8
+legit,legit,legit,35,suspicious,browser,,hxxps://skiresort-service[.]com/,Asks victims to pay to a cryptocurrency wallet,18.7
+legit,legit,legit,0,no_indicators,none,,hxxps://fortradev[.]com/,,2.8
+legit,legit,legit,58,suspicious,browser,,hxxps://0731fsw[.]com/,"Asks victims to pay to a cryptocurrency wallet | Shows different content to phones and computers (cloaking): phones get HTTP 403, computers get HTTP 200",23.8
+legit,legit,legit,0,no_indicators,none,,hxxps://m6r[.]eu/,,1.2
+legit,legit,legit,0,no_indicators,browser,PayPal,hxxps://mapal[.]com/,,30.1
+legit,legit,legit,0,no_indicators,browser,,hxxps://jts-blog[.]com/,,12.6
+legit,legit,legit,0,no_indicators,browser,,hxxps://peoplegrove[.]com/,,17.4
+legit,legit,legit,0,no_indicators,none,,hxxps://smlot[.]com/,,1.7
+legit,legit,legit,0,no_indicators,browser,,hxxps://zakopane[.]pl/,,21.3
+legit,legit,legit,51,suspicious,browser,,hxxps://stoov[.]com/,"Asks victims to pay to a cryptocurrency wallet | Uses countdowns and threats ('suspended', 'impounded') to rush the victim",27.0
+legit,legit,legit,0,no_indicators,browser,,hxxps://cdon[.]se/,,26.3
+legit,legit,legit,0,no_indicators,browser,,hxxps://citadium[.]com/,,23.5
+legit,legit,legit,25,no_indicators,browser,LinkedIn,hxxps://ukho[.]gov[.]uk/,Presents itself as LinkedIn but is not an official LinkedIn domain | Link passes through an unrelated redirect domain (ukho.gov.uk) before the landing page,30.5
+legit,legit,legit,0,no_indicators,browser,,hxxps://menukaart[.]menu/,,18.7
+legit,legit,legit,0,no_indicators,browser,,hxxps://darukade[.]com/,,29.0
+legit,legit,legit,0,no_indicators,none,,hxxps://estabonita[.]co[.]uk/,,37.0
+legit,legit,legit,0,no_indicators,browser,,hxxps://onehome[.]com/,,27.5
+legit,legit,legit,35,suspicious,browser,,hxxps://liquipedia[.]net/,Asks victims to pay to a cryptocurrency wallet,30.7
+legit,legit,legit,0,no_indicators,browser,,hxxps://info-instacams[.]com/,,6.5
+legit,legit,legit,0,no_indicators,browser,,hxxps://chinabridgegroup[.]co[.]uk/,,12.5
+legit,legit,legit,0,no_indicators,browser,,hxxps://network[.]com[.]tr/,,37.0
+legit,legit,legit,48,suspicious,browser,,hxxps://lifecell[.]ua/,"Asks victims to pay to a cryptocurrency wallet | Only contact route is WhatsApp / mobile, with no landline or registered address",36.5
+legit,legit,legit,0,no_indicators,none,,hxxps://dry-contact[.]com/,,4.3
+legit,legit,legit,35,suspicious,browser,,hxxps://pothys[.]com/,Asks victims to pay to a cryptocurrency wallet,37.7
+legit,legit,legit,0,no_indicators,browser,,hxxps://teennick[.]com/,,31.4
+legit,legit,legit,0,no_indicators,none,,hxxps://unior[.]it/,,5.6
+legit,legit,legit,0,no_indicators,browser,,hxxps://solidwp[.]com/,,26.7
+legit,legit,legit,0,no_indicators,browser,,hxxps://delhivery[.]com/,,27.5
+legit,legit,legit,0,no_indicators,none,,hxxps://scorphosting[.]com/,,5.7
+guard,legit,legit,0,official,http,RTA,hxxps://www[.]rta[.]ae,,41.1
+guard,legit,legit,0,official,browser,Salik,hxxps://www[.]salik[.]ae,,27.5
+guard,legit,legit,0,official,browser,Emirates Post,hxxps://www[.]emiratespost[.]ae,,39.0
+guard,legit,legit,0,official,http,ADCB,hxxps://www[.]adcb[.]com,,41.3
+guard,legit,legit,0,official,http,First Abu Dhabi Bank,hxxps://www[.]bankfab[.]com,,48.1
+guard,legit,legit,0,official,http,Emirates NBD,hxxps://www[.]emiratesnbd[.]com,,43.5
+guard,legit,legit,0,official,http,Dubai Police,hxxps://www[.]dubaipolice[.]gov[.]ae,,43.1
+guard,legit,legit,0,official,http,UAE Government Portal,hxxps://u[.]ae,,44.4
+guard,legit,legit,0,official,http,TAMM,hxxps://www[.]tamm[.]abudhabi,,43.9
+guard,legit,legit,0,official,browser,UAE PASS,hxxps://uaepass[.]ae,,32.4
+guard,legit,unknown,0,no_indicators,,,hxxps://www[.]etisalat[.]ae,,0
+guard,legit,legit,0,official,http,du,hxxps://www[.]du[.]ae,,44.2
+guard,legit,legit,0,official,http,noon,hxxps://www[.]noon[.]com,,11.2
+guard,legit,legit,0,official,none,,hxxps://www[.]amazon[.]ae,,16.1
+guard,legit,legit,0,no_indicators,http,Etihad Airways,hxxps://www[.]khaleejtimes[.]com,Presents itself as Etihad Airways but is not an official Etihad Airways domain,43.8
+guard,legit,legit,0,no_indicators,browser,,hxxps://www[.]thenationalnews[.]com,,39.9
+guard,legit,legit,0,official,browser,Careem,hxxps://www[.]careem[.]com,,33.2
+guard,legit,legit,0,official,browser,DEWA,hxxps://www[.]dewa[.]gov[.]ae,"Shows different content to phones and computers (cloaking): phones get HTTP 200, computers get HTTP 403",14.1
+guard,legit,legit,0,official,browser,Aramex,hxxps://www[.]aramex[.]com,"Shows different content to phones and computers (cloaking): phones get HTTP 200, computers get HTTP 403",13.4
+guard,legit,legit,0,no_indicators,browser,,hxxps://example[.]com,,20.0
