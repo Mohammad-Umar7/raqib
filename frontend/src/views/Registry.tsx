@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ShieldCheck } from 'lucide-react'
+import { Search } from 'lucide-react'
 import { api } from '../api'
 import { useLang } from '../i18n'
 import type { Entity } from '../types'
@@ -24,26 +24,23 @@ export function Registry() {
           <h1>{p('Protected entities', 'الجهات المحمية')}</h1>
           <p>{p('The UAE organisations scammers pretend to be. A page that names one of them on a domain that is not in its official list is flagged. Domains below should be verified with each organisation before operational use.', 'الجهات الإماراتية التي ينتحل المحتالون صفتها. تُعلَّم أي صفحة تذكر إحداها على نطاق ليس ضمن قائمتها الرسمية. يجب التحقق من النطاقات مع كل جهة قبل الاستخدام التشغيلي.')}</p>
         </div>
+        <div className="search-box"><Search size={14} strokeWidth={1.5} /><input placeholder={p('Filter', 'تصفية')} value={q} onChange={(e) => setQ(e.target.value)} aria-label={p('Filter entities', 'تصفية الجهات')} /></div>
       </div>
-      <div>
-        <div className="card">
-          <div className="card-h"><ShieldCheck size={16} color="#34d399" /><h3>{items.length} {p('entities', 'جهة')}</h3>
-            <input className="input right" style={{ maxWidth: 260, padding: '6px 10px' }} placeholder={p('Filter…', 'تصفية…')} value={q} onChange={(e) => setQ(e.target.value)} />
-          </div>
-          <div style={{ maxHeight: 640, overflow: 'auto' }}>
-            <table className="table">
-              <thead><tr><th>{p('Entity', 'الجهة')}</th><th>{p('Sector', 'القطاع')}</th><th>{p('Official domains', 'النطاقات الرسمية')}</th></tr></thead>
-              <tbody>
-                {shown.map((e) => (
-                  <tr key={e.id}>
-                    <td><b>{lang === 'ar' ? e.name_ar : e.name}</b><div className="faint" style={{ fontSize: 12 }}>{lang === 'ar' ? e.name : e.name_ar}</div></td>
-                    <td><span className="chip">{lang === 'ar' ? SECTOR[e.sector]?.[1] ?? e.sector : SECTOR[e.sector]?.[0] ?? e.sector}</span></td>
-                    <td className="mono" style={{ fontSize: 12 }}>{e.domains.join(', ')}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+      <div className="card">
+        <div className="card-h"><h3>{p('Entities', 'الجهات')}</h3><span className="right mono num" style={{ fontSize: 12 }}>{shown.length} / {items.length}</span></div>
+        <div style={{ maxHeight: 640, overflow: 'auto' }}>
+          <table className="table">
+            <thead><tr><th>{p('Entity', 'الجهة')}</th><th>{p('Sector', 'القطاع')}</th><th>{p('Official domains', 'النطاقات الرسمية')}</th></tr></thead>
+            <tbody>
+              {shown.map((e) => (
+                <tr key={e.id}>
+                  <td><div style={{ fontWeight: 500 }}>{lang === 'ar' ? e.name_ar : e.name}</div><div className="faint" style={{ fontSize: 12 }}>{lang === 'ar' ? e.name : e.name_ar}</div></td>
+                  <td className="muted">{lang === 'ar' ? SECTOR[e.sector]?.[1] ?? e.sector : SECTOR[e.sector]?.[0] ?? e.sector}</td>
+                  <td className="mono" style={{ fontSize: 12 }}>{e.domains.join(', ')}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

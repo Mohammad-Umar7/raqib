@@ -1,22 +1,28 @@
 import type { Tone, Verdict } from './types'
 
+/** Colour carries risk and nothing else: red scam, orange suspicious, green clean. */
+export const RISK = { high: '#e5484d', mid: '#e2803c', low: '#4cc38a', none: '#85858b' } as const
+
 export const VERDICT: Record<Verdict, { en: string; ar: string; tone: Tone; color: string }> = {
-  confirmed_scam: { en: 'Confirmed scam', ar: 'احتيال مؤكد', tone: 'danger', color: '#fb4a6c' },
-  likely_scam: { en: 'Likely scam', ar: 'احتيال محتمل', tone: 'danger', color: '#fb6a4a' },
-  suspicious: { en: 'Suspicious', ar: 'مشبوه', tone: 'warn', color: '#ff8a3d' },
-  no_indicators: { en: 'No scam indicators', ar: 'لا مؤشرات احتيال', tone: 'ok', color: '#34d399' },
-  official: { en: 'Official domain', ar: 'نطاق رسمي', tone: 'ok', color: '#34d399' },
+  confirmed_scam: { en: 'Confirmed scam', ar: 'احتيال مؤكد', tone: 'danger', color: RISK.high },
+  likely_scam: { en: 'Likely scam', ar: 'احتيال محتمل', tone: 'danger', color: RISK.high },
+  suspicious: { en: 'Suspicious', ar: 'مشبوه', tone: 'warn', color: RISK.mid },
+  no_indicators: { en: 'No scam indicators', ar: 'لا مؤشرات احتيال', tone: 'ok', color: RISK.low },
+  official: { en: 'Official domain', ar: 'نطاق رسمي', tone: 'ok', color: RISK.low },
 }
 
 export const verdictOf = (v?: string) => VERDICT[(v as Verdict) ?? 'no_indicators'] ?? VERDICT.no_indicators
 
-export const scoreColor = (s: number) => (s >= 85 ? '#fb4a6c' : s >= 60 ? '#fb7a4a' : s >= 30 ? '#ff8a3d' : '#34d399')
+export const scoreColor = (s: number) => (s >= 60 ? RISK.high : s >= 30 ? RISK.mid : RISK.low)
 
+/** Link strength is a magnitude, so it is drawn in neutral steps, not hues. */
 export const STRENGTH = {
-  strong: { en: 'Strong link', ar: 'ارتباط قوي', color: '#fb4a6c', width: 2.8 },
-  medium: { en: 'Medium link', ar: 'ارتباط متوسط', color: '#ff8a3d', width: 2 },
-  weak: { en: 'Weak link', ar: 'ارتباط ضعيف', color: '#75737f', width: 1.2 },
+  strong: { en: 'Strong link', ar: 'ارتباط قوي', color: '#d4d4d8', width: 2.5 },
+  medium: { en: 'Medium link', ar: 'ارتباط متوسط', color: '#85858b', width: 1.75 },
+  weak: { en: 'Weak link', ar: 'ارتباط ضعيف', color: '#55555a', width: 1.25 },
 } as const
+
+export const cap = (s?: string | null) => (s ? s.charAt(0).toUpperCase() + s.slice(1).replace(/_/g, ' ') : '')
 
 export const SCAM_TYPES: Record<string, { en: string; ar: string }> = {
   toll_topup: { en: 'Fake toll top-up', ar: 'رسوم سالك مزيفة' },

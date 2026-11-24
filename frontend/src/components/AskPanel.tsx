@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Send, Sparkles } from 'lucide-react'
+import { Send } from 'lucide-react'
 import { api } from '../api'
 import { useLang } from '../i18n'
 import type { Block } from '../types'
 import { BlockRenderer, type BlockActions } from './Blocks'
-import { Typewriter, spring } from './fx'
+import { Typewriter, soft } from './fx'
 
 interface Msg { role: 'q' | 'a'; text: string; blocks?: Block[]; source?: string; typed?: boolean }
 
@@ -44,34 +44,34 @@ export function AskPanel({ runId, act, followUps }: { runId: string; act: BlockA
   }
 
   return (
-    <div>
-      <div className="chat">
-        <AnimatePresence initial={false}>
-          {msgs.map((m, i) => (
-            <motion.div key={i} className={`bubble ${m.role}`} initial={{ opacity: 0, y: 18, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={spring}>
-              {m.role === 'a' && <div className="eyebrow row" style={{ marginBottom: 6, color: '#c4b5fd' }}><Sparkles size={12} /> {m.source === 'claude' ? 'Claude' : p('Raqib (offline writer)', 'رقيب (الكاتب غير المتصل)')}</div>}
-              <div>{m.typed ? <Typewriter text={m.text} onDone={() => { setShowBlocks((s) => ({ ...s, [i]: true })); scroll() }} /> : m.text}</div>
-              {!!m.blocks?.length && showBlocks[i] && <motion.div style={{ marginTop: 12 }} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}><BlockRenderer blocks={m.blocks} act={act} /></motion.div>}
-            </motion.div>
-          ))}
-        </AnimatePresence>
-        {busy && <div className="bubble a"><span className="typing"><span /><span /><span /></span></div>}
-        <div ref={end} />
-      </div>
-      <div className="card ask">
-        <div className="suggest">
-          <span className="suggest-label"><Sparkles size={12} /> {p('Suggested', 'مقترح')}</span>
+    <div className="col" style={{ gap: 16 }}>
+      {(msgs.length > 0 || busy) && (
+        <div className="chat">
           <AnimatePresence initial={false}>
-            {suggestions.map((s) => (
-              <motion.button key={s.q} layout initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} transition={spring} onClick={() => ask(lang === 'ar' ? s.q_ar : s.q, s.q)} disabled={busy}>
-                {lang === 'ar' ? s.q_ar : s.q}
-              </motion.button>
+            {msgs.map((m, i) => (
+              <motion.div key={i} className={`bubble ${m.role}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={soft}>
+                {m.role === 'a' && <div className="who">{m.source === 'claude' ? 'Claude' : p('Raqib, offline writer', 'رقيب، الكاتب غير المتصل')}</div>}
+                <div>{m.typed ? <Typewriter text={m.text} onDone={() => { setShowBlocks((s) => ({ ...s, [i]: true })); scroll() }} /> : m.text}</div>
+                {!!m.blocks?.length && showBlocks[i] && <motion.div style={{ marginTop: 12 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={soft}><BlockRenderer blocks={m.blocks} act={act} /></motion.div>}
+              </motion.div>
             ))}
           </AnimatePresence>
+          {busy && <div className="bubble a"><span className="typing" aria-label={p('Writing', 'يكتب')}><span /><span /><span /></span></div>}
+          <div ref={end} />
         </div>
+      )}
+      <div className="card ask">
+        {suggestions.length > 0 && (
+          <div className="suggest">
+            <span className="suggest-label">{p('Suggested questions', 'أسئلة مقترحة')}</span>
+            {suggestions.map((s) => (
+              <button key={s.q} className="btn btn-sm btn-ghost" onClick={() => ask(lang === 'ar' ? s.q_ar : s.q, s.q)} disabled={busy}>{lang === 'ar' ? s.q_ar : s.q}</button>
+            ))}
+          </div>
+        )}
         <form className="row" onSubmit={(e) => { e.preventDefault(); ask(q, q) }}>
-          <input className="input" value={q} onChange={(e) => setQ(e.target.value)} placeholder={p('Ask Raqib about this case…', 'اسأل رقيب عن هذه القضية…')} />
-          <button className="btn btn-primary" disabled={busy || !q.trim()}><Send size={15} /> {p('Ask', 'اسأل')}</button>
+          <input className="input" value={q} onChange={(e) => setQ(e.target.value)} placeholder={p('Ask about this case', 'اسأل عن هذه القضية')} aria-label={p('Question about this case', 'سؤال عن هذه القضية')} />
+          <button className="btn btn-primary" style={{ height: 36 }} disabled={busy || !q.trim()}><Send size={14} strokeWidth={1.5} className="flip-rtl" /> {p('Ask', 'اسأل')}</button>
         </form>
       </div>
     </div>
