@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion'
-import { ArrowRight, Building2, FlaskConical, FolderSearch, Languages, LayoutDashboard, Network, Search, Settings, X } from 'lucide-react'
+import { ArrowRight, Building2, FlaskConical, FolderSearch, Inbox as InboxIcon, Languages, LayoutDashboard, Network, Search, Settings, X } from 'lucide-react'
 import { api } from './api'
 import { useLang } from './i18n'
 import type { Status } from './types'
@@ -10,6 +10,7 @@ import { Investigation, type Nav } from './views/Investigation'
 import { Registry } from './views/Registry'
 import { Cases } from './views/Cases'
 import { Batch } from './views/Batch'
+import { Inbox } from './views/Inbox'
 import { ease, soft } from './components/fx'
 
 function parseRoute(): { name: string; id?: string; tab?: string } {
@@ -74,6 +75,13 @@ export default function App() {
 
   const refresh = useCallback(() => { api.status().then(setStatus).catch(() => {}) }, [])
   useEffect(() => { refresh() }, [refresh])
+  const [waiting, setWaiting] = useState(0)
+  useEffect(() => {
+    const load = () => api.radar().then((r) => setWaiting(r.pending)).catch(() => {})
+    load()
+    const id = window.setInterval(load, 10000)
+    return () => window.clearInterval(id)
+  }, [])
   useEffect(() => {
     const on = () => { setRoute(parseRoute()); window.scrollTo({ top: 0 }) }
     window.addEventListener('hashchange', on)
@@ -100,6 +108,7 @@ export default function App() {
 
   const items = [
     { k: 'command', icon: <LayoutDashboard size={16} strokeWidth={1.5} />, label: p('Command', 'القيادة'), to: '/command' },
+    { k: 'inbox', icon: <InboxIcon size={16} strokeWidth={1.5} />, label: p('Inbox', 'الوارد'), to: '/inbox', count: waiting },
     { k: 'cases', icon: <FolderSearch size={16} strokeWidth={1.5} />, label: p('Cases', 'القضايا'), to: '/cases' },
     { k: 'campaigns', icon: <Network size={16} strokeWidth={1.5} />, label: p('Campaigns', 'الحملات'), to: '/campaigns' },
     { k: 'batch', icon: <FlaskConical size={16} strokeWidth={1.5} />, label: p('Evaluate', 'التقييم'), to: '/batch' },
@@ -115,7 +124,7 @@ export default function App() {
         {items.map((it) => (
           <button key={it.k} className={`nav ${isActive(it.k) ? 'active' : ''}`} onClick={() => go(it.to)} title={it.label} aria-current={isActive(it.k) ? 'page' : undefined}>
             {isActive(it.k) && <motion.span layoutId="nav-ind" className="nav-ind" transition={{ duration: 0.2, ease }} />}
-            <span>{it.icon}<em>{it.label}</em></span>
+            <span>{it.icon}<em>{it.label}</em>{'count' in it && it.count ? <b className="nav-count num">{it.count}</b> : null}</span>
           </button>
         ))}
         <div className="side-sp" />
@@ -138,6 +147,7 @@ export default function App() {
           <motion.div key={route.name + (route.id ?? '')} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={soft}>
             {route.name === 'command' && <CommandCenter nav={nav} />}
             {route.name === 'case' && route.id && <Investigation key={route.id} runId={route.id} nav={nav} initialTab={route.tab} />}
+            {route.name === 'inbox' && <Inbox nav={nav} />}
             {route.name === 'cases' && <Cases nav={nav} />}
             {route.name === 'batch' && <Batch nav={nav} />}
             {route.name === 'campaigns' && <Campaigns nav={nav} />}

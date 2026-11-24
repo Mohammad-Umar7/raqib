@@ -122,12 +122,17 @@ def serpapi_key() -> str:
     return os.environ.get("SERPAPI_KEY", "").strip()
 
 
-async def serp_hunt(force: bool = False) -> dict:
-    """Live Google Search + sponsored ads + Maps listings through SerpAPI. Returns {"available": False} without a key."""
+async def serp_hunt(force: bool = False, search_queries: list[str] | None = None, maps_queries: list[str] | None = None) -> dict:
+    """Live Google Search + sponsored ads + Maps listings through SerpAPI. Returns {"available": False} without a key.
+
+    The radar passes a small rotating slice of queries so a monthly search budget is never exceeded."""
     key = serpapi_key()
     if not key:
         return {"available": False, "reason": "Set SERPAPI_KEY to hunt live Google Search, ads and Maps. Using the recorded feed meanwhile."}
-    if not force and "serp" in _cache and time.time() - _cache["serp"][0] < TTL:
+    sliced = search_queries is not None or maps_queries is not None
+    search_queries = SEARCH_QUERIES if search_queries is None else search_queries
+    maps_queries = MAPS_QUERIES if maps_queries is None else maps_queries
+    if not force and not sliced and "serp" in _cache and time.time() - _cache["serp"][0] < TTL:
         return {**_cache["serp"][1], "cached": True}
     reg = load_registry()
     rows: list[dict] = []
@@ -155,9 +160,10 @@ async def serp_hunt(force: bool = False) -> dict:
                              "url": listing["website"] or "", "detail": f"{listing['category']} · {listing['area']} · {listing['rating']}★ ({listing['reviews']})", "triage": t,
                              "case_id": None, "live": True, "when": date.today().isoformat(), "phone": listing["phone"]})
 
-        results = await asyncio.gather(*(search(q) for q in SEARCH_QUERIES), *(maps(q) for q in MAPS_QUERIES), return_exceptions=True)
+        results = await asyncio.gather(*(search(q) for q in search_queries), *(maps(q) for q in maps_queries), return_exceptions=True)
     errors = [f"{type(e).__name__}" for e in results if isinstance(e, Exception)]
     out = {"available": True, "rows": sorted(rows, key=lambda r: -r["triage"]["score"]), "errors": errors,
            "fetched_at": datetime.now(timezone.utc).isoformat(timespec="seconds")}
-    _cache["serp"] = (time.time(), out)
+    if not sliced:
+        _cache["serp"] = (time.time(), out)
     return out

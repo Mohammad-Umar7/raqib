@@ -48,6 +48,8 @@ export const SOURCES: Record<string, { en: string; ar: string; icon: string }> =
   maps: { en: 'Maps listing', ar: 'موقع على الخرائط', icon: 'map' },
   report: { en: 'Citizen report', ar: 'بلاغ مواطن', icon: 'message' },
   sms: { en: 'SMS link', ar: 'رابط رسالة', icon: 'message' },
+  nrd: { en: 'New domain', ar: 'نطاق جديد', icon: 'shield' },
+  sibling: { en: 'Sibling site', ar: 'موقع شقيق', icon: 'network' },
 }
 
 export const REASON_SHORT: Record<string, { en: string; ar: string }> = {
@@ -64,4 +66,40 @@ export const REASON_SHORT: Record<string, { en: string; ar: string }> = {
   asn: { en: 'Same hosting', ar: 'نفس الاستضافة' },
   layout: { en: 'Similar layout', ar: 'تخطيط مشابه' },
   text: { en: 'Similar wording', ar: 'صياغة مشابهة' },
+}
+
+/** Where a radar item stands, in plain words. */
+export const RADAR_STATE: Record<string, { en: string; ar: string; tone: string }> = {
+  queued: { en: 'Queued', ar: 'في الانتظار', tone: '' },
+  checking: { en: 'Checking now', ar: 'قيد الفحص', tone: 'live' },
+  watching: { en: 'Watching', ar: 'تحت المراقبة', tone: '' },
+  confirmed: { en: 'Confirmed scam', ar: 'احتيال مؤكد', tone: 'danger' },
+  down: { en: 'Offline now', ar: 'متوقف الآن', tone: 'ok' },
+  cleared: { en: 'Cleared', ar: 'سليم', tone: 'ok' },
+  dismissed: { en: 'Not a scam', ar: 'ليس احتيالاً', tone: 'ok' },
+}
+
+export const ACTION_KIND: Record<string, { en: string; ar: string }> = {
+  blocklist: { en: 'Blocklist feed', ar: 'قائمة الحجب' },
+  safebrowsing: { en: 'Google Safe Browsing', ar: 'التصفح الآمن من جوجل' },
+  brand_alert: { en: 'Brand alert', ar: 'تنبيه الجهة' },
+  registrar: { en: 'Registrar takedown', ar: 'طلب إيقاف لدى المسجّل' },
+  host: { en: 'Host takedown', ar: 'طلب إيقاف لدى المستضيف' },
+}
+
+export const ACTION_STATUS: Record<string, { en: string; ar: string; tone: string }> = {
+  done: { en: 'done', ar: 'تم', tone: 'ok' },
+  drafted: { en: 'drafted', ar: 'مسودة جاهزة', tone: '' },
+  pending: { en: 'waiting for you', ar: 'بانتظارك', tone: 'warn' },
+  approved: { en: 'approved', ar: 'تمت الموافقة', tone: 'ok' },
+  rejected: { en: 'rejected', ar: 'مرفوض', tone: '' },
+  revoked: { en: 'withdrawn', ar: 'مسحوب', tone: '' },
+}
+
+export function ago(ts: number | null | undefined, p: (en: string, ar: string) => string): string {
+  if (!ts) return '–'
+  const s = Date.now() / 1000 - ts
+  const a = Math.abs(s)
+  const v = a < 60 ? p('seconds', 'ثوانٍ') : a < 3600 ? `${Math.round(a / 60)} ${p('min', 'دقيقة')}` : a < 86400 ? `${Math.round(a / 3600)} ${p('h', 'ساعة')}` : `${Math.round(a / 86400)} ${p('d', 'يوم')}`
+  return s >= 0 ? p(`${v} ago`, `قبل ${v}`) : p(`in ${v}`, `بعد ${v}`)
 }

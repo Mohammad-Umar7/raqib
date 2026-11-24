@@ -1,4 +1,4 @@
-import type { Candidate, Cluster, Entity, GEdge, GNode, Overview, Status } from './types'
+import type { Candidate, Cluster, Entity, GEdge, GNode, Overview, RadarItem, RadarSnap, Status } from './types'
 
 async function j<T>(res: Response): Promise<T> {
   if (!res.ok) {
@@ -25,8 +25,10 @@ export const api = {
   batchStart: (body: { text: string; use_browser: boolean; use_ai: boolean; concurrency: number }) => post('/api/batch', body).then((r) => j<{ id: string; total: number }>(r)),
   batch: (id: string) => fetch(`/api/batch/${id}`).then((r) => j<any>(r)),
   batchCancel: (id: string) => post(`/api/batch/${id}/cancel`, {}).then((r) => j<any>(r)),
-  newDomains: (days = 2) => fetch(`/api/hunt/new-domains?days=${days}`).then((r) => j<any>(r)),
-  searchMaps: () => fetch('/api/hunt/search-maps').then((r) => j<any>(r)),
+  radar: () => fetch('/api/radar').then((r) => j<RadarSnap>(r)),
+  radarItems: (view = 'all', limit = 300) => fetch(`/api/radar/items?view=${view}&limit=${limit}`).then((r) => j<{ items: RadarItem[] }>(r)),
+  radarDecide: (domain: string, approve: boolean) => post(`/api/radar/domains/${encodeURIComponent(domain)}/decide`, { approve }).then((r) => j<{ ok: boolean }>(r)),
+  radarControl: (body: { paused?: boolean; auto_actions?: boolean; run?: string }) => post('/api/radar/control', body).then((r) => j<RadarSnap>(r)),
   cases: () => fetch('/api/investigations').then((r) => j<{ investigations: any[] }>(r)),
   investigation: (id: string) => fetch(`/api/investigations/${id}`).then((r) => j<any>(r)),
   ask: (id: string, question: string) => post(`/api/investigations/${id}/ask`, { question }).then((r) => j<{ answer: string; answer_ar: string; blocks: any[]; source: string }>(r)),

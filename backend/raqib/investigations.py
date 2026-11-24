@@ -146,7 +146,7 @@ async def run_replay(run: Run, case: dict, K: knowledge.Knowledge, speed: float)
     await _finish(run, case, K, store, speed)
 
 
-async def _finish(run: Run, case: dict, K: knowledge.Knowledge, store: EvidenceStore, speed: float, analysis: dict | None = None) -> None:
+async def _finish(run: Run, case: dict, K: knowledge.Knowledge, store: EvidenceStore, speed: float, analysis: dict | None = None, ai: bool = True) -> None:
     """Shared tail: fingerprint, link to known campaigns, let Claude write the case view, compose the UI."""
     if analysis is None and case["case_id"] in K.analysis:
         analysis = K.analysis[case["case_id"]]
@@ -179,9 +179,10 @@ async def _finish(run: Run, case: dict, K: knowledge.Knowledge, store: EvidenceS
         await _pause(0.55, speed)
 
     ctx = build_ctx(case, analysis, K, store, link, mode="replay")
-    label = "Claude is writing the case summary and laying out the view" if claude.enabled else "Writing the case summary (offline mode, no Claude key)"
+    use_claude = claude.enabled and ai
+    label = "Claude is writing the case summary and laying out the view" if use_claude else "Writing the case summary (offline writer)"
     run.emit("status", phase="reporting", label=label)
-    refined, source = await asyncio.to_thread(claude.refine, ctx)
+    refined, source = await asyncio.to_thread(claude.refine, ctx) if use_claude else (ui_spec.offline_refine(ctx), "offline")
     blocks = ui_spec.compose(ctx, refined)
     run.emit("ui", blocks=blocks, source=source, model=config.model_label(), headline=refined["headline"], headline_ar=refined["headline_ar"], follow_ups=refined.get("follow_ups", []))
 
@@ -243,7 +244,7 @@ async def run_listing(run: Run, case: dict, K: knowledge.Knowledge, speed: float
     await _finish(run, case, K, store, speed)
 
 
-async def run_scan(run: Run, url: str, K: knowledge.Knowledge, speed: float) -> None:
+async def run_scan(run: Run, url: str, K: knowledge.Knowledge, speed: float, ai: bool = True) -> None:
     """Real investigation of any URL: follow it, load it in the isolated browser, read it, score it, link it."""
     from . import scanner
     from .claude_service import service as claude
@@ -262,7 +263,7 @@ async def run_scan(run: Run, url: str, K: knowledge.Knowledge, speed: float) -> 
         elif kind == "request":
             run.emit("request", **data)
 
-    res = await scanner.scan(url, use_browser=True, use_ai=claude.enabled, emit=on_progress, reg=K.reg)
+    res = await scanner.scan(url, use_browser=True, use_ai=claude.enabled and ai, emit=on_progress, reg=K.reg)
     if res.get("error") and not res.get("case"):
         raise RuntimeError(res["error"])
     case, analysis = res["case"], res["analysis"]
@@ -318,7 +319,7 @@ async def run_scan(run: Run, url: str, K: knowledge.Knowledge, speed: float) -> 
     case["screenshot"] = f"/api/evidence/{run.id}/p1.png" if res["png"] else None
     if analysis["score"] >= 30 and not res.get("trusted"):
         K.add_live(case, analysis)  # future scans link to this one
-    await _finish(run, case, K, store, speed, analysis=analysis)
+    await _finish(run, case, K, store, speed, analysis=analysis, ai=ai)
 
 
 def _persist(run: Run) -> None:
@@ -381,7 +382,8 @@ class Manager:
             seen[rid] = _summary(rid, run.result, run.started, run.finished, run.input_url, run.mode)
         return sorted(seen.values(), key=lambda r: -r["started"])[:limit]
 
-    def start(self, url: str, *, mode: str = "auto", speed: float | None = None) -> Run:
+    def start(self, url: str, *, mode: str = "auto", speed: float | None = None, ai: bool = True) -> Run:
+        """Start an investigation. `ai=False` keeps Claude out of it (the radar uses this to bound cost)."""
         K = knowledge.get()
         spd = default_speed() if speed is None else speed
         cid = K.resolve(url)
@@ -410,7 +412,7 @@ class Manager:
 
                     await live.run_live(run, url, K, spd)
                 elif mode == "scan":
-                    await run_scan(run, url, K, spd)
+                    await run_scan(run, url, K, spd, ai=ai)
                 else:
                     await run_static(run, url, K, spd)
                 run.finish()

@@ -1,19 +1,20 @@
 import type React from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowRight, Map as MapIcon, Megaphone, MessageSquare, Play, Search, ShieldCheck, Square } from 'lucide-react'
+import { ArrowRight, Inbox as InboxIcon, Map as MapIcon, Megaphone, MessageSquare, Network, Play, Search, ShieldCheck, Square } from 'lucide-react'
 import { api, stream } from '../api'
 import { WorldMap } from '../components/WorldMap'
-import { LiveHunt } from '../components/LiveHunt'
+import { RadarStatus } from '../components/RadarStatus'
+import { RadarRow } from './Inbox'
 import { Num, Rise, soft } from '../components/fx'
 import { Radar, type Dot } from '../components/Radar'
 import { useLang } from '../i18n'
 import { SCAM_TYPES, SOURCES, scoreColor, verdictOf } from '../meta'
-import type { Candidate, Overview } from '../types'
+import type { Candidate, Overview, RadarItem, RadarSnap } from '../types'
 import type { Nav } from './Investigation'
 
 type Cand = Candidate & { verdict?: string | null; score?: number | null; kind?: string | null; blocked?: boolean }
-const ICON: Record<string, React.ReactElement> = { shield: <ShieldCheck size={14} strokeWidth={1.5} />, search: <Search size={14} strokeWidth={1.5} />, megaphone: <Megaphone size={14} strokeWidth={1.5} />, map: <MapIcon size={14} strokeWidth={1.5} />, message: <MessageSquare size={14} strokeWidth={1.5} /> }
+const ICON: Record<string, React.ReactElement> = { shield: <ShieldCheck size={14} strokeWidth={1.5} />, search: <Search size={14} strokeWidth={1.5} />, megaphone: <Megaphone size={14} strokeWidth={1.5} />, network: <Network size={14} strokeWidth={1.5} />, map: <MapIcon size={14} strokeWidth={1.5} />, message: <MessageSquare size={14} strokeWidth={1.5} /> }
 
 function Step({ label, sub, value, tone }: { label: string; sub?: string; value: number; tone?: string }) {
   return (
@@ -33,6 +34,18 @@ export function CommandCenter({ nav }: { nav: Nav }) {
   const [dots, setDots] = useState<Dot[]>([])
   const [run, setRun] = useState<{ on: boolean; scanned: number; flagged: number; investigated: number; confirmed: number; unblocked: number; total: number; line: string } | null>(null)
   const stop = useRef<(() => void) | null>(null)
+  const [snap, setSnap] = useState<RadarSnap | null>(null)
+  const [live, setLive] = useState<RadarItem[]>([])
+
+  useEffect(() => {
+    const load = () => {
+      api.radar().then(setSnap).catch(() => {})
+      api.radarItems('all', 200).then((r) => setLive(r.items)).catch(() => {})
+    }
+    load()
+    const id = window.setInterval(load, 4000)
+    return () => window.clearInterval(id)
+  }, [])
 
   useEffect(() => {
     api.overview().then(setOv)
@@ -75,7 +88,18 @@ export function CommandCenter({ nav }: { nav: Nav }) {
 
   const fn = ov?.funnel
   const view = run ?? (fn && { on: false, scanned: fn.unique, flagged: fn.flagged, investigated: fn.investigated, confirmed: fn.confirmed, unblocked: fn.unblocked, total: fn.unique, line: '' })
-  const radarDots = run ? dots : idleDots
+  const liveDots = useMemo<Dot[]>(() => {
+    const quiet: Dot[] = Array.from({ length: Math.min(160, Math.round(((snap?.today.names ?? 0) + (snap?.today.nrd ?? 0)) / 500)) }, (_, i) => ({ id: `n${i}`, source: ['ct', 'search', 'maps', 'ct'][i % 4], flagged: false, host: '' }))
+    const found: Dot[] = live.filter((r) => r.state !== 'dismissed' && r.state !== 'cleared').map((r) => {
+      const src = r.sources[0] === 'nrd' ? 'ct' : r.sources[0] === 'sibling' ? 'report' : r.sources[0]
+      return { id: r.domain, source: src, flagged: true, verdict: r.state === 'confirmed' ? 'confirmed_scam' : r.state === 'down' ? null : null, host: r.domain, case_id: r.run_id }
+    })
+    return [...quiet, ...found]
+  }, [live, snap])
+  const radarLive = !!snap?.started && !snap.paused
+  const showLive = !run && (live.length > 0 || radarLive)
+  const radarDots = run ? dots : showLive ? liveDots : idleDots
+  const liveConfirmed = (snap?.states.confirmed ?? 0) + (snap?.states.down ?? 0)
   const pct = (a: number, b: number) => (b > 0 ? Math.round((a / b) * 100) : 0)
 
   return (
@@ -83,14 +107,17 @@ export function CommandCenter({ nav }: { nav: Nav }) {
       <div className="hero">
         <Rise>
           <div className="hero-main">
-            <div className="eyebrow">{p('Proactive scam hunting', 'رصد استباقي للاحتيال')}</div>
+            <div className="eyebrow">{p('Autonomous scam hunting', 'رصد ذاتي للاحتيال')}</div>
             <h2>{p('Find scam sites before citizens click them', 'اكتشف مواقع الاحتيال قبل أن يضغط عليها المواطنون')}</h2>
-            <p>{p(`Raqib watches newly registered domains, Google Search ads and Google Maps listings for look-alikes of ${ov?.entities ?? 36} protected UAE brands, then investigates the dangerous ones in an isolated browser and links them into campaigns.`, `يراقب رقيب النطاقات المسجلة حديثاً وإعلانات بحث جوجل ومواقع خرائط جوجل بحثاً عن مواقع تنتحل صفة ${ov?.entities ?? 36} جهة إماراتية محمية، ثم يحقق في الخطيرة منها داخل متصفح معزول ويربطها في حملات.`)}</p>
+            <p>{p(`Around the clock, Raqib reads new HTTPS certificates, newly registered domains and Google Search, ads and Maps for look-alikes of ${ov?.entities ?? 36} protected UAE brands. It opens the live ones in an isolated browser, actions hard evidence, sends the rest to you, and searches for every confirmed site's siblings.`, `يقرأ رقيب على مدار الساعة شهادات HTTPS الجديدة والنطاقات المسجلة حديثاً وبحث جوجل وإعلاناته وخرائطه بحثاً عن مواقع تنتحل صفة ${ov?.entities ?? 36} جهة إماراتية محمية، ثم يفتح العاملة منها في متصفح معزول، ويتخذ الإجراء عند وجود أدلة قاطعة، ويرسل الباقي إليك، ويبحث عن المواقع الشقيقة لكل موقع مؤكد.`)}</p>
             <div className="row wrap" style={{ gap: 16 }}>
               {run?.on
                 ? <button className="btn btn-lg" onClick={stopHunt}><Square size={14} strokeWidth={1.5} /> {p('Stop hunt', 'إيقاف الرصد')}</button>
-                : <button className="btn btn-primary btn-lg" onClick={startHunt} disabled={!ov}><Play size={14} strokeWidth={1.5} className="flip-rtl" /> {p('Run hunt', 'ابدأ الرصد')}</button>}
-              <span className="hero-note">{p('Demo dataset: recorded feeds and fictional domains', 'بيانات تجريبية: مصادر مسجّلة ونطاقات وهمية')}</span>
+                : <>
+                  <button className="btn btn-primary btn-lg" onClick={() => nav.go('/inbox')}><InboxIcon size={14} strokeWidth={1.5} /> {p('Open inbox', 'افتح الوارد')}{snap?.pending ? ` · ${snap.pending} ${p('waiting', 'بالانتظار')}` : ''}</button>
+                  <button className="btn btn-lg" onClick={startHunt} disabled={!ov}><Play size={14} strokeWidth={1.5} className="flip-rtl" /> {p('Replay demo hunt', 'إعادة عرض الرصد التجريبي')}</button>
+                </>}
+              <span className="hero-note">{p('The demo replay uses recorded feeds and fictional domains', 'العرض التجريبي يستخدم مصادر مسجّلة ونطاقات وهمية')}</span>
             </div>
             <div className="targets">
               <div className="eyebrow">{p('Or open a recorded demo target', 'أو افتح هدفاً تجريبياً مسجّلاً')}</div>
@@ -110,15 +137,27 @@ export function CommandCenter({ nav }: { nav: Nav }) {
           <div className="card radar-card">
             <div className="card-h">
               <h3>{p('Hunt radar', 'رادار الرصد')}</h3>
-              <span className="row right" style={{ fontSize: 13 }}>{run?.on ? <><span className="dot live" /> {p('Hunting', 'يرصد')}</> : p('Last hunt', 'آخر رصد')}</span>
+              <span className="row right" style={{ fontSize: 13 }}>{run?.on ? <><span className="dot live" /> {p('Replaying demo', 'عرض تجريبي')}</> : radarLive ? <><span className="dot live" /> {p('Watching live', 'مراقبة مباشرة')}</> : snap?.paused ? p('Paused', 'متوقف') : p('Last hunt', 'آخر رصد')}</span>
             </div>
-            <Radar dots={radarDots} running={!!run?.on} confirmed={view?.confirmed ?? 0} onPick={(d) => d.case_id && nav.investigate('case:' + d.case_id)} />
-            <div className={`radar-foot ${run?.on ? 'mono' : ''}`}>{run?.on ? run.line : p('Click a red point to open its investigation', 'اضغط على نقطة حمراء لفتح التحقيق')}</div>
+            <Radar dots={radarDots} running={!!run?.on || radarLive} confirmed={showLive ? liveConfirmed : view?.confirmed ?? 0} onPick={(d) => d.case_id && (showLive ? nav.go(`/case/${d.case_id}`) : nav.investigate('case:' + d.case_id))} />
+            <div className={`radar-foot ${run?.on ? 'mono' : ''}`}>{run?.on ? run.line : showLive ? p('Grey: names read. Light: flagged and being checked. Red: confirmed scam.', 'رمادي: أسماء قُرئت. فاتح: مشتبه قيد الفحص. أحمر: احتيال مؤكد.') : p('Click a red point to open its investigation', 'اضغط على نقطة حمراء لفتح التحقيق')}</div>
           </div>
         </Rise>
       </div>
 
-      {view && (
+      {showLive && snap && (
+        <Rise i={2}>
+          <div className="card funnel">
+            <Step label={p('Names checked today', 'أسماء فُحصت اليوم')} sub={p('Certificates and new-domain lists', 'الشهادات وقوائم النطاقات الجديدة')} value={(snap.today.names ?? 0) + (snap.today.nrd ?? 0)} />
+            <Step label={p('Flagged by triage', 'مشتبه بهم بعد الفرز')} sub={`${p('score', 'الدرجة')} ≥ ${ov?.threshold ?? 40}`} value={snap.today.flagged ?? 0} />
+            <Step label={p('Opened in sandbox', 'فُتحت في البيئة المعزولة')} sub={p('Only pages that are online', 'الصفحات العاملة فقط')} value={snap.today.scanned ?? 0} />
+            <Step label={p('Confirmed scams', 'احتيال مؤكد')} sub={`${snap.blocklisted} ${p('on the blocklist feed', 'في قائمة الحجب')}`} value={snap.today.confirmed ?? 0} />
+            <Step label={p('Waiting for you', 'بانتظارك')} sub={p('Approve or reject in the inbox', 'وافق أو ارفض في الوارد')} value={snap.pending} tone={snap.pending > 0 ? 'var(--red)' : undefined} />
+          </div>
+        </Rise>
+      )}
+
+      {!showLive && view && (
         <Rise i={2}>
           <div className="card funnel">
             <Step label={p('Candidates scanned', 'مرشّحون تم فحصهم')} sub={p('New domains, search, maps and reports', 'نطاقات جديدة وبحث وخرائط وبلاغات')} value={view.scanned} />
@@ -130,9 +169,18 @@ export function CommandCenter({ nav }: { nav: Nav }) {
         </Rise>
       )}
 
-      <Rise i={3}><LiveHunt onScan={(h) => nav.investigate(h)} /></Rise>
+      <Rise i={3}><RadarStatus snap={snap} onChange={setSnap} /></Rise>
 
       <div className="grid-2" style={{ gridTemplateColumns: 'minmax(0,1.6fr) minmax(0,1fr)' }}>
+        {showLive ? (
+          <div className="card">
+            <div className="card-h"><h3>{p('Latest finds', 'أحدث الاكتشافات')}</h3><button className="btn btn-sm btn-ghost right" onClick={() => nav.go('/inbox')}>{p('Inbox', 'الوارد')} <ArrowRight size={13} className="flip-rtl" /></button></div>
+            <div className="feed list">
+              {[...live].sort((a, b) => b.last_seen - a.last_seen).slice(0, 30).map((r) => <RadarRow key={r.domain} r={r} nav={nav} compact />)}
+              {!live.length && <div className="empty">{p('Watching. The first look-alikes usually appear within minutes.', 'المراقبة جارية. تظهر أولى النطاقات المشابهة عادة خلال دقائق.')}</div>}
+            </div>
+          </div>
+        ) : (
         <div className="card">
           <div className="card-h"><h3>{p('Flagged candidates', 'المرشّحون المشتبه بهم')}</h3><span className="right mono num" style={{ fontSize: 12 }}><Num value={cands.length} ms={250} /></span></div>
           <div className="feed list">
@@ -160,6 +208,7 @@ export function CommandCenter({ nav }: { nav: Nav }) {
             {!cands.length && <div className="empty">{run?.on ? p('Scanning. Flagged candidates appear here.', 'جارٍ الفحص. يظهر المشتبه بهم هنا.') : p('Run a hunt to discover candidates', 'ابدأ الرصد لاكتشاف المرشّحين')}</div>}
           </div>
         </div>
+        )}
 
         <div className="card">
           <div className="card-h"><h3>{p('Active campaigns', 'الحملات النشطة')}</h3><span className="right mono num" style={{ fontSize: 12 }}>{ov?.clusters.length ?? 0}</span></div>

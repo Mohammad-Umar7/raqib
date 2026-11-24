@@ -96,3 +96,15 @@ export interface Status {
 }
 
 export interface Entity { id: string; name: string; name_ar: string; sector: string; scam_type: string; emirate: string; domains: string[]; keywords: string[] }
+
+export interface RadarSensor { key: 'ct' | 'nrd' | 'serp'; on: boolean; last_run: number | null; next_run: number | null; seen: number; flagged: number; error: string | null; note: string; coverage?: number | null }
+export interface RadarEvent { id: number; ts: number; kind: string; domain: string | null; text: string }
+export interface RadarSnap {
+  started: boolean; paused: boolean; auto_actions: boolean; ai: boolean; cap: number; scans_last_hour: number; pending: number; blocklisted: number
+  today: Record<string, number>; states: Record<string, number>; sensors: RadarSensor[]; events: RadarEvent[]
+}
+export interface RadarAction { id: number; kind: string; mode: 'auto' | 'approval'; status: 'done' | 'drafted' | 'pending' | 'approved' | 'rejected' | 'revoked'; by: string; draft: any }
+export interface RadarItem {
+  domain: string; host: string; url: string; state: string; sources: string[]; first_seen: number; last_seen: number; triage: number; reasons: { text: string; points: number }[]
+  brand: string | null; score: number | null; verdict: string | null; scam_type: string | null; run_id: string | null; next_check: number | null; parent: string | null; why: string | null; tier: string | null; actions: RadarAction[]
+}
