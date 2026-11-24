@@ -6,6 +6,11 @@ param(
   [int]$Port = 2222
 )
 $ErrorActionPreference = "Stop"
+# Re-check the VM boundary every time: VirtualBox's unattended installer turned host loopback access back on once.
+$vbox = "C:\Program Files\Oracle\VirtualBox\VBoxManage.exe"
+if ((& $vbox showvminfo raqib-sandbox --machinereadable | Select-String '^localhostReachable=') -notmatch '"0"') {
+  throw "raqib-sandbox can reach the host's loopback services: power it off and run  VBoxManage modifyvm raqib-sandbox --nat-localhostreachable1=off"
+}
 $root = (git rev-parse --show-toplevel)
 $key = "$env:USERPROFILE\.ssh\raqib_vm"
 $opts = @("-i", $key, "-o", "IdentitiesOnly=yes", "-o", "StrictHostKeyChecking=accept-new")
