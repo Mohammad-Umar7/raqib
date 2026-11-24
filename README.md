@@ -127,6 +127,21 @@ docker compose -f docker/docker-compose.yml up --build
 
 Loopback-only port, no host folders mounted, all Linux capabilities dropped, read-only root filesystem, memory / CPU / process caps. Use this when investigating real scam URLs.
 
+### Run in a locked-down VM (how the accuracy numbers were measured)
+
+`deploy/vm/` builds a VirtualBox VM ("raqib-sandbox", Ubuntu Server) that opens real scam sites without putting the laptop, the API key or the home network at risk:
+
+| Layer | What it does |
+|---|---|
+| VM | No shared folders, clipboard, drag-and-drop, USB, audio, serial port, remote display or Guest Additions. One NAT adapter; the VM cannot reach the host's own services (`localhostReachable=0`); SSH and the dashboard are forwarded to the host's 127.0.0.1 only |
+| Host firewall | `host-firewall.ps1`: the VirtualBox processes may not open connections to private networks, even if the guest is compromised |
+| Guest firewall | `nftables.conf`: outbound only TCP 80/443 to public addresses, DNS to 1.1.1.1/8.8.8.8 and NTP. Private, link-local, carrier-NAT, metadata and IPv6 traffic is dropped at the IP layer, which also defeats redirects, WebSockets, WebRTC and DNS rebinding |
+| Browser | Chrome's own sandbox on (`RAQIB_CHROME_SANDBOX=1`, AppArmor profile for its user namespaces), a new browser process per site (`RAQIB_FRESH_BROWSER=1`), no secrets in its environment, run as an unprivileged user under systemd limits |
+| Secrets | No API key ever enters the VM; the code is copied from git's file list, which never includes `.env`. Verdicts come from the deterministic rules |
+| Reset | Snapshot `clean-hardened` is restored after every run |
+
+`checks.sh` proves each control (results in `docs/eval/sandbox-checks.txt`); `run-eval.sh` runs the accuracy evaluation inside it. Production design: one gVisor or Firecracker micro-VM per site, with a broker outside the sandbox holding the keys.
+
 ### Tests
 
 ```powershell

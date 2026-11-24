@@ -1,0 +1,11 @@
+# Lets Playwright's Chromium create the user namespaces its own sandbox needs.
+# Ubuntu 24.04+ blocks unprivileged user namespaces by default; without this Chrome's sandbox cannot start.
+# Only these binaries, only for the raqib user's Playwright install.
+abi <abi/4.0>,
+include <tunables/global>
+
+profile raqib-chromium /home/raqib/.cache/ms-playwright/**/{chrome,headless_shell,chrome-headless-shell} flags=(unconfined) {
+  userns,
+
+  include if exists <local/raqib-chromium>
+}

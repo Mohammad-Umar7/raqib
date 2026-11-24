@@ -1,0 +1,33 @@
+[Unit]
+Description=Raqib dashboard inside the sandbox VM (no API keys)
+After=network-online.target nftables.service
+
+[Service]
+User=raqib
+Group=raqib
+WorkingDirectory=/home/raqib/raqib/backend
+Environment=HOME=/tmp PLAYWRIGHT_BROWSERS_PATH=/home/raqib/.cache/ms-playwright
+Environment=RAQIB_RADAR=0 RAQIB_MODE=auto RAQIB_CHROME_SANDBOX=1 RAQIB_FRESH_BROWSER=1
+ExecStart=/home/raqib/raqib/backend/.venv/bin/python -m uvicorn raqib.main:app --host 0.0.0.0 --port 8600
+# Filesystem: read-only everywhere except the case data
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/raqib/raqib/backend/raqib/data
+PrivateTmp=yes
+UMask=0077
+# Privileges and kernel
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+LockPersonality=yes
+RestrictRealtime=yes
+# Resources
+MemoryMax=3G
+TasksMax=512
+# Chrome's sandbox needs user namespaces, so RestrictNamespaces is deliberately not set.
+
+[Install]
+WantedBy=multi-user.target

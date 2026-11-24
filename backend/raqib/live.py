@@ -36,6 +36,7 @@ from .evidence import EvidenceStore
 from .investigations import _finish, _pause, analyze_emit
 from .netutil import MOBILE_UA, url_error  # noqa: F401  (url_error re-exported for tests)
 from .pagejs import EXTRACT_JS
+from .scanner import launch_options
 
 VIEWPORT = {"width": 390, "height": 760}
 MAX_TURNS = 14
@@ -128,7 +129,7 @@ class Sandbox:
         last: Exception | None = None
         for ch in ([channel] if channel else [None, "chrome", "msedge"]):
             try:
-                self.browser = await self.pw.chromium.launch(headless=headless, channel=ch, args=["--disable-dev-shm-usage"])
+                self.browser = await self.pw.chromium.launch(**launch_options(ch, headless=headless))
                 break
             except Exception as exc:  # bundled build missing: try the installed browsers
                 last = exc

@@ -1,0 +1,36 @@
+== Raqib sandbox checks · 2026-11-24T18:44:03Z · Ubuntu 26.04.1 LTS · kernel 7.0.0-30-generic
+-- network, from the scanner's own user
+PASS  public web reachable (https://example.com)
+PASS  home router 192.168.1.1 blocked
+PASS  home router 192.168.0.1 blocked
+PASS  private 10.0.0.1 blocked
+PASS  private 172.16.0.1 blocked
+PASS  the host through VirtualBox (10.0.2.2:8600) blocked
+PASS  VirtualBox DNS proxy (10.0.2.3) blocked
+PASS  cloud metadata 169.254.169.254 blocked
+PASS  carrier NAT 100.64.0.1 blocked
+PASS  DNS-rebinding name (192-168-1-1.nip.io) blocked
+PASS  DNS works through the public resolvers
+PASS  IPv6 switched off
+PASS  firewall table loaded
+-- secrets and accounts
+PASS  no .env in the app
+PASS  no API key, token or GitHub credential on disk
+PASS  no key in any process environment
+PASS  scanner user cannot sudo
+PASS  SSH password login off
+PASS  SSH root login off
+-- browser (Raqib's own launch settings)
+PASS  renderer 35912: seccomp=2 (2 = filtered), own user namespace=True
+PASS  page fetch to a private address: blocked
+PASS  page websocket to a private address: blocked
+PASS  page rebinding to a private address: blocked
+PASS  WebRTC learns no public address via STUN (candidate types: none)
+-- blocked attempts the firewall logged in the last 15 minutes
+      1 raqib-drop-other
+     48 raqib-drop-private
+  ip daddr @private4 counter packets 92 bytes 11520 drop
+  counter packets 1 bytes 1278 drop
+== 20 passed, 0 failed
+-- host backstop (VM firewall flushed on purpose, then restored)
+PASS  home router 192.168.1.1 still unreachable: Windows Firewall blocks the VirtualBox processes from private networks

@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import csv
 import io
+import os
 import random
 import re
 import secrets
@@ -87,7 +88,8 @@ def from_recorded(url: str) -> dict | None:
 
 
 class Job:
-    def __init__(self, rows: list[dict], use_browser: bool, use_ai: bool, concurrency: int):
+    def __init__(self, rows: list[dict], use_browser: bool, use_ai: bool, concurrency: int, shots_dir: str | None = None):
+        self.shots_dir = shots_dir  # save each page's screenshot here (evaluation runs)
         self.id = secrets.token_hex(4)
         self.rows = rows
         self.use_browser, self.use_ai = use_browser, use_ai
@@ -117,6 +119,11 @@ class Job:
                     if r is None:
                         full = await asyncio.wait_for(scanner.scan(row["url"], use_browser=self.use_browser, use_ai=self.use_ai), timeout=90)
                         r = scanner.public(full)
+                        if self.shots_dir and full.get("png"):
+                            os.makedirs(self.shots_dir, exist_ok=True)
+                            r["shot"] = f"{i + 1:03d}.png"
+                            with open(os.path.join(self.shots_dir, r["shot"]), "wb") as fh:
+                                fh.write(full["png"])
                 except Exception as exc:
                     r = {"input_url": row["url"], "error": f"{type(exc).__name__}: {str(exc)[:120]}", "score": 0, "verdict": "no_indicators",
                          "label": "legit", "reasons": [], "signals": [], "seconds": round(time.time() - t0, 1), "engine": "none"}
@@ -173,7 +180,7 @@ def recorded_sample() -> list[dict]:
 
 async def openphish_sample(n: int = 15) -> list[dict]:
     """A few live phishing URLs from the free OpenPhish community feed (labelled fraud)."""
-    async with httpx.AsyncClient(timeout=15.0, verify=ssl_context(), headers={"User-Agent": "raqib-evaluator"}) as c:
+    async with httpx.AsyncClient(timeout=15.0, verify=ssl_context(), follow_redirects=True, headers={"User-Agent": "raqib-evaluator"}) as c:
         r = await c.get(OPENPHISH_FEED)
         r.raise_for_status()
     urls = [u.strip() for u in r.text.splitlines() if u.strip().startswith("http")]

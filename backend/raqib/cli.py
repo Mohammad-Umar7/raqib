@@ -31,12 +31,13 @@ async def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--no-browser", action="store_true", help="skip the headless browser (HTTP fetch only)")
     ap.add_argument("--ai", action="store_true", help="use the Claude vision check (needs ANTHROPIC_API_KEY)")
     ap.add_argument("--concurrency", type=int, default=4)
+    ap.add_argument("--shots", help="folder to save each page's screenshot in (for reviewing errors)")
     ap.add_argument("--threshold", type=int, default=scanner.FRAUD_THRESHOLD, help="score at or above which a URL is labelled fraud")
     a = ap.parse_args(argv)
 
     scanner.FRAUD_THRESHOLD = a.threshold
     text = Path(a.input).read_text(encoding="utf-8-sig")
-    job = batch.Job(batch.parse_input(text), use_browser=not a.no_browser, use_ai=a.ai, concurrency=a.concurrency)
+    job = batch.Job(batch.parse_input(text), use_browser=not a.no_browser, use_ai=a.ai, concurrency=a.concurrency, shots_dir=a.shots)
     print(f"Scanning {len(job.rows)} URL(s) with concurrency {job.concurrency} ...", file=sys.stderr)
     runner = asyncio.create_task(job.run())
     last = -1

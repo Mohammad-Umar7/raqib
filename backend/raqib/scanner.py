@@ -21,6 +21,7 @@ import base64
 import hashlib
 import io
 import ipaddress
+import os
 import re
 import time
 from datetime import date
@@ -284,8 +285,31 @@ def cloaking_check(mobile: dict, desktop: dict) -> str | None:
 
 # --------------------------------------------------------------------------- 4. browser capture
 
+# Environment variables Chrome may see. Everything else (API keys, tokens) is withheld from the browser process.
+SAFE_ENV = {"PATH", "HOME", "TMPDIR", "TMP", "TEMP", "LANG", "LC_ALL", "XDG_RUNTIME_DIR", "DISPLAY", "FONTCONFIG_PATH", "PLAYWRIGHT_BROWSERS_PATH",
+            "SYSTEMROOT", "WINDIR", "SYSTEMDRIVE", "USERPROFILE", "LOCALAPPDATA", "APPDATA", "PROGRAMFILES", "PROGRAMFILES(X86)", "PROGRAMDATA",
+            "COMSPEC", "HOMEDRIVE", "HOMEPATH", "NUMBER_OF_PROCESSORS", "PROCESSOR_ARCHITECTURE", "OS"}
+HARDENING_ARGS = ["--disable-dev-shm-usage", "--disable-extensions", "--disable-sync", "--no-first-run", "--disable-background-networking",
+                  "--disable-component-update", "--disable-default-apps", "--disable-domain-reliability",
+                  "--force-webrtc-ip-handling-policy=disable_non_proxied_udp"]
+
+
+def launch_options(channel: str | None = None, headless: bool = True) -> dict:
+    """How Chrome is started for untrusted pages.
+
+    RAQIB_CHROME_SANDBOX=1 turns on Chrome's own sandbox (Playwright disables it by default). There is no fallback
+    without it: if the sandboxed launch fails, no browser is used at all. The browser never inherits secrets."""
+    return {"headless": headless, "channel": channel, "args": HARDENING_ARGS, "chromium_sandbox": os.environ.get("RAQIB_CHROME_SANDBOX") == "1",
+            "env": {k: v for k, v in os.environ.items() if k.upper() in SAFE_ENV}}
+
+
+def fresh_browser() -> bool:
+    """RAQIB_FRESH_BROWSER=1: a new browser process for every page, closed straight after (used inside the sandbox VM)."""
+    return os.environ.get("RAQIB_FRESH_BROWSER") == "1"
+
+
 class _Browser:
-    """One shared headless browser; each scan gets its own throwaway context."""
+    """One shared headless browser; each scan gets its own throwaway context (or its own browser, see fresh_browser)."""
 
     def __init__(self) -> None:
         self.pw = None
@@ -303,19 +327,39 @@ class _Browser:
                 from playwright.async_api import async_playwright
 
                 self.pw = self.pw or await async_playwright().start()
-                import os
-
-                channel = os.environ.get("RAQIB_BROWSER_CHANNEL") or None
-                for ch in ([channel] if channel else [None, "chrome", "msedge"]):
-                    try:
-                        self.browser = await self.pw.chromium.launch(headless=True, channel=ch, args=["--disable-dev-shm-usage"])
-                        return self.browser
-                    except Exception as exc:
-                        self.failed = str(exc)[:200]
-                return None
+                self.browser = await self._launch()
+                return self.browser
             except Exception as exc:
                 self.failed = str(exc)[:200]
                 return None
+
+    async def _launch(self):
+        channel = os.environ.get("RAQIB_BROWSER_CHANNEL") or None
+        last: Exception | None = None
+        for ch in ([channel] if channel else [None, "chrome", "msedge"]):
+            try:
+                return await self.pw.chromium.launch(**launch_options(ch))
+            except Exception as exc:
+                last = exc
+        raise RuntimeError(str(last))
+
+    async def launch_new(self):
+        """A separate browser process for one page; the caller closes it."""
+        if self.failed:
+            return None
+        async with self.lock:
+            try:
+                from playwright.async_api import async_playwright
+
+                self.pw = self.pw or await async_playwright().start()
+            except Exception as exc:
+                self.failed = str(exc)[:200]
+                return None
+        try:
+            return await self._launch()
+        except Exception as exc:
+            self.failed = str(exc)[:200]
+            return None
 
 
     async def close(self) -> None:
@@ -346,11 +390,17 @@ def dhash(png: bytes, size: int = 8) -> str | None:
 
 
 async def browser_capture(url: str, timeout_ms: int = 20000) -> dict | None:
-    browser = await BROWSER.get()
+    fresh = fresh_browser()
+    browser = await (BROWSER.launch_new() if fresh else BROWSER.get())
     if not browser:
         return None
-    ctx = await browser.new_context(viewport={"width": 390, "height": 760}, user_agent=MOBILE_UA, is_mobile=True, has_touch=True,
-                                    locale="en-AE", timezone_id="Asia/Dubai", accept_downloads=False, service_workers="block", ignore_https_errors=True)
+    try:
+        ctx = await browser.new_context(viewport={"width": 390, "height": 760}, user_agent=MOBILE_UA, is_mobile=True, has_touch=True,
+                                        locale="en-AE", timezone_id="Asia/Dubai", accept_downloads=False, service_workers="block", ignore_https_errors=True)
+    except Exception:
+        if fresh:
+            await browser.close()
+        raise
     network: list[dict] = []
     nav_chain: list[dict] = []
 
@@ -416,6 +466,8 @@ async def browser_capture(url: str, timeout_ms: int = 20000) -> dict | None:
         return {"data": data, "png": png, "scripts": scripts, "network": network, "chain": nav_chain, "favicon_hash": favicon_hash}
     finally:
         await ctx.close()
+        if fresh:
+            await browser.close()
 
 
 # --------------------------------------------------------------------------- orchestration

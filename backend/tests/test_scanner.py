@@ -87,3 +87,15 @@ def test_recorded_cases_score_without_network():
     r = batch.from_recorded("http://salik-topup-ae.test/")
     assert r and r["engine"] == "recorded" and r["label"] == "fraud"
     assert batch.from_recorded("https://not-a-demo-case.example/") is None
+
+
+def test_browser_launch_is_sandboxed_and_secret_free(monkeypatch):
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-ant-test")
+    monkeypatch.setenv("SERPAPI_KEY", "serp-test")
+    monkeypatch.setenv("RAQIB_CHROME_SANDBOX", "1")
+    opts = scanner.launch_options("chrome")
+    assert opts["chromium_sandbox"] is True and "--no-sandbox" not in opts["args"]
+    assert "ANTHROPIC_API_KEY" not in opts["env"] and "SERPAPI_KEY" not in opts["env"] and "PATH" in {k.upper() for k in opts["env"]}
+    assert "--force-webrtc-ip-handling-policy=disable_non_proxied_udp" in opts["args"]
+    monkeypatch.delenv("RAQIB_CHROME_SANDBOX")
+    assert scanner.launch_options()["chromium_sandbox"] is False  # default unchanged on Windows laptops

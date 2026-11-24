@@ -12,7 +12,7 @@ RUN npm run build
 
 # ---- runtime: Playwright image ships Chromium and its system libraries
 FROM mcr.microsoft.com/playwright/python:v1.65.2-noble AS app
-ENV PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1 RAQIB_MODE=live RAQIB_BROWSER_CHANNEL= PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+ENV PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1 RAQIB_MODE=live RAQIB_BROWSER_CHANNEL= PLAYWRIGHT_BROWSERS_PATH=/ms-playwright RAQIB_CHROME_SANDBOX=1
 WORKDIR /app
 COPY backend/requirements.txt backend/requirements.txt
 RUN pip install -r backend/requirements.txt
