@@ -15,9 +15,6 @@ from __future__ import annotations
 from .fingerprint import layout_similarity, text_similarity
 
 STRENGTH_WEIGHT = {"strong": 0.9, "medium": 0.6, "weak": 0.25}
-STRENGTH_LABEL = {"strong": ("Strong", "قوي"), "medium": ("Medium", "متوسط"), "weak": ("Weak", "ضعيف")}
-
-
 def _reason(kind: str, strength: str, en: str, ar: str, value: str | None = None) -> dict:
     return {"kind": kind, "strength": strength, "text": en, "text_ar": ar, "value": value}
 

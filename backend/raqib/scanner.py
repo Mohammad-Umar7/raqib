@@ -21,7 +21,6 @@ import base64
 import hashlib
 import io
 import ipaddress
-import json
 import re
 import time
 from datetime import date
@@ -560,6 +559,3 @@ def png_b64_jpeg(png: bytes, quality: int = 72) -> str:
     except Exception:
         return base64.b64encode(png).decode()
 
-
-def dump(obj) -> str:
-    return json.dumps(obj, ensure_ascii=False, default=str)

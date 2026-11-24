@@ -67,8 +67,6 @@ body::before { opacity: .22; }
 
 /* ================================================================== agent crew */
 .crew-wrap { margin-bottom: 18px; }
-.crew-wrap .stepper { margin: 10px 0 0; min-height: 26px; }
-.crew-wrap .stepper > .row { display: none; }
 .crew { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; }
 @media (max-width: 1000px) { .crew { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 10px; } .ag-link { display: none; } }
 .crew > .row { min-width: 0; }
@@ -120,7 +118,6 @@ html[dir='rtl'] .al-who { letter-spacing: 0; }
 .wm-legend i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-inline-end: 6px; vertical-align: 0; }
 .wm-legend i.g { background: #e5b85c; } .wm-legend i.r { background: #fb4a6c; }
 .wm-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-.map-row > div > .card .card-b { display: flex; flex-direction: column; justify-content: center; }
 
 /* ================================================================== cases page */
 .search-box { display: flex; align-items: center; gap: 8px; padding: 0 12px; height: 38px; border-radius: 12px; border: 1px solid var(--line-2); background: var(--s1); color: var(--faint); min-width: 240px; }

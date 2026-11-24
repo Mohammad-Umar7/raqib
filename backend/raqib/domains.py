@@ -70,10 +70,6 @@ def registrable(host: str) -> str:
     return tail2
 
 
-def tld_of(host: str) -> str:
-    return host.rsplit(".", 1)[-1] if "." in host else host
-
-
 def label_of(domain: str) -> str:
     """The leftmost label of a registrable domain: 'salik-topup-ae.test' -> 'salik-topup-ae'."""
     return registrable(domain).split(".")[0]

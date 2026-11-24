@@ -66,13 +66,10 @@ export interface Cluster {
 }
 export interface Overview {
   funnel: Funnel
-  by_source: Record<string, number>
-  emirates: Record<string, number>
   hosting_countries: Record<string, number>
   clusters: Cluster[]
   threshold: number
   entities: number
-  sources: Record<string, number>
 }
 
 export interface Candidate {

@@ -9,7 +9,6 @@ import { STRENGTH, scoreColor, verdictOf } from '../meta'
 import type { Block } from '../types'
 import { Gauge } from './Gauge'
 import { Num, Reveal, Scramble, Typewriter, spring } from './fx'
-import { UaeMap } from './Maps'
 import { WorldMap } from './WorldMap'
 
 export interface BlockActions {
@@ -44,7 +43,6 @@ export const BLOCK_META: Record<string, { en: string; ar: string; icon: ReactNod
   campaign_card: { en: 'Campaign', ar: 'الحملة', icon: <Network size={13} /> },
   indicators: { en: 'Indicators', ar: 'المؤشرات التقنية', icon: <Bot size={13} /> },
   kv_table: { en: 'Infrastructure', ar: 'البنية التحتية', icon: <Server size={13} /> },
-  emirate_map: { en: 'Targets', ar: 'المستهدفون', icon: <MapPin size={13} /> },
   evidence_list: { en: 'Evidence', ar: 'الأدلة', icon: <Landmark size={13} /> },
   action_list: { en: 'Actions', ar: 'الإجراءات', icon: <Flame size={13} /> },
 }
@@ -370,22 +368,6 @@ function Actions({ b, act }: { b: Block; act: BlockActions }) {
   )
 }
 
-function MapBlock({ b }: { b: Block }) {
-  const { f } = useLang()
-  return (
-    <div className="card">
-      <Title b={b} icon={<MapPin size={16} color="#fb4a6c" />} />
-      <div className="card-b">
-        <UaeMap counts={b.counts} />
-        <div className="faint" style={{ fontSize: 11.5 }}>{f(b, 'note')}</div>
-      </div>
-    </div>
-  )
-}
-
-function Fallback({ b }: { b: Block }) {
-  return <div className="card card-p"><div className="eyebrow">{b.type}</div><pre className="mono" style={{ fontSize: 11, whiteSpace: 'pre-wrap', margin: 0 }}>{JSON.stringify(b, null, 1)}</pre></div>
-}
 
 // ------------------------------------------------------------------ layout strip + renderer
 
@@ -429,8 +411,7 @@ export function BlockRenderer({ blocks, act }: { blocks: Block[]; act: BlockActi
           case 'kv_table': node = <KV b={b} />; break
           case 'evidence_list': node = <Evidence b={b} />; break
           case 'action_list': node = <Actions b={b} act={act} />; break
-          case 'emirate_map': node = <MapBlock b={b} />; break
-          default: node = <Fallback b={b} />
+          default: return null
         }
         return <Reveal key={i} i={i} className={SPAN.has(b.type) ? 'span' : ''}>{node}</Reveal>
       })}

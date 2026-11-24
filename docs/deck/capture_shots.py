@@ -71,10 +71,8 @@ def main() -> None:
 
         run_id = start_case()
         time.sleep(1.5)
-        shot("casefile", f"/case/{run_id}?tab=case", 5)
         shot("campaign", f"/case/{run_id}?tab=campaign", 5)
         shot("report", f"/case/{run_id}?tab=report", 4)
-        shot("campaigns", "/campaigns", 5)
         shot("cases", "/cases", 4)
 
         # logo (transparent PNG) for the title slide

@@ -36,30 +36,12 @@ export const SCAM_TYPES: Record<string, { en: string; ar: string }> = {
 }
 
 export const SOURCES: Record<string, { en: string; ar: string; icon: string }> = {
-  ct: { en: 'New certificate', ar: 'شهادة جديدة', icon: 'shield' },
+  ct: { en: 'New domain', ar: 'نطاق جديد', icon: 'shield' },
   search: { en: 'Search result', ar: 'نتيجة بحث', icon: 'search' },
   search_ad: { en: 'Sponsored ad', ar: 'إعلان ممول', icon: 'megaphone' },
   maps: { en: 'Maps listing', ar: 'موقع على الخرائط', icon: 'map' },
   report: { en: 'Citizen report', ar: 'بلاغ مواطن', icon: 'message' },
   sms: { en: 'SMS link', ar: 'رابط رسالة', icon: 'message' },
-}
-
-export const EMIRATES = ['Abu Dhabi', 'Dubai', 'Sharjah', 'Ajman', 'Umm Al Quwain', 'Ras Al Khaimah', 'Fujairah'] as const
-export const EMIRATE_AR: Record<string, string> = {
-  'Abu Dhabi': 'أبوظبي', Dubai: 'دبي', Sharjah: 'الشارقة', Ajman: 'عجمان', 'Umm Al Quwain': 'أم القيوين', 'Ras Al Khaimah': 'رأس الخيمة', Fujairah: 'الفجيرة',
-}
-
-export const CATEGORY_ICON: Record<string, string> = {
-  impersonation: 'mask', payment: 'card', exfiltration: 'send', fraud: 'alert', infrastructure: 'server',
-}
-
-export const PHASES = ['browsing', 'analyzing', 'fingerprinting', 'linking', 'reporting'] as const
-export const PHASE_LABEL: Record<string, { en: string; ar: string }> = {
-  browsing: { en: 'Browse', ar: 'التصفح' },
-  analyzing: { en: 'Analyse', ar: 'التحليل' },
-  fingerprinting: { en: 'Fingerprint', ar: 'البصمة' },
-  linking: { en: 'Link campaign', ar: 'ربط الحملة' },
-  reporting: { en: 'Case view', ar: 'ملف القضية' },
 }
 
 export const REASON_SHORT: Record<string, { en: string; ar: string }> = {

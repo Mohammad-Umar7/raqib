@@ -125,13 +125,13 @@ cd backend
 
 ## 5. Using the dashboard
 
-* **Command** — hunt radar and detection funnel, live newly-registered-domain hunt, active campaigns, UAE map of targeted emirates, world map of hosting infrastructure.
+* **Command** — hunt radar and detection funnel, live newly-registered-domain hunt, flagged candidates, active campaigns, world map of hosting infrastructure.
 * **Cases** — every investigation, newest first. Paste any URL in the top bar to investigate it: the isolated browser opens it live, the agent crew (browser agent, detectors, campaign linker, case writer) and the activity log show every action, the score climbs as signals are found.
 * **Case file** — generative layout chosen per case; ask follow-up questions.
 * **Campaign** — graph of linked sites with the reason for every link.
 * **Report pack** — PDF, CSV, JSON, takedown drafts, public warning.
 * **Evaluate** — batch scan and accuracy metrics.
-* **Brands** — the protected-entity registry and a domain checker.
+* **Brands** — the protected-entity registry (official domains of the 36 UAE brands).
 
 ## 6. Route to a police pilot
 

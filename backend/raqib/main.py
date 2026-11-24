@@ -13,7 +13,6 @@ from fastapi.responses import FileResponse, PlainTextResponse, Response, Streami
 from pydantic import BaseModel
 
 from . import __version__, batch, config, hunters, hunters_live, knowledge, report
-from .domains import host_of
 from .claude_service import service as claude
 from .investigations import default_speed, manager
 
@@ -92,23 +91,16 @@ def overview() -> dict:
     confirmed = [c for c in investigated if k.analysis[c["case_id"]]["verdict"] in ("confirmed_scam", "likely_scam")]
     sites = [c for c in confirmed if k.cases[c["case_id"]]["kind"] == "site"]
     unblocked = [c for c in sites if not k.on_blocklist(c["case_id"])]
-    emirates: Counter = Counter()
-    for c in confirmed:
-        for e in k.cases[c["case_id"]].get("targeting", {}).get("emirates", []):
-            emirates[e] += 1
     countries: Counter = Counter()
     for c in sites:
         infra = k.cases[c["case_id"]].get("infra", {})
         if infra.get("country"):
             countries[infra["country"]] += 1
-    by_source = Counter(c["source"] for c in flagged)
     return {
         "funnel": {"scanned": cand["scanned"], "unique": len(rows), "flagged": len(flagged), "investigated": len(investigated), "confirmed": len(confirmed),
                    "unblocked": len(unblocked)},
-        "by_source": dict(by_source), "emirates": dict(emirates), "hosting_countries": dict(countries), "clusters": k.clusters(), "threshold": THRESH,
+        "hosting_countries": dict(countries), "clusters": k.clusters(), "threshold": THRESH,
         "entities": len(k.reg.entities),
-        "sources": {"ct": len([c for c in rows if c["source"] == "ct"]), "search": len([c for c in rows if c["source"].startswith("search")]),
-                    "maps": len([c for c in rows if c["source"] == "maps"]), "report": len([c for c in rows if c["source"] == "report"])},
     }
 
 
@@ -141,11 +133,6 @@ async def hunt_stream(speed: float = Query(1.0, ge=0.0, le=20.0)) -> StreamingRe
 
 def _sse(obj: dict) -> str:
     return f"data: {json.dumps(obj, ensure_ascii=False)}\n\n"
-
-
-@app.get("/api/triage")
-def triage(host: str) -> dict:
-    return hunters.triage_host(host_of(host) or host, K().reg)
 
 
 @app.get("/api/candidates")

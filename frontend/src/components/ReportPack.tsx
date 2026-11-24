@@ -83,6 +83,7 @@ export function ReportPack({ runId, focus }: { runId: string; focus?: string }) 
           <div className="row wrap">
             <a className="btn btn-primary" href={`/api/investigations/${runId}/report.pdf`} target="_blank" rel="noreferrer"><FileText size={15} /> {p('Case report (PDF)', 'تقرير القضية (PDF)')}</a>
             <a className="btn" href={`/api/investigations/${runId}/blocklist.csv`}><Download size={15} /> {p('Blocklist (CSV)', 'قائمة الحجب (CSV)')}</a>
+            <a className="btn" href={`/api/investigations/${runId}/bundle.json`}><Download size={15} /> {p('Case bundle (JSON)', 'حزمة القضية (JSON)')}</a>
           </div>
           <div className="faint" style={{ fontSize: 12 }}>{p('The PDF includes English and Arabic summaries, the campaign graph and the evidence hashes.', 'يتضمن ملف PDF ملخصاً بالعربية والإنجليزية ورسم الحملة وبصمات الأدلة.')}</div>
         </div>

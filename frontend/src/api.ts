@@ -20,7 +20,6 @@ export const api = {
   candidates: () => fetch('/api/candidates').then((r) => j<{ candidates: (Candidate & { verdict: string | null; score: number | null })[] }>(r)),
   campaigns: () => fetch('/api/campaigns').then((r) => j<{ clusters: Cluster[] }>(r)),
   graph: () => fetch('/api/graph').then((r) => j<{ nodes: GNode[]; edges: GEdge[]; cluster_of: Record<string, string> }>(r)),
-  triage: (host: string) => fetch('/api/triage?host=' + encodeURIComponent(host)).then((r) => j<{ score: number; reasons: { text: string; points: number }[]; brand: string | null }>(r)),
   start: (url: string, opts: { mode?: string; speed?: number } = {}) => post('/api/investigations', { url, ...opts }).then((r) => j<{ id: string; mode: string }>(r)),
   batchSample: (kind: string) => fetch(`/api/batch/sample?kind=${kind}`).then((r) => j<{ text: string; count: number }>(r)),
   batchStart: (body: { text: string; use_browser: boolean; use_ai: boolean; concurrency: number }) => post('/api/batch', body).then((r) => j<{ id: string; total: number }>(r)),

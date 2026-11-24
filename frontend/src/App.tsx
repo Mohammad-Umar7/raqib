@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion'
-import { Building2, FlaskConical, Languages, LayoutDashboard, Network, Radar, Search, Settings, ShieldCheck, Sparkles, X } from 'lucide-react'
+import { Building2, FlaskConical, Languages, LayoutDashboard, Network, Radar, Search, Settings, Sparkles, X } from 'lucide-react'
 import { api } from './api'
 import { useLang } from './i18n'
 import type { Status } from './types'
@@ -73,7 +73,7 @@ export default function App() {
   const investigate = useCallback(async (target: string, opts: { mode?: string; speed?: number } = {}) => {
     setBusy(true)
     try {
-      const [r] = await Promise.all([api.start(target, opts), new Promise((res) => setTimeout(res, 650))])
+      const r = await api.start(target, opts)
       go(`/case/${r.id}`)
     } catch (e: any) { setToast(e.message); setTimeout(() => setToast(null), 4000) } finally { setBusy(false) }
   }, [go])
@@ -113,14 +113,12 @@ export default function App() {
           <form className="analyze" onSubmit={(e) => { e.preventDefault(); if (url.trim()) investigate(url.trim()) }}>
             <Search size={16} color="#6c6a76" />
             <input id="analyze-input" value={url} onChange={(e) => setUrl(e.target.value)} placeholder={p('Paste a suspicious URL to investigate…', 'الصق رابطاً مشبوهاً للتحقيق…')} dir="ltr" spellCheck={false} />
-            <button className="btn btn-primary btn-sm" type="submit"><Sparkles size={14} /> {p('Analyze', 'تحليل')}</button>
+            <button className="btn btn-primary btn-sm" type="submit" disabled={busy}><Sparkles size={14} /> {p('Analyze', 'تحليل')}</button>
           </form>
           <div className="row right wrap" style={{ gap: 8 }}>
-            <span className="chip"><ShieldCheck size={13} /> {p('Isolated sandbox', 'بيئة معزولة')}</span>
             <button className={`chip ${status?.claude.enabled ? 'violet' : 'warn'}`} style={{ cursor: 'pointer' }} onClick={() => setShowSettings(true)}>
               <span className={`dot ${status?.claude.enabled ? 'live' : 'warn'}`} /> {status?.claude.enabled ? p('Claude connected', 'Claude متصل') : p('Claude offline', 'Claude غير متصل')}
             </button>
-            <span className="chip info">{status?.live_ready ? p('Claude agent mode', 'وضع وكيل Claude') : p('Real scanner + demo cases', 'فاحص حقيقي + حالات تجريبية')}</span>
           </div>
         </header>
         <AnimatePresence mode="wait" initial={false}>
@@ -136,7 +134,6 @@ export default function App() {
       </div>
       <AnimatePresence>{showSettings && <SettingsModal status={status} onClose={() => setShowSettings(false)} onChange={refresh} />}</AnimatePresence>
       <AnimatePresence>{toast && <motion.div className="toast" initial={{ opacity: 0, y: 20, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10 }}>{toast}</motion.div>}</AnimatePresence>
-      <AnimatePresence>{busy && <motion.div className="launch" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><div className="launch-box"><span className="spinner" /><b>{p('Starting an isolated browser…', 'جارٍ تشغيل متصفح معزول…')}</b><small>{p('fresh profile · UAE locale · destroyed after the run', 'ملف جديد · إعدادات الإمارات · يُحذف بعد التشغيل')}</small></div></motion.div>}</AnimatePresence>
     </div>
     </MotionConfig>
   )

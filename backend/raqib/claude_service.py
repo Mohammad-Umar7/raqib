@@ -96,7 +96,7 @@ infrastructure facts and links to other sites. Rules:
 - Layout: choose which blocks to show and in what order. Always include 'verdict' first and 'signals'. Add a 'callout' that
   explains how the victim is deceived when the verdict is a scam. Omit 'campaign' when there are no related sites.
   Blocks: verdict (headline + gauge), stats (key figures), callout (one alert), narrative (short prose), journey (the victim's path step by step),
-  signals (why the score), breakdown (how the score adds up), campaign (linked sites), indicators (IDs to share), infrastructure, evidence, actions, map (emirates targeted).
+  signals (why the score), breakdown (how the score adds up), campaign (linked sites), indicators (IDs to share), infrastructure, evidence, actions.
   Pick a layout that fits the case: a benign site needs only verdict, stats, signals, infrastructure, evidence; a campaign member should foreground journey and campaign.
   Also write 3 to 4 follow_ups: questions the officer is likely to ask next, in English and Arabic."""
 

@@ -3,7 +3,6 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowRight, Globe2, Layers, Map as MapIcon, Megaphone, MessageSquare, Play, Radar as RadarIcon, Search, ShieldCheck, Sparkles, Square } from 'lucide-react'
 import { api, stream } from '../api'
-import { UaeMap } from '../components/Maps'
 import { WorldMap } from '../components/WorldMap'
 import { LiveHunt } from '../components/LiveHunt'
 import { Num, Rise, soft, spring } from '../components/fx'
@@ -47,7 +46,6 @@ export function CommandCenter({ nav }: { nav: Nav }) {
   const [targets, setTargets] = useState<{ case_id: string; label: string; url: string; truth: string }[]>([])
   const [cands, setCands] = useState<Cand[]>([])
   const [dots, setDots] = useState<Dot[]>([])
-  const [speed, setSpeed] = useState(1.6)
   const [run, setRun] = useState<{ on: boolean; scanned: number; flagged: number; investigated: number; confirmed: number; unblocked: number; total: number; line: string } | null>(null)
   const stop = useRef<(() => void) | null>(null)
 
@@ -72,7 +70,7 @@ export function CommandCenter({ nav }: { nav: Nav }) {
     setCands([])
     setDots([])
     setRun({ on: true, scanned: 0, flagged: 0, investigated: 0, confirmed: 0, unblocked: 0, total: ov?.funnel.unique ?? 1, line: '' })
-    stop.current = stream(`/api/hunt/stream?speed=${speed}`, (ev) => {
+    stop.current = stream('/api/hunt/stream?speed=1.6', (ev) => {
       if (ev.type === 'start') setRun((r) => r && { ...r, total: ev.total })
       if (ev.type === 'candidate') {
         const c: Cand = { ...ev.candidate, verdict: ev.verdict, kind: ev.kind, blocked: ev.blocked }
@@ -101,14 +99,11 @@ export function CommandCenter({ nav }: { nav: Nav }) {
           <div className="card hero-main">
             <div className="eyebrow row"><RadarIcon size={14} /> {p('Proactive scam hunting', 'رصد استباقي للاحتيال')}</div>
             <h2>{p('Find scam sites before citizens click them.', 'اكتشف مواقع الاحتيال قبل أن يضغط عليها المواطنون.')}</h2>
-            <p>{p(`Raqib watches Google Search, Google Maps and newly issued certificates for look-alikes of ${ov?.entities ?? 26} protected UAE brands, then investigates the dangerous ones in an isolated browser and links them into campaigns.`, `يراقب رقيب بحث جوجل وخرائط جوجل والشهادات الجديدة بحثاً عن مواقع تنتحل صفة ${ov?.entities ?? 26} جهة إماراتية محمية، ثم يحقق في الخطيرة منها داخل متصفح معزول ويربطها في حملات.`)}</p>
+            <p>{p(`Raqib watches newly registered domains, Google Search ads and Google Maps listings for look-alikes of ${ov?.entities ?? 36} protected UAE brands, then investigates the dangerous ones in an isolated browser and links them into campaigns.`, `يراقب رقيب النطاقات المسجلة حديثاً وإعلانات بحث جوجل ومواقع خرائط جوجل بحثاً عن مواقع تنتحل صفة ${ov?.entities ?? 36} جهة إماراتية محمية، ثم يحقق في الخطيرة منها داخل متصفح معزول ويربطها في حملات.`)}</p>
             <div className="row wrap">
               {run?.on
                 ? <button className="btn btn-primary" onClick={stopHunt}><Square size={15} /> {p('Stop hunt', 'إيقاف الرصد')}</button>
                 : <button className="btn btn-primary pulse-btn" onClick={startHunt} disabled={!ov}><Play size={15} /> {p('Run hunt', 'ابدأ الرصد')}</button>}
-              <div className="seg" role="group" aria-label="speed">
-                {[1.6, 4, 10].map((v) => <button key={v} className={speed === v ? 'on' : ''} onClick={() => setSpeed(v)}>{v === 1.6 ? '1×' : v === 4 ? '2.5×' : '6×'}</button>)}
-              </div>
             </div>
             <div className="faint" style={{ fontSize: 12, marginTop: 10 }}>{p('Demo dataset: recorded feeds and fictional domains.', 'بيانات تجريبية: مصادر مسجّلة ونطاقات وهمية.')}</div>
             <div style={{ marginTop: 20 }}>
@@ -137,7 +132,7 @@ export function CommandCenter({ nav }: { nav: Nav }) {
 
       {view && (
         <div className="funnel-row">
-          <Step i={0} label={p('Candidates scanned', 'مرشّحون تم فحصهم')} hint={p('search · maps · certificates · reports', 'بحث · خرائط · شهادات · بلاغات')} value={view.scanned} of={view.total} color="#75737f" />
+          <Step i={0} label={p('Candidates scanned', 'مرشّحون تم فحصهم')} hint={p('new domains · search · maps · reports', 'نطاقات جديدة · بحث · خرائط · بلاغات')} value={view.scanned} of={view.total} color="#75737f" />
           <Step i={1} label={p('Flagged by triage', 'مشتبه بهم بعد الفرز')} hint={`${p('score', 'الدرجة')} ≥ ${ov?.threshold ?? 40}`} value={view.flagged} of={view.scanned} color="#ff8a3d" />
           <Step i={2} label={p('Investigated in sandbox', 'فُحصوا في البيئة المعزولة')} value={view.investigated} of={view.flagged} color="#e5b85c" />
           <Step i={3} label={p('Confirmed scams', 'احتيال مؤكد')} value={view.confirmed} of={view.investigated} color="#fb4a6c" />
@@ -194,20 +189,12 @@ export function CommandCenter({ nav }: { nav: Nav }) {
         </div>
       </div>
 
-      <div className="grid-2 map-row" style={{ gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.9fr)', marginTop: 18, alignItems: 'stretch' }}>
-        <Rise i={3}>
-          <div className="card" style={{ height: '100%' }}>
-            <div className="card-h"><MapIcon size={16} color="#fb4a6c" /><h3>{p('Emirates targeted', 'الإمارات المستهدفة')}</h3><span className="sub">{p('confirmed scams by emirate', 'الاحتيال المؤكد حسب الإمارة')}</span></div>
-            <div className="card-b"><UaeMap counts={ov?.emirates ?? {}} /></div>
-          </div>
-        </Rise>
-        <Rise i={4}>
-          <div className="card" style={{ height: '100%' }}>
-            <div className="card-h"><Globe2 size={16} color="#e5b85c" /><h3>{p('Scam infrastructure worldwide', 'البنية التحتية للاحتيال حول العالم')}</h3><span className="sub">{p('where the servers are, pointed at who they target', 'مواقع الخوادم ومن تستهدف')}</span></div>
-            <div className="card-b"><WorldMap data={ov?.hosting_countries ?? {}} /></div>
-          </div>
-        </Rise>
-      </div>
+      <Rise i={3}>
+        <div className="card" style={{ marginTop: 18 }}>
+          <div className="card-h"><Globe2 size={16} color="#e5b85c" /><h3>{p('Scam infrastructure worldwide', 'البنية التحتية للاحتيال حول العالم')}</h3><span className="sub">{p('where the servers are, not where the operators are', 'مواقع الخوادم لا مواقع المحتالين')}</span></div>
+          <div className="card-b"><WorldMap data={ov?.hosting_countries ?? {}} /></div>
+        </div>
+      </Rise>
     </div>
   )
 }

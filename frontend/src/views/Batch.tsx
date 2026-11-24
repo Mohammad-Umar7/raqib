@@ -25,7 +25,6 @@ export function Batch({ nav }: { nav: Nav }) {
   const [text, setText] = useState('')
   const [browser, setBrowser] = useState(true)
   const [ai, setAi] = useState(false)
-  const [conc, setConc] = useState(4)
   const [snap, setSnap] = useState<Snap | null>(null)
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState<string | null>(null)
@@ -44,7 +43,7 @@ export function Batch({ nav }: { nav: Nav }) {
   const start = async () => {
     setErr(null); setBusy(true); setSnap(null)
     try {
-      const { id } = await api.batchStart({ text, use_browser: browser, use_ai: ai, concurrency: conc })
+      const { id } = await api.batchStart({ text, use_browser: browser, use_ai: ai, concurrency: 4 })
       const poll = async () => {
         const s = await api.batch(id)
         setSnap(s)
@@ -94,10 +93,6 @@ export function Batch({ nav }: { nav: Nav }) {
             <div className="card-b col" style={{ gap: 14 }}>
               <label className="toggle"><input type="checkbox" checked={browser} onChange={(e) => setBrowser(e.target.checked)} /><span><b>{p('Isolated browser', 'المتصفح المعزول')}</b><small>{p('Renders JavaScript, takes screenshots. Off = fast HTTP-only scan.', 'يعرض JavaScript ويلتقط الصور. عند الإيقاف: فحص HTTP سريع فقط.')}</small></span></label>
               <label className="toggle"><input type="checkbox" checked={ai} onChange={(e) => setAi(e.target.checked)} /><span><b>{p('Claude vision check', 'فحص بصري بـ Claude')}</b><small>{p('Looks at each screenshot for brand impersonation (needs an API key, slower).', 'يفحص كل لقطة بحثاً عن انتحال العلامات (يتطلب مفتاح API وأبطأ).')}</small></span></label>
-              <div className="row" style={{ gap: 10 }}>
-                <span className="faint" style={{ fontSize: 12.5 }}>{p('Parallel scans', 'فحوص متوازية')}</span>
-                <div className="seg">{[2, 4, 6, 8].map((n) => <button key={n} className={conc === n ? 'on' : ''} onClick={() => setConc(n)}>{n}</button>)}</div>
-              </div>
               <div className="row wrap">
                 {busy ? <button className="btn" onClick={stop}><Square size={14} /> {p('Stop', 'إيقاف')}</button>
                   : <button className="btn btn-primary" disabled={!count} onClick={start}><Play size={14} /> {p(`Scan ${count} URL(s)`, `فحص ${count} رابط`)}</button>}

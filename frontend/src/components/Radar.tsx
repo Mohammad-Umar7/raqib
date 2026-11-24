@@ -5,7 +5,7 @@ export interface Dot { id: string; source: string; flagged: boolean; verdict?: s
 
 const C = 220
 const SECTORS: Record<string, { a0: number; a1: number; en: string; ar: string; lx: number; ly: number; anchor: 'start' | 'end' }> = {
-  ct: { a0: 190, a1: 260, en: 'New certificates', ar: 'شهادات جديدة', lx: 26, ly: 30, anchor: 'start' },
+  ct: { a0: 190, a1: 260, en: 'New domains', ar: 'نطاقات جديدة', lx: 26, ly: 30, anchor: 'start' },
   search: { a0: 280, a1: 350, en: 'Search & ads', ar: 'البحث والإعلانات', lx: 414, ly: 30, anchor: 'end' },
   maps: { a0: 10, a1: 80, en: 'Google Maps', ar: 'خرائط جوجل', lx: 414, ly: 420, anchor: 'end' },
   report: { a0: 100, a1: 170, en: 'Citizen reports', ar: 'بلاغات المواطنين', lx: 26, ly: 420, anchor: 'start' },

@@ -105,8 +105,6 @@ CATALOGUE: dict[str, dict] = {
         ar="الرابط يمرّ عبر نطاق تحويل غير مرتبط ({hop}) قبل صفحة الهبوط"),
 }
 
-SEVERITY_ORDER = {"critical": 3, "high": 2, "medium": 1, "low": 0}
-
 
 def _severity(weight: float) -> str:
     if weight >= 0.45:

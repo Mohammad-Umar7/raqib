@@ -1,62 +1,24 @@
 import type React from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { AlertTriangle, ArrowRight, Check, FileText, Fingerprint, LayoutDashboard, Loader2, Network, Radar, Search, Send, Server, Sparkles, UserRoundX, Wallet } from 'lucide-react'
+import { AlertTriangle, ArrowRight, FileText, LayoutDashboard, Network, Radar, Search, Send, Server, Sparkles, UserRoundX, Wallet } from 'lucide-react'
 import { AskPanel } from '../components/AskPanel'
 import { ActivityLog, CrewStrip } from '../components/Crew'
 import { BlockRenderer, LayoutStrip, type BlockActions } from '../components/Blocks'
 import { BrowserPanel } from '../components/BrowserPanel'
-import { Num, Rise, Scramble, Typewriter, soft, spring } from '../components/fx'
+import { Num, Rise, Typewriter, soft, spring } from '../components/fx'
 import { Gauge } from '../components/Gauge'
 import { Graph } from '../components/Graph'
 import { ReportPack } from '../components/ReportPack'
 import { useInvestigation, type InvState } from '../hooks'
 import { useLang } from '../i18n'
-import { PHASE_LABEL, PHASES, STRENGTH, scoreColor, verdictOf } from '../meta'
+import { STRENGTH, scoreColor, verdictOf } from '../meta'
 import type { GEdge } from '../types'
 
 export interface Nav { go: (route: string) => void; investigate: (url: string, opts?: { mode?: string; speed?: number }) => void }
 
 const CAT_ICON: Record<string, React.ReactElement> = {
   impersonation: <UserRoundX size={17} />, payment: <Wallet size={17} />, exfiltration: <Send size={17} />, fraud: <AlertTriangle size={17} />, infrastructure: <Server size={17} />,
-}
-
-function phaseIndex(s: InvState): number {
-  if (s.done) return 5
-  switch (s.phase) {
-    case 'queued': return -1
-    case 'browsing': case 'triage': return s.signals.length ? 1 : 0
-    case 'fingerprinting': return 2
-    case 'linking': return 3
-    case 'reporting': return 4
-    default: return 0
-  }
-}
-
-function Stepper({ s }: { s: InvState }) {
-  const { lang, p } = useLang()
-  const idx = phaseIndex(s)
-  return (
-    <div className="stepper">
-      {PHASES.map((ph, i) => (
-        <div key={ph} className="row" style={{ gap: 8 }}>
-          {i > 0 && <span className="step-sep"><motion.i initial={false} animate={{ scaleX: i <= idx ? 1 : 0 }} transition={{ duration: 0.5 }} /></span>}
-          <motion.span layout className={`step ${i < idx ? 'done' : i === idx ? 'on' : ''}`} animate={i === idx ? { scale: [1, 1.04, 1] } : { scale: 1 }} transition={{ duration: 0.5 }}>
-            <AnimatePresence mode="wait" initial={false}>
-              {i < idx ? <motion.span key="d" initial={{ scale: 0, rotate: -90 }} animate={{ scale: 1, rotate: 0 }} transition={spring} style={{ display: 'flex' }}><Check size={14} /></motion.span>
-                : i === idx ? <motion.span key="a" initial={{ scale: 0 }} animate={{ scale: 1 }} style={{ display: 'flex' }}><Loader2 size={14} className="spin" /></motion.span>
-                  : <span key="p" className="dot" />}
-            </AnimatePresence>
-            {lang === 'ar' ? PHASE_LABEL[ph].ar : PHASE_LABEL[ph].en}
-          </motion.span>
-        </div>
-      ))}
-      <AnimatePresence mode="wait">
-        {s.phaseLabel && !s.done && <motion.span key={s.phaseLabel} className="muted shimmer-text" style={{ marginInlineStart: 8, fontSize: 12.5 }} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }}>{s.phaseLabel}</motion.span>}
-        {s.done && !s.error && <motion.span key="ok" className="chip ok" initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} transition={spring}><Check size={13} /> {p('Investigation complete', 'اكتمل التحقيق')}</motion.span>}
-      </AnimatePresence>
-    </div>
-  )
 }
 
 function RiskCard({ s }: { s: InvState }) {
@@ -112,38 +74,6 @@ function SignalFeed({ s }: { s: InvState }) {
   )
 }
 
-function IndicatorsCard({ s }: { s: InvState }) {
-  const { p } = useLang()
-  const i = s.indicators
-  const rows: [string, string, string?][] = []
-  if (i) {
-    i.iocs.telegram_bot_ids.forEach((v) => rows.push([p('Telegram bot ID', 'معرّف بوت تيليجرام'), v, 'danger']))
-    i.iocs.discord_webhook_ids.forEach((v) => rows.push([p('Discord webhook ID', 'معرّف ويب هوك ديسكورد'), v, 'danger']))
-    i.iocs.wallets.forEach((v) => rows.push([p('Crypto wallet', 'محفظة رقمية'), v, 'danger']))
-    i.contacts.whatsapp.forEach((v) => rows.push(['WhatsApp', v, 'warn']))
-    i.contacts.phones.forEach((v) => rows.push([p('Phone', 'هاتف'), v]))
-    i.contacts.emails.forEach((v) => rows.push([p('E-mail', 'بريد'), v]))
-  }
-  const fp = s.fingerprint
-  return (
-    <div className="card">
-      <div className="card-h"><Fingerprint size={16} color="#a78bfa" /><h3>{p('Scam fingerprint', 'بصمة الاحتيال')}</h3></div>
-      <div className="card-b">
-        {rows.length ? (
-          <dl className="kv" style={{ margin: 0 }}>
-            {rows.map(([k, v, tone], n) => (
-              <motion.div key={k + v} style={{ display: 'contents' }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: n * 0.05 }}>
-                <dt>{k}</dt><dd className={`mono ${tone ?? ''}`} style={{ fontSize: 12 }}><Scramble text={v} ms={650} /></dd>
-              </motion.div>
-            ))}
-            {fp && <><dt>{p('Kit files', 'ملفات الأدوات')}</dt><dd className="mono" style={{ fontSize: 12 }}><Num value={fp.kit_files} /></dd><dt>{p('Layout shingles', 'عناصر التخطيط')}</dt><dd className="mono" style={{ fontSize: 12 }}><Num value={fp.layout_shingles} /></dd></>}
-          </dl>
-        ) : <div className="muted">{s.done ? p('No shareable indicators found.', 'لا مؤشرات يمكن مشاركتها.') : p('Phones, bot IDs, wallets and kit files are collected here.', 'تُجمع هنا أرقام الهواتف ومعرّفات البوتات والمحافظ وملفات الأدوات.')}</div>}
-      </div>
-    </div>
-  )
-}
-
 function CampaignPanel({ s, big, onEdge, sel }: { s: InvState; big?: boolean; onEdge?: (e: GEdge) => void; sel?: string | null }) {
   const { p } = useLang()
   const strongN = s.edges.filter((e) => e.strength === 'strong' && s.nodes.some((n) => n.center && (n.case_id === e.source || n.case_id === e.target))).length
@@ -184,49 +114,6 @@ function RelatedFeed({ s, act }: { s: InvState; act: BlockActions }) {
         {!s.related.length && <div className="muted">{s.nodes.length > 1 ? p('Only weak links: nothing is investigated automatically.', 'روابط ضعيفة فقط: لا تحقيق تلقائي.') : p('Strongly linked sites are investigated here as they are found.', 'تظهر هنا المواقع المرتبطة بقوة فور اكتشافها والتحقيق فيها.')}</div>}
       </div>
     </div>
-  )
-}
-
-function EvidenceCard({ s }: { s: InvState }) {
-  const { p } = useLang()
-  const newest = s.evidence.length
-  return (
-    <div className="card">
-      <div className="card-h"><FileText size={16} color="#34d399" /><h3>{p('Evidence log', 'سجل الأدلة')}</h3><span className="sub">{p('every item is SHA-256 hashed when recorded', 'كل عنصر يُحسب له SHA-256 عند تسجيله')}</span><span className="sub right"><Num value={s.evidence.length} ms={300} /></span></div>
-      <div className="card-b" style={{ maxHeight: 300, overflow: 'auto' }}>
-        <AnimatePresence initial={false}>
-          {[...s.evidence].reverse().map((e, i) => (
-            <motion.div className="ev" key={e.id} layout initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
-              <span className="id">{e.id}</span>
-              <div><div>{e.label}</div><div className="hash">{newest - i > newest - 4 ? <Scramble text={e.sha256} ms={800} /> : e.sha256}</div></div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-        {!s.evidence.length && <div className="muted">{p('Screenshots, DOM, network logs and scripts are stored here.', 'تُحفظ هنا لقطات الشاشة وبنية الصفحة وسجلات الشبكة والسكربتات.')}</div>}
-      </div>
-    </div>
-  )
-}
-
-/** The generative-UI moment: Claude (or the offline writer) is choosing blocks; once chosen they pop in as a strip. */
-function ComposeCard({ s, onOpen }: { s: InvState; onOpen: () => void }) {
-  const { p } = useLang()
-  const composing = !s.blocks && !s.error && (s.phase === 'reporting')
-  if (!composing && !s.blocks) return null
-  return (
-    <motion.div className="card compose" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={soft}>
-      <div className="card-h">
-        <Sparkles size={16} color="#a78bfa" />
-        <h3>{composing ? p('Composing the case file…', 'جارٍ تركيب ملف القضية…') : p('Case file composed', 'تم تركيب ملف القضية')}</h3>
-        <span className="sub">{composing ? p('choosing which blocks matter for this case', 'اختيار الكتل الأنسب لهذه القضية') : p('layout chosen for this case, in order', 'التخطيط المختار لهذه القضية بالترتيب')}</span>
-        {s.blocks && <button className="btn btn-primary btn-sm right" onClick={onOpen}>{p('Open case file', 'فتح ملف القضية')} <ArrowRight size={14} /></button>}
-      </div>
-      <div className="card-b">
-        {composing ? (
-          <div className="mosaic">{[2, 1, 1, 2, 1, 1, 2, 1].map((w, i) => <i key={i} className="skeleton" style={{ gridColumn: `span ${w}`, animationDelay: `${i * 0.12}s` }} />)}</div>
-        ) : s.blocks ? <LayoutStrip blocks={s.blocks} source={s.source} /> : null}
-      </div>
-    </motion.div>
   )
 }
 
@@ -278,7 +165,7 @@ export function Investigation({ runId, nav, initialTab }: { runId: string; nav: 
         </div>
       </div>
 
-      <div className="crew-wrap"><CrewStrip s={s} /><Stepper s={s} /></div>
+      <div className="crew-wrap"><CrewStrip s={s} /></div>
       {s.error && <div className="callout danger" style={{ marginBottom: 16 }}><AlertTriangle /> <div><h4>{p('The investigation failed', 'فشل التحقيق')}</h4><p>{s.error}</p></div></div>}
 
       <AnimatePresence mode="wait" initial={false}>
@@ -294,13 +181,10 @@ export function Investigation({ runId, nav, initialTab }: { runId: string; nav: 
                 </div>
               </div>
               {(s.nodes.length > 0 || s.phase === 'linking') && (
-                <motion.div ref={graphRef} className="grid-2" style={{ marginTop: 18, gridTemplateColumns: 'minmax(0,1.5fr) minmax(0,1fr)', scrollMarginTop: 90 }} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={soft}>
-                  <CampaignPanel s={s} />
-                  <RelatedFeed s={s} act={act} />
+                <motion.div ref={graphRef} style={{ marginTop: 18, scrollMarginTop: 90 }} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={soft}>
+                  <CampaignPanel s={s} big />
                 </motion.div>
               )}
-              <div style={{ marginTop: 18 }}><ComposeCard s={s} onOpen={() => setTab('case')} /></div>
-              <div className="grid-2" style={{ marginTop: 18, gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.4fr)' }}><IndicatorsCard s={s} /><EvidenceCard s={s} /></div>
               <AnimatePresence>
                 {s.done && !s.error && (
                   <motion.div className="banner-done" style={{ marginTop: 18 }} initial={{ opacity: 0, y: 26, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={spring}>

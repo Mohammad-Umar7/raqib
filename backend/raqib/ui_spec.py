@@ -6,7 +6,7 @@ the deterministic evidence pipeline, so the model cannot invent figures.
 
 Block types understood by the frontend registry:
   verdict_hero, stat_row, callout, markdown, journey, signal_list, score_breakdown,
-  campaign_card, indicators, kv_table, evidence_list, action_list, emirate_map
+  campaign_card, indicators, kv_table, evidence_list, action_list
 """
 
 from __future__ import annotations
@@ -15,7 +15,7 @@ from collections import Counter
 
 from .detectors import SCAM_TYPE_LABELS, forms_of
 
-LAYOUT_BLOCKS = ["verdict", "screenshot", "stats", "callout", "narrative", "journey", "signals", "breakdown", "campaign", "indicators", "infrastructure", "evidence", "actions", "map"]
+LAYOUT_BLOCKS = ["verdict", "screenshot", "stats", "callout", "narrative", "journey", "signals", "breakdown", "campaign", "indicators", "infrastructure", "evidence", "actions"]
 
 VICTIM_FLOW = {
     "toll_topup": ("Victims are told their {brand} balance is low or fines are pending, then sent to a look-alike page that collects card details and the SMS verification code.",
@@ -195,8 +195,6 @@ def offline_refine(ctx: dict) -> dict:
     if any(r["strength"] in ("strong", "medium") for r in ctx.get("related", [])):
         layout.append(L("campaign", "Campaign connections", "روابط الحملة"))
     layout += [L("indicators", "Indicators to share", "مؤشرات للمشاركة"), L("infrastructure", "Infrastructure indicators", "مؤشرات البنية التحتية")]
-    if scam:
-        layout.append(L("map", "Who is being targeted", "من المستهدف"))
     layout += [L("evidence", "Evidence chain of custody", "سلسلة حيازة الأدلة"), L("actions", "Recommended actions", "الإجراءات الموصى بها")]
     follow_ups = [{"q": "Why this score?", "q_ar": "لماذا هذه النتيجة؟"}]
     if scam:
@@ -354,18 +352,6 @@ def _block_infra(ctx: dict, item: dict) -> dict:
             "note_ar": "موقع الاستضافة مؤشر تقني فقط ولا يدل على مكان وجود المحتال."}
 
 
-def _block_map(ctx: dict, item: dict) -> dict:
-    counts: Counter = Counter()
-    for e in ctx.get("targeting", {}).get("emirates", []):
-        counts[e] += 1
-    for r in ctx.get("related", []):
-        if r["strength"] in ("strong", "medium"):
-            for e in r.get("emirates", []):
-                counts[e] += 1
-    return {"type": "emirate_map", "title": item.get("title") or "Who is being targeted", "title_ar": item.get("title_ar") or "من المستهدف", "counts": dict(counts),
-            "note": "Emirates the lure is aimed at (sites in this campaign).", "note_ar": "الإمارات التي تستهدفها الحملة."}
-
-
 def _block_evidence(ctx: dict, item: dict) -> dict:
     return {"type": "evidence_list", "title": item.get("title") or "Evidence chain of custody", "title_ar": item.get("title_ar") or "سلسلة حيازة الأدلة",
             "items": ctx.get("evidence", []), "manifest": ctx.get("manifest", ""), "mode": ctx.get("evidence_mode", "replay")}
@@ -417,8 +403,6 @@ def compose(ctx: dict, refined: dict) -> list[dict]:
             block = _block_evidence(ctx, item)
         elif kind == "actions":
             block = _block_actions(ctx, refined, item)
-        elif kind == "map":
-            block = _block_map(ctx, item)
         if block:
             blocks.append(block)
     if not seen_verdict:
@@ -459,5 +443,5 @@ def answer_offline(ctx: dict, question: str) -> dict:
         return {"answer": "Infrastructure indicators below. Hosting location shows where the server is, not where the operator is.",
                 "answer_ar": "مؤشرات البنية التحتية أدناه. موقع الاستضافة يدل على مكان الخادم لا على مكان المحتال.", "blocks": [_block_infra(ctx, {})]}
     if any(w in q for w in ("who", "target", "victim", "emirate", "المستهدف", "ضحية")):
-        return {"answer": refined["victim_impact"], "answer_ar": refined["victim_impact_ar"], "blocks": [_block_map(ctx, {})]}
+        return {"answer": refined["victim_impact"], "answer_ar": refined["victim_impact_ar"], "blocks": []}
     return {"answer": refined["summary"], "answer_ar": refined["summary_ar"], "blocks": [_block_verdict(ctx, refined, {})]}
