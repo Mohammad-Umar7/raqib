@@ -97,7 +97,7 @@ RAQIB_BROWSER_CHANNEL=chrome     # use installed Chrome if Playwright's Chromium
 
 ### The radar: nobody has to paste a link
 
-When the server starts, the radar (`backend/raqib/radar.py`) runs on its own:
+With `RAQIB_RADAR=1`, the radar (`backend/raqib/radar.py`) runs on its own from server start. It is off by default because it opens real suspicious sites in the browser, so turn it on only inside a VM or sandbox:
 
 1. **Watch.** It reads new HTTPS certificates from public Certificate Transparency logs within minutes of issue, the daily newly-registered-domain list every 6 hours, and Google Search / ads / Maps one query at a time inside the SerpAPI monthly budget.
 2. **Triage.** Only look-alikes of the 36 protected brands go further. Official, vetted-zone and trusted domains are skipped.
@@ -106,7 +106,7 @@ When the server starts, the radar (`backend/raqib/radar.py`) runs on its own:
 5. **Siblings.** Each confirmed site starts a search for related sites: shared kit, bot, wallet or phone with a scanned site, the same naming pattern among new domains, and the same server (shared CDNs are skipped).
 6. **Act in tiers.** Hard evidence (score ≥ 85, a named brand, and a card / OTP / password / ID form or data-stealing bot) is added to the blocklist feed (`/api/radar/blocklist.txt`), and the Safe Browsing and brand reports are drafted. Everything else, plus every registrar and host takedown, waits in the **Inbox** for an analyst. Nothing is sent. Confirmed sites are checked daily until they go offline.
 
-The Inbox has a pause switch, an "everything to me" switch for automatic actions, and an audit log. Settings are in `.env.example` (`RAQIB_RADAR=0` turns the radar off).
+The Inbox has a pause switch, an "everything to me" switch for automatic actions, and an audit log. Settings are in `.env.example` (`RAQIB_RADAR=1` turns the radar on).
 
 ### Scan a URL list (e.g. the hidden test set)
 

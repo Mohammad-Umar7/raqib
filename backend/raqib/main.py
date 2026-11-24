@@ -251,7 +251,7 @@ async def hunt_search_maps(force: bool = False) -> dict:
 
 @app.on_event("startup")
 async def _radar_start() -> None:
-    if os.environ.get("RAQIB_RADAR", "1") != "0":
+    if os.environ.get("RAQIB_RADAR", "0") == "1":  # off unless asked: it opens real suspicious sites
         radar.get().start()
 
 

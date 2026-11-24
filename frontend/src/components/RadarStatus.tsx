@@ -21,7 +21,7 @@ export function RadarStatus({ snap, onChange }: { snap: RadarSnap | null; onChan
     <div className="card">
       <div className="card-h">
         <h3>{p('Always-on sensors', 'مستشعرات تعمل دائماً')}</h3>
-        <span className="sub">{snap?.paused ? p('Paused', 'متوقف') : p('No one has to paste a link', 'لا حاجة للصق أي رابط')}</span>
+        <span className="sub">{snap && !snap.started ? p('Off · start the server with RAQIB_RADAR=1 inside a VM or sandbox', 'متوقف · شغّل الخادم مع RAQIB_RADAR=1 داخل جهاز افتراضي أو بيئة معزولة') : snap?.paused ? p('Paused', 'متوقف') : p('No one has to paste a link', 'لا حاجة للصق أي رابط')}</span>
         <span className="right faint num" style={{ fontSize: 12 }}>{snap ? `${snap.scans_last_hour}/${snap.cap} ${p('sandbox scans this hour', 'فحص معزول هذه الساعة')}` : ''}</span>
       </div>
       <div className="rs-grid">
