@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 352" width="1200" height="352" role="img" aria-label="Raqib: find scam sites before citizens click them">
+  <title>Raqib: find scam sites before citizens click them</title>
+  <style>
+    .sweep { transform-box: view-box; transform-origin: 952px 176px; animation: spin 9.0s linear infinite; }
+    .blip { fill: #e5484d; opacity: .2; animation: blip 9.0s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes blip { 0% { opacity: 1; } 55% { opacity: .45; } 100% { opacity: .2; } }
+    @media (prefers-reduced-motion: reduce) { .sweep { animation: none; } .blip { animation: none; opacity: 1; } }
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "IBM Plex Sans", Helvetica, Arial, sans-serif; }
+  </style>
+  <defs>
+    <linearGradient id="sw" gradientUnits="userSpaceOnUse" x1="1053.1" y1="85.0" x2="1088" y2="176">
+      <stop offset="0" stop-color="#ededed" stop-opacity="0"/>
+      <stop offset="1" stop-color="#ededed" stop-opacity="0.13"/>
+    </linearGradient>
+    <clipPath id="disc"><circle cx="952" cy="176" r="136"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="1199" height="351" rx="16" fill="#141415" stroke="#ededed" stroke-opacity="0.08"/>
+
+  <g transform="translate(64 80) scale(0.625)">
+    <path d="M32 8 12 16v15c0 12 8.5 20.5 20 25 11.5-4.5 20-13 20-25V16L32 8Z" fill="none" stroke="#c9a35b" stroke-width="4.5" stroke-linejoin="round"/>
+    <circle cx="32" cy="30" r="7" fill="none" stroke="#c9a35b" stroke-width="4.5"/>
+    <circle cx="32" cy="30" r="2.5" fill="#c9a35b"/>
+  </g>
+  <text x="114" y="111" font-size="30" font-weight="600" fill="#ededed">Raqib</text>
+  <text x="214" y="111" font-size="26" fill="#85858b">رقيب</text>
+  <text x="64" y="186" font-size="40" font-weight="500" fill="#ededed" letter-spacing="-0.4">Find scam sites before</text>
+  <text x="64" y="236" font-size="40" font-weight="500" fill="#ededed" letter-spacing="-0.4">citizens click them</text>
+  <text x="64" y="288" font-size="16" fill="#a1a1a6">Scam hunting for UAE police · SCAMSHIELD AI Hackathon</text>
+
+  <g fill="none" stroke="#ededed" stroke-opacity="0.08">
+    <circle cx="952" cy="176" r="46" stroke-dasharray="2 6"/>
+    <circle cx="952" cy="176" r="92" stroke-dasharray="2 6"/>
+    <circle cx="952" cy="176" r="136" stroke-opacity="0.14"/>
+    <line x1="816" y1="176" x2="1088" y2="176" stroke-opacity="0.06"/>
+    <line x1="952" y1="40" x2="952" y2="312" stroke-opacity="0.06"/>
+  </g>
+  <g fill="#55555a"><circle cx="916.5" cy="247.0" r="1.5"/><circle cx="908.6" cy="115.5" r="1.5"/><circle cx="861.7" cy="155.3" r="1.5"/><circle cx="1046.8" cy="212.2" r="1.5"/><circle cx="1046.2" cy="198.6" r="1.5"/><circle cx="1020.5" cy="208.1" r="1.5"/><circle cx="844.1" cy="231.4" r="1.5"/><circle cx="1011.7" cy="234.8" r="1.5"/><circle cx="862.4" cy="83.6" r="1.5"/><circle cx="868.3" cy="131.9" r="1.5"/><circle cx="1024.1" cy="165.2" r="1.5"/><circle cx="1007.4" cy="107.7" r="1.5"/><circle cx="999.7" cy="236.9" r="1.5"/><circle cx="908.7" cy="288.5" r="1.5"/><circle cx="996.7" cy="272.2" r="1.5"/><circle cx="892.2" cy="104.7" r="1.5"/><circle cx="881.4" cy="154.2" r="1.5"/><circle cx="1029.0" cy="206.3" r="1.5"/><circle cx="911.1" cy="88.6" r="1.5"/><circle cx="910.3" cy="273.8" r="1.5"/><circle cx="867.2" cy="201.7" r="1.5"/><circle cx="983.2" cy="67.0" r="1.5"/><circle cx="955.9" cy="281.5" r="1.5"/><circle cx="829.3" cy="156.4" r="1.5"/><circle cx="940.7" cy="88.9" r="1.5"/><circle cx="1028.7" cy="166.4" r="1.5"/><circle cx="850.2" cy="233.5" r="1.5"/><circle cx="1009.9" cy="257.9" r="1.5"/><circle cx="1060.1" cy="203.2" r="1.5"/><circle cx="961.6" cy="70.9" r="1.5"/><circle cx="1015.4" cy="112.9" r="1.5"/><circle cx="916.0" cy="75.4" r="1.5"/><circle cx="865.8" cy="128.7" r="1.5"/><circle cx="1020.9" cy="67.4" r="1.5"/><circle cx="842.3" cy="194.0" r="1.5"/><circle cx="1057.3" cy="218.2" r="1.5"/><circle cx="872.8" cy="71.0" r="1.5"/><circle cx="990.3" cy="97.2" r="1.5"/><circle cx="868.0" cy="249.3" r="1.5"/><circle cx="1049.6" cy="189.9" r="1.5"/><circle cx="990.0" cy="243.2" r="1.5"/><circle cx="1061.7" cy="218.6" r="1.5"/><circle cx="1010.7" cy="238.0" r="1.5"/><circle cx="856.0" cy="254.5" r="1.5"/><circle cx="1037.6" cy="223.5" r="1.5"/><circle cx="833.2" cy="137.9" r="1.5"/><circle cx="1004.1" cy="64.0" r="1.5"/><circle cx="935.0" cy="270.2" r="1.5"/><circle cx="873.2" cy="272.8" r="1.5"/><circle cx="1028.6" cy="155.2" r="1.5"/><circle cx="989.7" cy="251.5" r="1.5"/><circle cx="962.5" cy="275.5" r="1.5"/><circle cx="878.9" cy="130.2" r="1.5"/><circle cx="1047.9" cy="178.5" r="1.5"/><circle cx="880.4" cy="253.0" r="1.5"/><circle cx="1059.9" cy="143.2" r="1.5"/><circle cx="844.2" cy="165.5" r="1.5"/><circle cx="919.2" cy="110.4" r="1.5"/><circle cx="1047.5" cy="106.2" r="1.5"/><circle cx="1036.2" cy="91.3" r="1.5"/><circle cx="878.1" cy="235.3" r="1.5"/><circle cx="1039.0" cy="242.2" r="1.5"/><circle cx="1020.6" cy="204.3" r="1.5"/><circle cx="972.5" cy="253.4" r="1.5"/></g>
+  <g clip-path="url(#disc)">
+    <g class="sweep">
+      <path d="M 952 176 L 1088 176 A 136 136 0 0 0 1053.1 85.0 Z" fill="url(#sw)"/>
+      <line x1="952" y1="176" x2="1088" y2="176" stroke="#ededed" stroke-opacity="0.45" stroke-width="1"/>
+    </g>
+  </g>
+  <g><circle class="blip" cx="1010.3" cy="221.6" r="4" style="animation-delay:-8.05s"/><circle class="blip" cx="915.3" cy="266.9" r="4" style="animation-delay:-6.20s"/><circle class="blip" cx="896.7" cy="184.8" r="4" style="animation-delay:-4.73s"/><circle class="blip" cx="902.8" cy="103.0" r="4" style="animation-delay:-3.10s"/><circle class="blip" cx="982.0" cy="119.5" r="4" style="animation-delay:-1.55s"/><circle class="blip" cx="1040.3" cy="107.0" r="4" style="animation-delay:-0.95s"/></g>
+  <circle cx="952" cy="176" r="3" fill="#c9a35b"/>
+</svg>
