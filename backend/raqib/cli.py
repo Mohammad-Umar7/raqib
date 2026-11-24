@@ -49,9 +49,9 @@ async def main(argv: list[str] | None = None) -> int:
     await runner
     await scanner.BROWSER.close()
 
-    Path(a.out).write_text(batch.to_csv(job), encoding="utf-8")
-    if a.json:
+    if a.json:  # JSON first: it holds everything, so a CSV problem can never lose a finished run
         Path(a.json).write_text(json.dumps(job.snapshot(), ensure_ascii=False, indent=1, default=str), encoding="utf-8")
+    Path(a.out).write_text(batch.to_csv(job), encoding="utf-8")
     m = batch.metrics([r for r in job.results if r])
     flagged = sum(1 for r in job.results if r and r["label"] == "fraud")
     print(f"\nWrote {a.out}. Flagged {flagged} of {len(job.rows)} as fraud (score >= {a.threshold}).")

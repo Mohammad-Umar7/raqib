@@ -64,6 +64,12 @@ CATALOGUE: dict[str, dict] = {
     "fraud.fake_license": dict(category="fraud", weight=0.20,
         en="Claims to be 'licensed and regulated' without naming a verifiable regulator",
         ar="يدّعي أنه مرخّص وخاضع للرقابة دون ذكر جهة رقابية يمكن التحقق منها"),
+    "pay.credentials_unbranded": dict(category="payment", weight=0.40,
+        en="Asks for a password on {where}",
+        ar="يطلب كلمة مرور على نطاق جديد جداً أو منصة استضافة مجانية"),
+    "url.offline_lookalike": dict(category="impersonation", weight=0.50,
+        en="The page is offline, but the link itself looks like a scam: {why}",
+        ar="الصفحة غير متاحة، لكن الرابط نفسه يبدو احتيالياً"),
     "infra.new_domain": dict(category="infrastructure", weight=0.30,
         en="Domain was registered only {days} days before this investigation",
         ar="تم تسجيل النطاق قبل {days} يوماً فقط من هذا التحقيق"),
@@ -391,6 +397,14 @@ def analyse(bundle: dict, registry: Registry, upto_page: int | None = None, upto
             sig["weight"] = 0.2
             sig["severity"] = _severity(0.2)
         signals.append(sig)
+    # A password form with no named brand still matters on a brand-new or free-hosted site (global phishing kits).
+    if "password" in kinds and "pay.credentials" not in {s["id"] for s in signals}:
+        from .domains import PRIVATE_SUFFIXES
+
+        fresh = age is not None and age <= 90
+        if fresh or any(host.endswith("." + s) for s in PRIVATE_SUFFIXES):
+            signals.append(make_signal("pay.credentials_unbranded", field_evidence({"password", "username"}),
+                                       where=f"a domain registered {age} days ago" if fresh else "a free hosting platform"))
     cert_age = days_between(infra.get("cert_issued"), observed)
     if cert_age is not None and cert_age <= 14:
         signals.append(make_signal("infra.fresh_cert", [{"type": "tls", "value": infra.get("cert_issued")}], days=cert_age))

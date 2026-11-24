@@ -157,7 +157,7 @@ def to_csv(job: Job) -> str:
     for r in sorted((r for r in job.results if r), key=lambda r: r["n"]):
         w.writerow([r["n"], r["input_url"], r.get("final_url", ""), r.get("expected") or "", r["label"], "" if r.get("correct") is None else r["correct"],
                     r["score"], r["verdict"], r.get("scam_type", ""), r.get("brand") or "", r.get("engine", ""), r.get("seconds", ""),
-                    " | ".join(r.get("reasons", [])), r.get("error") or ""])
+                    " | ".join(r.get("reasons") or []), r.get("error") or ""])
     return buf.getvalue()
 
 

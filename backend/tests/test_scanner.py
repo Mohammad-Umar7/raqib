@@ -99,3 +99,19 @@ def test_browser_launch_is_sandboxed_and_secret_free(monkeypatch):
     assert "--force-webrtc-ip-handling-policy=disable_non_proxied_udp" in opts["args"]
     monkeypatch.delenv("RAQIB_CHROME_SANDBOX")
     assert scanner.launch_options()["chromium_sandbox"] is False  # default unchanged on Windows laptops
+
+
+def test_dead_lookalike_link_is_still_judged():
+    import asyncio
+
+    r = asyncio.run(scanner.scan("http://salik-recharge-pay.invalid/", use_browser=False, rdap=False))
+    assert r["engine"] == "none" and "url.offline_lookalike" in {g["id"] for g in r["signals"]}
+    plain = asyncio.run(scanner.scan("http://weather-today.invalid/", use_browser=False, rdap=False))
+    assert "url.offline_lookalike" not in {g["id"] for g in plain["signals"]}
+
+
+def test_global_brands_are_known():
+    reg = load_registry()
+    assert reg.official_domain_of("login.microsoftonline.com").id == "microsoft"
+    assert reg.official_domain_of("docs.google.com") is None  # user-content hosts must never count as official
+    assert scanner.url_signals("https://paypal-account-verify.web.app/", reg)

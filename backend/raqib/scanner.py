@@ -553,6 +553,17 @@ async def scan(url: str, *, use_browser: bool = True, use_ai: bool = False, rdap
     if final_url.startswith("http://") and any(e.get("kind") in ("input", "select") for e in page["elements"]):
         extra.append(make_signal("http.insecure_form", [{"type": "url", "value": final_url}]))
     trust = trust_of(host, reg)
+    if engine == "none" and not trust:
+        # The page is gone (taken down) or not up yet: judge the link itself, like the hunters do.
+        from .hunters import triage_host
+
+        t = triage_host(host_of(input_url), reg)
+        if t["score"] >= 40:
+            sig = make_signal("url.offline_lookalike", [{"type": "domain", "value": host_of(input_url)}],
+                              why="; ".join(r["text"] for r in t["reasons"][:2]).lower())
+            sig["weight"] = round(min(0.65, 0.2 + t["score"] / 150), 2)
+            sig["severity"] = "high" if sig["weight"] >= 0.5 else "medium"
+            extra.append(sig)
 
     ai = None
     if use_ai and png:
@@ -563,8 +574,10 @@ async def scan(url: str, *, use_browser: bool = True, use_ai: bool = False, rdap
             ai = await asyncio.to_thread(claude.vision_check, png, (page.get("title") or "") + "\n" + " ".join(e.get("text", "") for e in page["elements"][:40]), host)
             if ai and ai.get("impersonates") not in (None, "none") and ai.get("confidence", 0) >= 0.7 and not trust:
                 ent = reg.get(ai["impersonates"])
-                if ent and not reg.official_domain_of(host):
-                    extra.append(make_signal("ai.visual_brand", [{"type": "ai", "value": ai.get("reason", "")}], brand=ent.name, reason=ai.get("reason", "")[:120]))
+                name = ent.name if ent else (ai.get("other_brand") or "").strip()
+                squash = lambda s: re.sub(r"[^a-z0-9]", "", s.lower())  # noqa: E731
+                if name and not reg.official_domain_of(host) and (ent or squash(name) not in squash(host)):
+                    extra.append(make_signal("ai.visual_brand", [{"type": "ai", "value": ai.get("reason", "")}], brand=name, reason=ai.get("reason", "")[:120]))
 
     case["scan"] = {"extra_signals": extra, "trusted": trust, "engine": engine, "cloaking": cloak, "ai": ai,
                     "error": (cap or {}).get("error") if engine != "browser" else None, "http_error": mobile.get("error")}

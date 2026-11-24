@@ -112,7 +112,7 @@ def main() -> None:
             shots.mkdir(parents=True, exist_ok=True)
             shutil.copy(run / "shots" / r["shot"], shots / r["shot"])
             shot = f"shots/{r['shot']}"
-        lines.append(f"| {kind} ({r['set']}) | `{defang(r['input_url'])}` | {r['score']} | {r.get('engine')} | {'; '.join(r.get('reasons', [])[:2]) or '–'} | {shot} |")
+        lines.append(f"| {kind} ({r['set']}) | `{defang(r['input_url'])}` | {r['score']} | {r.get('engine')} | {'; '.join((r.get('reasons') or [])[:2]) or '–'} | {shot} |")
 
     out.mkdir(parents=True, exist_ok=True)
     (out / "results.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -121,7 +121,7 @@ def main() -> None:
         w.writerow(["set", "expected", "predicted", "score", "verdict", "engine", "impersonates", "url_defanged", "top_reasons", "seconds"])
         for r in sorted(res, key=lambda r: r.get("n", 0)):
             w.writerow([r["set"], r.get("expected"), r["label"], r["score"], r["verdict"], r.get("engine"), r.get("brand") or "", defang(r["input_url"]),
-                        " | ".join(r.get("reasons", [])[:3]), r.get("seconds")])
+                        " | ".join((r.get("reasons") or [])[:3]), r.get("seconds")])
     print("\n".join(lines[:22]))
 
 

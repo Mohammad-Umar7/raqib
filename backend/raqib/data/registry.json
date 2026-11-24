@@ -614,6 +614,291 @@
     "taqa"
    ],
    "aliases": []
+  },
+  {
+   "id": "microsoft",
+   "name": "Microsoft",
+   "name_ar": "مايكروسوفت",
+   "sector": "global",
+   "scam_type": "phishing",
+   "emirate": "Global",
+   "domains": [
+    "microsoft.com",
+    "microsoftonline.com",
+    "office.com",
+    "office365.com",
+    "outlook.com"
+   ],
+   "keywords": [
+    "microsoft",
+    "microsoft 365",
+    "office 365",
+    "outlook web",
+    "onedrive"
+   ],
+   "aliases": [
+    "microsoft account",
+    "outlook web access"
+   ]
+  },
+  {
+   "id": "paypal",
+   "name": "PayPal",
+   "name_ar": "باي بال",
+   "sector": "global",
+   "scam_type": "phishing",
+   "emirate": "Global",
+   "domains": [
+    "paypal.com",
+    "paypal.me"
+   ],
+   "keywords": [
+    "paypal"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "netflix",
+   "name": "Netflix",
+   "name_ar": "نتفليكس",
+   "sector": "global",
+   "scam_type": "phishing",
+   "emirate": "Global",
+   "domains": [
+    "netflix.com"
+   ],
+   "keywords": [
+    "netflix"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "apple",
+   "name": "Apple",
+   "name_ar": "أبل",
+   "sector": "global",
+   "scam_type": "phishing",
+   "emirate": "Global",
+   "domains": [
+    "apple.com",
+    "icloud.com"
+   ],
+   "keywords": [
+    "apple id",
+    "icloud",
+    "apple account",
+    "apple support"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "meta",
+   "name": "Meta / Facebook",
+   "name_ar": "ميتا / فيسبوك",
+   "sector": "global",
+   "scam_type": "phishing",
+   "emirate": "Global",
+   "domains": [
+    "facebook.com",
+    "fb.com",
+    "meta.com",
+    "messenger.com"
+   ],
+   "keywords": [
+    "facebook",
+    "meta business",
+    "meta for business",
+    "meta verified"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "instagram",
+   "name": "Instagram",
+   "name_ar": "إنستغرام",
+   "sector": "global",
+   "scam_type": "phishing",
+   "emirate": "Global",
+   "domains": [
+    "instagram.com"
+   ],
+   "keywords": [
+    "instagram"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "linkedin",
+   "name": "LinkedIn",
+   "name_ar": "لينكدإن",
+   "sector": "global",
+   "scam_type": "phishing",
+   "emirate": "Global",
+   "domains": [
+    "linkedin.com"
+   ],
+   "keywords": [
+    "linkedin"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "fedex",
+   "name": "FedEx",
+   "name_ar": "فيديكس",
+   "sector": "global",
+   "scam_type": "parcel_fee",
+   "emirate": "Global",
+   "domains": [
+    "fedex.com"
+   ],
+   "keywords": [
+    "fedex"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "usps",
+   "name": "USPS",
+   "name_ar": "خدمة البريد الأمريكية",
+   "sector": "global",
+   "scam_type": "parcel_fee",
+   "emirate": "Global",
+   "domains": [
+    "usps.com"
+   ],
+   "keywords": [
+    "usps"
+   ],
+   "aliases": [
+    "united states postal service"
+   ]
+  },
+  {
+   "id": "binance",
+   "name": "Binance",
+   "name_ar": "بينانس",
+   "sector": "global",
+   "scam_type": "phishing",
+   "emirate": "Global",
+   "domains": [
+    "binance.com"
+   ],
+   "keywords": [
+    "binance"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "coinbase",
+   "name": "Coinbase",
+   "name_ar": "كوينبيس",
+   "sector": "global",
+   "scam_type": "phishing",
+   "emirate": "Global",
+   "domains": [
+    "coinbase.com"
+   ],
+   "keywords": [
+    "coinbase"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "metamask",
+   "name": "MetaMask",
+   "name_ar": "ميتاماسك",
+   "sector": "global",
+   "scam_type": "phishing",
+   "emirate": "Global",
+   "domains": [
+    "metamask.io"
+   ],
+   "keywords": [
+    "metamask"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "docusign",
+   "name": "DocuSign",
+   "name_ar": "دوكيوساين",
+   "sector": "global",
+   "scam_type": "phishing",
+   "emirate": "Global",
+   "domains": [
+    "docusign.com",
+    "docusign.net"
+   ],
+   "keywords": [
+    "docusign"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "chase",
+   "name": "Chase",
+   "name_ar": "تشيس",
+   "sector": "global",
+   "scam_type": "bank_verification",
+   "emirate": "Global",
+   "domains": [
+    "chase.com"
+   ],
+   "keywords": [
+    "chase bank",
+    "chase online"
+   ],
+   "aliases": [
+    "jpmorgan chase"
+   ]
+  },
+  {
+   "id": "wellsfargo",
+   "name": "Wells Fargo",
+   "name_ar": "ويلز فارغو",
+   "sector": "global",
+   "scam_type": "bank_verification",
+   "emirate": "Global",
+   "domains": [
+    "wellsfargo.com"
+   ],
+   "keywords": [
+    "wells fargo"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "bankofamerica",
+   "name": "Bank of America",
+   "name_ar": "بنك أوف أمريكا",
+   "sector": "global",
+   "scam_type": "bank_verification",
+   "emirate": "Global",
+   "domains": [
+    "bankofamerica.com"
+   ],
+   "keywords": [
+    "bank of america"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "steam",
+   "name": "Steam",
+   "name_ar": "ستيم",
+   "sector": "global",
+   "scam_type": "phishing",
+   "emirate": "Global",
+   "domains": [
+    "steampowered.com",
+    "steamcommunity.com"
+   ],
+   "keywords": [
+    "steam community",
+    "steam guard"
+   ],
+   "aliases": []
   }
  ]
 }

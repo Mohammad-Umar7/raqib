@@ -40,7 +40,7 @@ def _playwright_available() -> bool:
 def status() -> dict:
     return {"version": __version__, "model_label": config.model_label(), "requested_mode": config.requested_mode(), "claude": claude.status(), "playwright": _playwright_available(),
             "live_ready": config.requested_mode() == "live" and claude.enabled and _playwright_available(), "speed": default_speed(),
-            "cases": len(K().cases), "entities": len(K().reg.entities),
+            "cases": len(K().cases), "entities": sum(1 for e in K().reg.entities if e.emirate != "Global"),
             "sources": {"nrd": True, "serpapi": bool(hunters_live.serpapi_key()), "browser": _playwright_available()}}
 
 
@@ -101,7 +101,7 @@ def overview() -> dict:
         "funnel": {"scanned": cand["scanned"], "unique": len(rows), "flagged": len(flagged), "investigated": len(investigated), "confirmed": len(confirmed),
                    "unblocked": len(unblocked)},
         "hosting_countries": dict(countries), "clusters": k.clusters(), "threshold": THRESH,
-        "entities": len(k.reg.entities),
+        "entities": sum(1 for e in k.reg.entities if e.emirate != "Global"),
     }
 
 

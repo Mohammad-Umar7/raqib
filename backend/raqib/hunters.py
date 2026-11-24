@@ -47,7 +47,8 @@ def blocklist() -> set[str]:
 
 
 # Brands whose name is also an everyday word or a common foreign brand: only suspicious with UAE or lure context.
-AMBIGUOUS_BRANDS = {"amazonae", "fta", "moi", "cbd", "emirates", "noon", "careem", "du", "fab", "dib", "icp", "tamm", "lulu", "dhl", "adnoc", "uae_gov", "etihad"}
+AMBIGUOUS_BRANDS = {"amazonae", "fta", "moi", "cbd", "emirates", "noon", "careem", "du", "fab", "dib", "icp", "tamm", "lulu", "dhl", "adnoc", "uae_gov", "etihad",
+                    "apple", "meta", "chase", "steam"}
 UAE_MARKERS = {"ae", "uae", "dubai", "dxb", "abudhabi", "auh", "sharjah", "shj", "ajman", "rak", "fujairah", "emirati", "gov", "khaleej"}
 
 
