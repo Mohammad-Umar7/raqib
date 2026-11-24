@@ -26,6 +26,7 @@ export interface InvState {
   source: string
   headline: { en: string; ar: string } | null
   followUps: { q: string; q_ar: string }[]
+  model: string
   timeline: TL[]
   done: boolean
   error: string | null
@@ -36,7 +37,7 @@ export interface TL { id: number; t: number; agent: 'browser' | 'detector' | 'li
 
 const initial = (runId: string): InvState => ({
   runId, mode: '', phase: 'queued', phaseLabel: '', meta: null, frame: null, cursor: null, notes: [], requests: [], signals: [], flagged: {}, score: 0,
-  verdict: 'no_indicators', indicators: null, evidence: [], fingerprint: null, nodes: [], edges: [], related: [], blocks: null, source: '', headline: null, followUps: [], timeline: [], done: false, error: null,
+  verdict: 'no_indicators', indicators: null, evidence: [], fingerprint: null, nodes: [], edges: [], related: [], blocks: null, source: '', headline: null, followUps: [], model: '', timeline: [], done: false, error: null,
 })
 
 const SEV_TONE: Record<string, string> = { critical: 'danger', high: 'warn', medium: 'info', low: 'muted' }
@@ -112,7 +113,7 @@ function reduce(s0: InvState, a: Action): InvState {
       return { ...s, nodes, edges }
     }
     case 'related_case': return { ...s, related: [...s.related, d] }
-    case 'ui': return { ...s, blocks: d.blocks, source: d.source, headline: { en: d.headline, ar: d.headline_ar }, followUps: d.follow_ups ?? [] }
+    case 'ui': return { ...s, blocks: d.blocks, source: d.source, headline: { en: d.headline, ar: d.headline_ar }, followUps: d.follow_ups ?? [], model: d.model ?? '' }
     case 'done': return { ...s, done: true, phase: 'done' }
     case 'error': return { ...s, error: d.message, done: true }
     default: return s

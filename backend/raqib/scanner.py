@@ -8,7 +8,7 @@ For each URL it:
   4. opens it in an isolated headless browser (mobile, UAE locale) for a screenshot, the rendered DOM,
      forms, scripts and network log, falling back to the raw HTML when no browser is available;
   5. looks up registration (RDAP) and hosting;
-  6. optionally asks Claude Opus 5.5 to look at the screenshot (only with an API key);
+  6. optionally asks Claude (vision) to look at the screenshot (only with an API key);
   7. runs the same detectors as every other mode and returns a case bundle plus a verdict.
 
 Nothing is submitted, downloaded or typed: the page is only loaded and read.
@@ -508,7 +508,7 @@ async def scan(url: str, *, use_browser: bool = True, use_ai: bool = False, rdap
         from .claude_service import service as claude
 
         if claude.enabled:
-            say("progress", step="ai", text="Claude Opus 5.5 is looking at the screenshot")
+            say("progress", step="ai", text=f"{config.model_label()} is looking at the screenshot")
             ai = await asyncio.to_thread(claude.vision_check, png, (page.get("title") or "") + "\n" + " ".join(e.get("text", "") for e in page["elements"][:40]), host)
             if ai and ai.get("impersonates") not in (None, "none") and ai.get("confidence", 0) >= 0.7 and not trust:
                 ent = reg.get(ai["impersonates"])

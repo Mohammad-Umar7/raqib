@@ -798,7 +798,7 @@ def slide_uae(prs):
                   "مصمَّم لدولة الإمارات", notes=(
         f"Everything is bilingual, from the dashboard to the PDF case file, and the detectors read Arabic lures. "
         f"The registry protects {BRANDS_LABEL} UAE brands, from banks and RTA to UAE PASS, ICP and the police. "
-        "Claude Opus 5.5 composes the case file as structured output and checks screenshots visually, but every number "
+        "Claude Sonnet 5.5 composes the case file as structured output and checks screenshots visually, but every number "
         "on screen comes from the deterministic pipeline. The maps show hosting infrastructure; hosting is an indicator, "
         "never the scammer's location."))
     cards = [
@@ -807,7 +807,7 @@ def slide_uae(prs):
          "Banks, RTA, Salik, TAMM, UAE PASS, Emirates Post, ICP, MOI, Dubai & Abu Dhabi Police."),
         ("car", ORANGE, "Traffic-fine & toll scams", "Fake RTA, Salik and police-fine pages are a first-class scam type."),
         ("sparkles", VIOLET, "Generative case UI",
-         "Claude Opus 5.5 composes the case file as structured output; numbers always come from the pipeline."),
+         "Claude Sonnet 5.5 composes the case file as structured output; numbers always come from the pipeline."),
         ("scan-eye", VIOLET, "Claude vision check", "Screenshots are checked for visual brand impersonation."),
         ("globe", GREEN, "Networks & infrastructure maps",
          "Scam domains linked into networks; UAE + world maps. Hosting is an indicator, not the scammer's location."),
@@ -858,7 +858,7 @@ def slide_arch(prs):
     arrow(s, bx + bw + 0.04, top + 0.95, cx - 0.04, top + 0.95, color=GOLD, width=1.5)
     cy2 = top + 1.95
     box(s, cx, cy2, cw, 1.35, fill=blend(VIOLET, BG, 0.1), line=blend(VIOLET, BG, 0.5))
-    text(s, cx + 0.2, cy2 + 0.12, cw - 0.4, 0.36, [[("Claude Opus 5.5", {})]], size=15, bold=True, color=VIOLET, anchor="m")
+    text(s, cx + 0.2, cy2 + 0.12, cw - 0.4, 0.36, [[("Claude Sonnet 5.5", {})]], size=15, bold=True, color=VIOLET, anchor="m")
     text(s, cx + 0.2, cy2 + 0.52, cw - 0.4, 0.8, [[("Browser agent · case writer · vision check (optional)", {})]],
          size=13, color=MUTED, line=1.0)
     arrow(s, bx + bw + 0.04, cy2 + 0.6, cx - 0.04, cy2 + 0.6, color=VIOLET, width=1.5, dash=True)

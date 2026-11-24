@@ -183,7 +183,7 @@ async def _finish(run: Run, case: dict, K: knowledge.Knowledge, store: EvidenceS
     run.emit("status", phase="reporting", label=label)
     refined, source = await asyncio.to_thread(claude.refine, ctx)
     blocks = ui_spec.compose(ctx, refined)
-    run.emit("ui", blocks=blocks, source=source, headline=refined["headline"], headline_ar=refined["headline_ar"], follow_ups=refined.get("follow_ups", []))
+    run.emit("ui", blocks=blocks, source=source, model=config.model_label(), headline=refined["headline"], headline_ar=refined["headline_ar"], follow_ups=refined.get("follow_ups", []))
 
     run.result = {"run_id": run.id, "case_id": case["case_id"], "ctx": ctx, "refined": refined, "blocks": blocks, "source": source,
                   "graph": {"nodes": [centre] + [{**{k: r[k] for k in ("case_id", "host", "label", "kind", "score", "verdict", "scam_type", "cluster_id", "on_blocklist", "emirates")}, "center": False} for r in link["related"]],

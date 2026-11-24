@@ -38,7 +38,7 @@ def _playwright_available() -> bool:
 
 @app.get("/api/status")
 def status() -> dict:
-    return {"version": __version__, "requested_mode": config.requested_mode(), "claude": claude.status(), "playwright": _playwright_available(),
+    return {"version": __version__, "model_label": config.model_label(), "requested_mode": config.requested_mode(), "claude": claude.status(), "playwright": _playwright_available(),
             "live_ready": config.requested_mode() == "live" and claude.enabled and _playwright_available(), "speed": default_speed(),
             "cases": len(K().cases), "entities": len(K().reg.entities),
             "sources": {"nrd": True, "serpapi": bool(hunters_live.serpapi_key()), "browser": _playwright_available()}}

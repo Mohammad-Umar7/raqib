@@ -20,7 +20,7 @@ Raqib is an investigation platform for police analysts that works **before** the
 | **Hunt** | Watches the places scams appear: newly registered domains (live daily feed), Google Search results and sponsored ads, Google Maps listings, and citizen / hotline reports. |
 | **Triage** | Cheap checks without opening the site: look-alikes of 36 protected UAE brands (homoglyphs, brand + lure words, brand hidden in a sub-domain), domain age, abused TLDs, Maps listing oddities. |
 | **Investigate** | Opens the dangerous ones in an isolated, throwaway browser (mobile, UAE locale): follows every redirect, expands URL shorteners, compares what phones and computers are shown (cloaking), captures a screenshot, the rendered page, forms, scripts and network log. Nothing is typed, submitted or downloaded. |
-| **Explain** | 28 deterministic detectors turn the evidence into a risk score (0-100) where every point has a reason, in English and Arabic. Optional Claude Opus 5.5 vision check on the screenshot. |
+| **Explain** | 28 deterministic detectors turn the evidence into a risk score (0-100) where every point has a reason, in English and Arabic. Optional Claude Sonnet 5.5 vision check on the screenshot. |
 | **Link** | Fingerprints each site (scam-kit file hashes, Telegram-bot / Discord-webhook IDs, crypto wallets, phone / WhatsApp numbers, favicon, analytics IDs, redirectors, registration batch, screenshot similarity) and links it to known campaigns with a graded strength. Looking alike is not proof of the same operator. |
 | **Act** | Evidence with SHA-256 chain of custody, PDF case report (English + Arabic), takedown drafts for the registrar, host, Google Safe Browsing and Google Maps, blocklist CSV, JSON case bundle, public warning text. |
 
@@ -31,7 +31,7 @@ Raqib is an investigation platform for police analysts that works **before** the
 | Detection accuracy | 30% | Real scanner for any URL; redirect, shortener and cloaking handling; false-positive guard (official brand registry, vetted `.gov.ae` / `.ac.ae` / `.bank` zones, trusted-site list, domain age, "names a brand but collects nothing" rule); **batch evaluator and CLI** that report precision / recall / F1 / confusion matrix on any labelled list (the hidden test set). |
 | Early detection & coverage | 25% | Live newly-registered-domain hunt (~70,000 domains a day), Search + sponsored ads + Maps listings (SerpAPI connector, recorded demo feed without a key), citizen reports; triage funnel shown live on a radar. |
 | Explainability & actionability | 20% | Every signal has a weight and a plain-language reason; "how the score adds up" waterfall; screenshots, RDAP/WHOIS, hosting, redirect chain and timestamps with SHA-256 hashes; PDF / CSV / JSON exports and takedown drafts. |
-| UAE relevance & innovation | 15% | 36 protected UAE brands (banks, RTA, Salik, TAMM, UAE PASS, ICP, MOI, police, couriers, telcos), Arabic lure detection, fully bilingual UI and reports; generative case files composed by Claude Opus 5.5; Claude vision brand check; campaign network linking; visual page similarity. |
+| UAE relevance & innovation | 15% | 36 protected UAE brands (banks, RTA, Salik, TAMM, UAE PASS, ICP, MOI, police, couriers, telcos), Arabic lure detection, fully bilingual UI and reports; generative case files composed by Claude Sonnet 5.5; Claude vision brand check; campaign network linking; visual page similarity. |
 | Feasibility & presentation | 10% | Working app, CLI and tests; hardened container; pluggable data sources; pilot route below; honest limitations. |
 
 ## 3. Technical choices, tools, APIs and data
@@ -40,7 +40,7 @@ Raqib is an investigation platform for police analysts that works **before** the
 
 **Frontend** — React 19 + TypeScript + Vite, framer-motion for animation, d3-force for the campaign graph, d3-geo + topojson (world-atlas) for the infrastructure map, lucide icons, Inter / IBM Plex Sans Arabic fonts.
 
-**AI** — Anthropic Claude **Opus 5.5** (`claude-opus-5-5`, configurable with `RAQIB_MODEL`):
+**AI** — Anthropic Claude **Sonnet 5.5** (`claude-sonnet-5-5`, configurable with `RAQIB_MODEL`; one model only, no automatic fallback to another model):
 * writes the case summary and **chooses the case-file layout** (structured JSON output: which of 14 block types to show, in what order, with what wording) and suggests follow-up questions;
 * answers analyst questions with blocks of its own;
 * looks at screenshots to spot brand impersonation (vision, structured output);
@@ -88,7 +88,8 @@ macOS / Linux: use `.venv/bin/...` instead of `.venv\Scripts\...`. During develo
 Optional configuration in a `.env` file at the repository root (see `.env.example`), or the key can be pasted in the app's Settings:
 
 ```
-ANTHROPIC_API_KEY=sk-ant-...     # Claude Opus 5.5 features
+ANTHROPIC_API_KEY=sk-ant-...     # Claude Sonnet 5.5 features
+RAQIB_MODEL=claude-sonnet-5-5
 SERPAPI_KEY=...                  # live Google Search / ads / Maps
 RAQIB_MODE=live                  # let the Claude browser agent drive unknown URLs
 RAQIB_BROWSER_CHANNEL=chrome     # use installed Chrome if Playwright's Chromium is not installed

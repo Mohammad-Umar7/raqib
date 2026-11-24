@@ -373,11 +373,11 @@ def _toolset() -> dict:
 
 
 async def _create(client, **kw):
-    """One Messages call. Prefer the beta surface (progress notes + refusal fallbacks); fall back to the plain one."""
+    """One Messages call on the configured model. Uses the progress-notes beta when available, else a plain call."""
     import anthropic
 
     try:
-        return await client.beta.messages.create(**kw, betas=["thinking-display-updates-2026-08-18", "server-side-fallback-2026-07-01"], fallbacks="default",
+        return await client.beta.messages.create(**kw, betas=["thinking-display-updates-2026-08-18"],
                                                  thinking={"type": "adaptive", "display": "updates"})
     except (TypeError, anthropic.BadRequestError):
         return await client.messages.create(**kw)

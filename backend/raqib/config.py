@@ -36,8 +36,16 @@ def anthropic_key() -> str:
     return os.environ.get("ANTHROPIC_API_KEY", "").strip()
 
 
+def model_label() -> str:
+    """Human name of the configured model, e.g. 'Claude Sonnet 5.5'."""
+    m = model_name().removeprefix("claude-").split("-")
+    family = m[0].capitalize() if m else "Claude"
+    version = ".".join(x for x in m[1:] if x.isdigit())
+    return f"Claude {family} {version}".strip()
+
+
 def model_name() -> str:
-    return os.environ.get("RAQIB_MODEL", "claude-opus-5-5").strip() or "claude-opus-5-5"
+    return os.environ.get("RAQIB_MODEL", "claude-sonnet-5-5").strip() or "claude-sonnet-5-5"
 
 
 def requested_mode() -> str:

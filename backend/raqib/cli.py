@@ -3,7 +3,7 @@
     python -m raqib.cli urls.txt                     # one URL per line
     python -m raqib.cli test.csv --out results.csv   # CSV with url[,label]; prints precision/recall when labels are present
     python -m raqib.cli urls.txt --no-browser        # HTTP-only (faster, no screenshots)
-    python -m raqib.cli urls.txt --ai                # add the Claude Opus 5.5 vision check (needs ANTHROPIC_API_KEY)
+    python -m raqib.cli urls.txt --ai                # add the Claude vision check (needs ANTHROPIC_API_KEY)
 
 Run from the backend/ folder.
 """

@@ -128,7 +128,7 @@ class ClaudeService:
     # ------------------------------------------------------------------ low level
 
     def _structured(self, schema: dict, user: str, max_tokens: int = 6000) -> dict:
-        """One structured-output call. Tries server-side refusal fallbacks, then a plain call."""
+        """One structured-output call on the configured model only (no fallback to another model)."""
         client = self._get_client()
         kwargs = dict(
             model=config.model_name(),
@@ -137,10 +137,7 @@ class ClaudeService:
             messages=[{"role": "user", "content": user}],
             output_config={"effort": "medium", "format": {"type": "json_schema", "schema": schema}},
         )
-        try:
-            resp = client.beta.messages.create(**kwargs, betas=["server-side-fallback-2026-07-01"], fallbacks="default")
-        except TypeError:
-            resp = client.messages.create(**kwargs)
+        resp = client.messages.create(**kwargs)
         if resp.stop_reason == "refusal":
             raise RuntimeError("model declined this request")
         if resp.stop_reason == "max_tokens":

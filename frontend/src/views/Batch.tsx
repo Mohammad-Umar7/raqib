@@ -93,7 +93,7 @@ export function Batch({ nav }: { nav: Nav }) {
             <div className="card-h"><Play size={16} color="#34d399" /><h3>{p('Run', 'تشغيل')}</h3></div>
             <div className="card-b col" style={{ gap: 14 }}>
               <label className="toggle"><input type="checkbox" checked={browser} onChange={(e) => setBrowser(e.target.checked)} /><span><b>{p('Isolated browser', 'المتصفح المعزول')}</b><small>{p('Renders JavaScript, takes screenshots. Off = fast HTTP-only scan.', 'يعرض JavaScript ويلتقط الصور. عند الإيقاف: فحص HTTP سريع فقط.')}</small></span></label>
-              <label className="toggle"><input type="checkbox" checked={ai} onChange={(e) => setAi(e.target.checked)} /><span><b>{p('Claude Opus 5.5 vision check', 'فحص بصري بـ Claude Opus 5.5')}</b><small>{p('Looks at each screenshot for brand impersonation (needs an API key, slower).', 'يفحص كل لقطة بحثاً عن انتحال العلامات (يتطلب مفتاح API وأبطأ).')}</small></span></label>
+              <label className="toggle"><input type="checkbox" checked={ai} onChange={(e) => setAi(e.target.checked)} /><span><b>{p('Claude vision check', 'فحص بصري بـ Claude')}</b><small>{p('Looks at each screenshot for brand impersonation (needs an API key, slower).', 'يفحص كل لقطة بحثاً عن انتحال العلامات (يتطلب مفتاح API وأبطأ).')}</small></span></label>
               <div className="row" style={{ gap: 10 }}>
                 <span className="faint" style={{ fontSize: 12.5 }}>{p('Parallel scans', 'فحوص متوازية')}</span>
                 <div className="seg">{[2, 4, 6, 8].map((n) => <button key={n} className={conc === n ? 'on' : ''} onClick={() => setConc(n)}>{n}</button>)}</div>

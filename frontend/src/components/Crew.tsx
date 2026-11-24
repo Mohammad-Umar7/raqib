@@ -13,7 +13,7 @@ function agentsOf(s: InvState, p: (en: string, ar: string) => string): Agent[] {
   const ph = s.done ? 'done' : s.phase
   const browsing = ph === 'browsing' || ph === 'triage' || ph === 'analyzing'
   const after = (phases: string[]) => s.done || phases.includes(ph)
-  const writerName = s.source === 'claude' ? 'Claude Opus 5.5' : p('Case writer', 'كاتب القضية')
+  const writerName = s.source === 'claude' ? (s.model || 'Claude') : p('Case writer', 'كاتب القضية')
   return [
     {
       key: 'browser', name: p('Browser agent', 'وكيل المتصفح'), name_ar: '', icon: <Bot size={18} />,
