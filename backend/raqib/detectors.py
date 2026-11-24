@@ -70,6 +70,36 @@ CATALOGUE: dict[str, dict] = {
     "infra.fresh_cert": dict(category="infrastructure", weight=0.08,
         en="TLS certificate was issued {days} days ago",
         ar="شهادة TLS صدرت قبل {days} يوماً"),
+    "url.shortener": dict(category="evasion", weight=0.12,
+        en="The link uses a URL shortener ({svc}) that hides the real destination",
+        ar="الرابط يستخدم خدمة تقصير ({svc}) تخفي الوجهة الحقيقية"),
+    "url.ip_host": dict(category="evasion", weight=0.35,
+        en="The link points to a raw IP address instead of a domain name",
+        ar="الرابط يشير إلى عنوان IP مباشر بدلاً من اسم نطاق"),
+    "url.punycode": dict(category="impersonation", weight=0.35,
+        en="The domain uses look-alike international characters (punycode)",
+        ar="النطاق يستخدم أحرفاً دولية مشابهة (Punycode)"),
+    "url.userinfo": dict(category="evasion", weight=0.3,
+        en="The URL contains '@', which hides the real host from the reader",
+        ar="الرابط يحتوي على '@' التي تخفي النطاق الحقيقي"),
+    "url.brand_in_subdomain": dict(category="impersonation", weight=0.4,
+        en="The brand name '{brand}' is placed in a sub-domain of an unrelated domain ({domain})",
+        ar="اسم الجهة '{brand}' موضوع كنطاق فرعي لنطاق غير مرتبط ({domain})"),
+    "url.free_hosting": dict(category="infrastructure", weight=0.15,
+        en="Hosted on a free site-builder / hosting platform ({platform}) that scammers often abuse",
+        ar="مستضاف على منصة استضافة مجانية ({platform}) يستغلها المحتالون كثيراً"),
+    "url.risky_tld": dict(category="infrastructure", weight=0.1,
+        en="Uses a top-level domain heavily abused for scams (.{tld})",
+        ar="يستخدم امتداد نطاق يُستغل كثيراً في الاحتيال (.{tld})"),
+    "http.cloaking": dict(category="evasion", weight=0.35,
+        en="Shows different content to phones and computers (cloaking): {detail}",
+        ar="يعرض محتوى مختلفاً للهواتف والحواسيب (إخفاء): {detail}"),
+    "http.insecure_form": dict(category="payment", weight=0.2,
+        en="Asks for sensitive data over an unencrypted (http) connection",
+        ar="يطلب بيانات حساسة عبر اتصال غير مشفّر (http)"),
+    "ai.visual_brand": dict(category="impersonation", weight=0.35,
+        en="AI vision check: the page looks like {brand} ({reason})",
+        ar="فحص بصري بالذكاء الاصطناعي: الصفحة تشبه {brand}"),
     "infra.redirector": dict(category="infrastructure", weight=0.15,
         en="Link passes through an unrelated redirect domain ({hop}) before the landing page",
         ar="الرابط يمرّ عبر نطاق تحويل غير مرتبط ({hop}) قبل صفحة الهبوط"),
@@ -140,13 +170,14 @@ def classify_field(field: dict) -> str:
 
 _GUARANTEED = re.compile(
     r"guarantee[d]?\b.{0,24}\b(?:returns?|profits?|income)|\b\d{2,3}\s?%\s?(?:monthly|weekly|daily|per month|returns?)|"
-    r"risk[- ]free|double your|عائد مضمون|أرباح مضمونة|ربح مضمون", re.I)
+    r"risk[- ]free|double your|عائد مضمون|عوائد مضمونة|أرباح مضمونة|ربح مضمون|ربح يومي|عائد شهري ثابت|استثمار مضمون", re.I)
 _UPFRONT = re.compile(
     r"processing fee|refundable (?:fee|deposit)|release (?:the |your )?(?:funds|loan)|insurance fee|"
-    r"pay (?:a )?(?:small )?fee to receive|رسوم (?:المعالجة|التأمين|الإفراج)", re.I)
+    r"pay (?:a )?(?:small )?fee to receive|رسوم (?:المعالجة|التأمين|الإفراج|إدارية|التوصيل|إعادة التوصيل)|ادفع رسوم", re.I)
 _URGENCY = re.compile(
     r"within \d+ ?(?:hours?|hrs?)|\b24 ?(?:h|hrs?|hours?)\b|suspen(?:d|ded|sion)|impound|final notice|"
-    r"act now|expires? in|عاجل|خلال \d+ ساعة|إيقاف|حجز", re.I)
+    r"act now|expires? in|account (?:is |has been )?(?:blocked|restricted|locked)|عاجل|خلال \d+ ساعة|إيقاف|حجز|تم تعليق|تعليق حسابك|حسابك موقوف|"
+    r"آخر فرصة|آخر موعد|غرامة إضافية|تجنب الغرامة|تحديث بياناتك", re.I)
 _LICENSE = re.compile(r"licen[sc]ed\s*(?:and|&)\s*regulated|licen[sc]e\s*(?:no\.?|number)\s*[:#]?\s*\w+|regulated by", re.I)
 _NAMED_REGULATOR = re.compile(r"\b(?:SCA|DFSA|ADGM|FSRA|central bank|DED|department of economic development)\b", re.I)
 
@@ -257,10 +288,17 @@ def analyse(bundle: dict, registry: Registry, upto_page: int | None = None, upto
     if official_entity:
         return {"signals": [], "brand": official_entity.to_dict(), "brand_confidence": 1.0, "forms": [f for _, f in all_forms],
                 "contacts": contacts, "iocs": iocs, "official": True, "lookalike": {"score": 0.0, "reasons": ["is an official domain"]}}
+    if brand and not (brand.mentions(title) + brand.mentions(headline_text(view))):
+        # The brand is only discussed in the body (a news article, a comparison page...): that is not impersonation.
+        brand, brand_conf = None, 0.0
+    sensitive = kinds & {"card_number", "card_cvv", "card_expiry", "otp", "password", "emirates_id"}
+    collects = bool(sensitive or iocs["wallets"] or iocs["telegram_bot_ids"] or iocs["discord_webhook_ids"])
     if brand:
         look = lookalike(host, brand.domains, brand.keywords + brand.aliases)
-        signals.append(make_signal("imp.brand_mismatch", [{"type": "page", "page": pages[0]["page_id"], "note": f"names {brand.name}"}],
-                                   brand=brand.name))
+        sig = make_signal("imp.brand_mismatch", [{"type": "page", "page": pages[0]["page_id"], "note": f"names {brand.name}"}], brand=brand.name)
+        if not collects and look["score"] < 0.5:
+            sig["weight"], sig["severity"] = 0.15, _severity(0.15)  # names the brand but asks for nothing
+        signals.append(sig)
         if look["score"] >= 0.5:
             signals.append(make_signal("imp.lookalike_domain", [{"type": "domain", "value": reg_domain, "note": "; ".join(look["reasons"])}],
                                        brand=brand.name))
@@ -285,13 +323,23 @@ def analyse(bundle: dict, registry: Registry, upto_page: int | None = None, upto
                     ev.append({"type": "field", "page": p["page_id"], "element": fld["element_id"], "note": fld["kind"]})
         return ev
 
+    infra_ = bundle.get("infra", {})
+    age_days = days_between(infra_.get("domain_created"), bundle.get("observed_at"))
+    context_risk = bool(brand) or look["score"] >= 0.5 or (age_days is not None and age_days <= 180)
+
+    def weighted(sid: str, ev: list[dict], soft: float) -> dict:
+        sig = make_signal(sid, ev)
+        if not context_risk:
+            sig["weight"], sig["severity"] = soft, _severity(soft)  # an ordinary checkout or login page on an established site
+        return sig
+
     if {"card_number", "card_cvv"} <= kinds or ("card_number" in kinds and "card_expiry" in kinds):
-        signals.append(make_signal("pay.card_form", field_evidence({"card_number", "card_expiry", "card_cvv", "card_holder"})))
+        signals.append(weighted("pay.card_form", field_evidence({"card_number", "card_expiry", "card_cvv", "card_holder"}), 0.15))
     if "otp" in kinds:
-        signals.append(make_signal("pay.otp_request", field_evidence({"otp"})))
+        signals.append(weighted("pay.otp_request", field_evidence({"otp"}), 0.1))
     if "emirates_id" in kinds:
         signals.append(make_signal("pay.id_request", field_evidence({"emirates_id"})))
-    if "password" in kinds and ("username" in kinds or brand is not None):
+    if "password" in kinds and (brand is not None or look["score"] >= 0.5):
         signals.append(make_signal("pay.credentials", field_evidence({"password", "username"})))
 
     # -- exfiltration -----------------------------------------------------------------
@@ -370,6 +418,8 @@ def analyse(bundle: dict, registry: Registry, upto_page: int | None = None, upto
         "iocs": iocs,
         "official": False,
         "lookalike": look,
+        "collects": collects,
+        "age_days": age_days,
         "hints": {
             "job": bool(re.search(r"hiring|vacanc|apply now|free visa|careers|jobs?", text + " " + title, re.I)),
             "loan": bool(re.search(r"loan|salary certificate|قرض", text, re.I)),
@@ -385,6 +435,41 @@ def risk_score(signals: list[dict]) -> int:
     for s in signals:
         p_safe *= 1.0 - float(s["weight"])
     return int(round(100 * (1.0 - p_safe)))
+
+
+def enrich(analysis: dict, case: dict) -> dict:
+    """Merge what the URL scanner found outside the page (URL tricks, cloaking, AI vision, trust) into an analysis."""
+    scan = case.get("scan") or {}
+    have = {g["id"] for g in analysis["signals"]}
+    for g in scan.get("extra_signals", []):
+        if g["id"] not in have:
+            analysis["signals"].append(g)
+            have.add(g["id"])
+    if scan.get("trusted"):
+        analysis["trusted"] = scan["trusted"]
+    if scan.get("cap") is not None:
+        analysis["cap"] = scan["cap"]
+    if scan.get("collects"):
+        analysis["collects"] = True
+    return analysis
+
+
+def final_score(analysis: dict) -> int:
+    """Risk score with trust caps applied.
+
+    An established domain (2+ years old) that does not collect sensitive data or send data to a bot is
+    capped at 25: real banks, ministries and news sites must not be flagged. A compromised old site that
+    hosts a card/credential form under someone else's brand still scores high.
+    """
+    if analysis.get("official") or analysis.get("trusted"):
+        return 0
+    score = risk_score(analysis["signals"])
+    age = analysis.get("age_days")
+    if age is not None and age >= 730 and not analysis.get("collects"):
+        score = min(score, 25)
+    if analysis.get("cap") is not None:
+        score = min(score, int(analysis["cap"]))
+    return score
 
 
 def verdict_for(score: int, official: bool = False) -> str:

@@ -12,6 +12,28 @@ _SECOND_LEVEL = {
     "com.tr", "com.cn", "co.jp",
 }
 
+# Hosting platforms where anyone can get a sub-domain: each customer is a separate "site",
+# so the registrable unit is <customer>.<platform>, never the platform itself.
+PRIVATE_SUFFIXES = {
+    "github.io", "gitlab.io", "web.app", "firebaseapp.com", "vercel.app", "netlify.app", "pages.dev", "workers.dev", "herokuapp.com",
+    "onrender.com", "glitch.me", "replit.app", "repl.co", "surge.sh", "azurewebsites.net", "cloudfront.net", "appspot.com", "blogspot.com",
+    "weebly.com", "wixsite.com", "wix.com", "square.site", "godaddysites.com", "mystrikingly.com", "webflow.io", "framer.website", "framer.app",
+    "carrd.co", "000webhostapp.com", "ngrok.io", "ngrok-free.app", "ngrok.app", "trycloudflare.com", "duckdns.org", "sites.google.com",
+    "s3.amazonaws.com", "storage.googleapis.com", "r2.dev", "myshopify.com", "wordpress.com", "tilda.ws", "notion.site", "canva.site",
+    "teachable.com", "jimdosite.com", "site123.me", "webnode.page", "yolasite.com", "byethost.com", "infinityfreeapp.com", "rf.gd",
+}
+# Top-level / second-level zones that only vetted organisations can register.
+RESTRICTED_SUFFIXES = ("gov.ae", "mil.ae", "ac.ae", "sch.ae", "bank", "gov", "mil", "edu", "int")
+# Common link shorteners: the real destination is hidden until you follow the redirect.
+SHORTENERS = {
+    "bit.ly", "bitly.com", "tinyurl.com", "t.co", "goo.gl", "ow.ly", "is.gd", "buff.ly", "rebrand.ly", "cutt.ly", "rb.gy", "shorturl.at",
+    "tiny.cc", "s.id", "t.ly", "v.gd", "bl.ink", "short.io", "lnkd.in", "qrco.de", "shorturl.gg", "urlz.fr", "tinu.be", "u.to", "clck.ru",
+    "dub.sh", "linktr.ee", "x.co", "trib.al", "ift.tt", "smarturl.it", "soo.gd", "2u.pw", "shrtco.de", "wa.link", "surl.li", "lnk.bio",
+}
+RISKY_TLDS = {"xyz", "top", "click", "icu", "vip", "live", "site", "online", "shop", "buzz", "cfd", "sbs", "cyou", "rest", "lol", "monster",
+              "quest", "bond", "zip", "mov", "support", "help", "info", "work", "fit", "gq", "tk", "ml", "cf", "ga", "ru", "su", "cn", "pw"}
+
+
 # Characters attackers swap to imitate a brand name.
 _HOMOGLYPHS = str.maketrans({"0": "o", "1": "l", "3": "e", "4": "a", "5": "s", "7": "t", "$": "s", "@": "a"})
 _DIGRAPHS = (("rn", "m"), ("vv", "w"), ("cl", "d"))
@@ -33,8 +55,12 @@ def host_of(url: str) -> str:
 
 
 def registrable(host: str) -> str:
-    """Return the registrable domain (eTLD+1) for a host."""
+    """Return the registrable domain (eTLD+1) for a host; hosting platforms count as public suffixes."""
     host = host.lower().strip(".")
+    for suf in PRIVATE_SUFFIXES:
+        if host.endswith("." + suf):
+            head = host[: -len(suf) - 1].split(".")[-1]
+            return f"{head}.{suf}"
     labels = host.split(".")
     if len(labels) <= 2:
         return host
@@ -94,8 +120,8 @@ def lookalike(domain: str, official_domains: list[str], keywords: list[str]) -> 
     """
     label = label_of(domain)
     norm = normalise_label(label)
-    raw_tokens = [t for t in re.split(r"[-_.]", label.lower()) if t]
-    tokens = [t for t in re.split(r"[-_.]", norm) if t]
+    raw_tokens = [t for t in re.split(r"[-_.0-9]+", label.lower()) if t]
+    tokens = [t for t in re.split(r"[-_.0-9]+", norm) if t]
     raw_compact = re.sub(r"[^a-z0-9]", "", label.lower())
     norm_compact = re.sub(r"[^a-z0-9]", "", norm)
     reasons: list[str] = []
@@ -124,7 +150,7 @@ def lookalike(domain: str, official_domains: list[str], keywords: list[str]) -> 
     for off in official_domains:
         off_label = label_of(off)
         d = edit_distance(norm, off_label)
-        if 0 < d <= 2 and len(off_label) >= 4:
+        if 0 < d <= 2 and len(off_label) >= 5:
             score = max(score, 0.9 - 0.15 * (d - 1))
             reasons.append(f"is {d} character(s) away from the official '{off_label}'")
             break
@@ -132,3 +158,12 @@ def lookalike(domain: str, official_domains: list[str], keywords: list[str]) -> 
     if registrable(domain) in {registrable(d) for d in official_domains}:
         return {"score": 0.0, "reasons": ["is an official domain"], "official": True}
     return {"score": round(min(score, 0.98), 2), "reasons": reasons, "official": False}
+
+
+def restricted_zone(host: str) -> str | None:
+    """The vetted zone (.gov.ae, .bank, ...) this host sits in, if any."""
+    host = host.lower().strip(".")
+    for z in RESTRICTED_SUFFIXES:
+        if host == z or host.endswith("." + z):
+            return z
+    return None

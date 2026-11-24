@@ -1,57 +1,619 @@
 {
-  "_note": "Protected entities: UAE organisations that scammers commonly pretend to be. Official domains are the only ones Raqib treats as legitimate for that brand. Verify against each organisation before operational use.",
-  "entities": [
-    {"id": "salik", "name": "Salik", "name_ar": "سالك", "sector": "toll", "scam_type": "toll_topup", "emirate": "Dubai",
-     "domains": ["salik.ae"], "keywords": ["salik", "سالك"], "aliases": ["salik toll", "salik account"]},
-    {"id": "rta", "name": "RTA", "name_ar": "هيئة الطرق والمواصلات", "sector": "government", "scam_type": "traffic_fine", "emirate": "Dubai",
-     "domains": ["rta.ae"], "keywords": ["rta", "roads and transport", "هيئة الطرق"], "aliases": ["rta fines", "rta dubai"]},
-    {"id": "dubaipolice", "name": "Dubai Police", "name_ar": "شرطة دبي", "sector": "government", "scam_type": "traffic_fine", "emirate": "Dubai",
-     "domains": ["dubaipolice.gov.ae"], "keywords": ["dubai police", "شرطة دبي"], "aliases": []},
-    {"id": "adpolice", "name": "Abu Dhabi Police", "name_ar": "شرطة أبوظبي", "sector": "government", "scam_type": "traffic_fine", "emirate": "Abu Dhabi",
-     "domains": ["adpolice.gov.ae"], "keywords": ["abu dhabi police", "شرطة أبوظبي"], "aliases": []},
-    {"id": "emiratespost", "name": "Emirates Post", "name_ar": "بريد الإمارات", "sector": "courier", "scam_type": "parcel_fee", "emirate": "Abu Dhabi",
-     "domains": ["emiratespost.ae"], "keywords": ["emirates post", "emiratespost", "بريد الإمارات"], "aliases": ["emirates post group"]},
-    {"id": "aramex", "name": "Aramex", "name_ar": "أرامكس", "sector": "courier", "scam_type": "parcel_fee", "emirate": "Dubai",
-     "domains": ["aramex.com"], "keywords": ["aramex", "أرامكس"], "aliases": []},
-    {"id": "dhl", "name": "DHL", "name_ar": "دي إتش إل", "sector": "courier", "scam_type": "parcel_fee", "emirate": "Dubai",
-     "domains": ["dhl.com"], "keywords": ["dhl"], "aliases": []},
-    {"id": "adcb", "name": "ADCB", "name_ar": "بنك أبوظبي التجاري", "sector": "bank", "scam_type": "bank_verification", "emirate": "Abu Dhabi",
-     "domains": ["adcb.com"], "keywords": ["adcb", "abu dhabi commercial bank", "بنك أبوظبي التجاري"], "aliases": []},
-    {"id": "enbd", "name": "Emirates NBD", "name_ar": "الإمارات دبي الوطني", "sector": "bank", "scam_type": "bank_verification", "emirate": "Dubai",
-     "domains": ["emiratesnbd.com"], "keywords": ["emirates nbd", "emiratesnbd", "الإمارات دبي الوطني"], "aliases": ["enbd"]},
-    {"id": "fab", "name": "First Abu Dhabi Bank", "name_ar": "بنك أبوظبي الأول", "sector": "bank", "scam_type": "bank_verification", "emirate": "Abu Dhabi",
-     "domains": ["bankfab.com"], "keywords": ["first abu dhabi bank", "bankfab", "بنك أبوظبي الأول"], "aliases": ["fab bank"]},
-    {"id": "mashreq", "name": "Mashreq", "name_ar": "المشرق", "sector": "bank", "scam_type": "bank_verification", "emirate": "Dubai",
-     "domains": ["mashreq.com"], "keywords": ["mashreq", "المشرق"], "aliases": []},
-    {"id": "dib", "name": "Dubai Islamic Bank", "name_ar": "بنك دبي الإسلامي", "sector": "bank", "scam_type": "bank_verification", "emirate": "Dubai",
-     "domains": ["dib.ae"], "keywords": ["dubai islamic bank", "بنك دبي الإسلامي"], "aliases": ["dib"]},
-    {"id": "eand", "name": "e& (Etisalat)", "name_ar": "إي آند", "sector": "telecom", "scam_type": "bill_refund", "emirate": "Abu Dhabi",
-     "domains": ["eand.com", "etisalat.ae"], "keywords": ["etisalat", "e&", "إتصالات"], "aliases": []},
-    {"id": "du", "name": "du", "name_ar": "دو", "sector": "telecom", "scam_type": "bill_refund", "emirate": "Dubai",
-     "domains": ["du.ae"], "keywords": ["du telecom", "du.ae"], "aliases": []},
-    {"id": "dewa", "name": "DEWA", "name_ar": "هيئة كهرباء ومياه دبي", "sector": "utility", "scam_type": "bill_refund", "emirate": "Dubai",
-     "domains": ["dewa.gov.ae"], "keywords": ["dewa", "هيئة كهرباء ومياه دبي"], "aliases": []},
-    {"id": "tamm", "name": "TAMM", "name_ar": "تم", "sector": "government", "scam_type": "government_service", "emirate": "Abu Dhabi",
-     "domains": ["tamm.abudhabi"], "keywords": ["tamm"], "aliases": []},
-    {"id": "icp", "name": "ICP (Identity & Citizenship)", "name_ar": "الهيئة الاتحادية للهوية والجنسية", "sector": "government", "scam_type": "government_service", "emirate": "Abu Dhabi",
-     "domains": ["icp.gov.ae"], "keywords": ["icp", "emirates id", "identity and citizenship", "الهوية والجنسية"], "aliases": []},
-    {"id": "uae_gov", "name": "UAE Government Portal", "name_ar": "البوابة الرسمية لحكومة الإمارات", "sector": "government", "scam_type": "government_service", "emirate": "Abu Dhabi",
-     "domains": ["u.ae"], "keywords": ["uae government", "u.ae"], "aliases": []},
-    {"id": "fta", "name": "Federal Tax Authority", "name_ar": "الهيئة الاتحادية للضرائب", "sector": "government", "scam_type": "government_service", "emirate": "Abu Dhabi",
-     "domains": ["tax.gov.ae"], "keywords": ["federal tax authority", "الهيئة الاتحادية للضرائب"], "aliases": []},
-    {"id": "centralbank", "name": "Central Bank of the UAE", "name_ar": "مصرف الإمارات المركزي", "sector": "regulator", "scam_type": "investment", "emirate": "Abu Dhabi",
-     "domains": ["centralbank.ae"], "keywords": ["central bank of the uae", "مصرف الإمارات المركزي"], "aliases": []},
-    {"id": "etihad", "name": "Etihad Airways", "name_ar": "الاتحاد للطيران", "sector": "travel", "scam_type": "prize_travel", "emirate": "Abu Dhabi",
-     "domains": ["etihad.com"], "keywords": ["etihad"], "aliases": []},
-    {"id": "emirates", "name": "Emirates", "name_ar": "طيران الإمارات", "sector": "travel", "scam_type": "prize_travel", "emirate": "Dubai",
-     "domains": ["emirates.com"], "keywords": ["emirates airline", "skywards"], "aliases": []},
-    {"id": "noon", "name": "noon", "name_ar": "نون", "sector": "retail", "scam_type": "fake_shop", "emirate": "Dubai",
-     "domains": ["noon.com"], "keywords": ["noon.com", "noon shop"], "aliases": []},
-    {"id": "amazonae", "name": "Amazon.ae", "name_ar": "أمازون", "sector": "retail", "scam_type": "fake_shop", "emirate": "Dubai",
-     "domains": ["amazon.ae"], "keywords": ["amazon.ae", "amazon"], "aliases": []},
-    {"id": "careem", "name": "Careem", "name_ar": "كريم", "sector": "mobility", "scam_type": "prize_travel", "emirate": "Dubai",
-     "domains": ["careem.com"], "keywords": ["careem"], "aliases": []},
-    {"id": "mohre", "name": "MOHRE", "name_ar": "وزارة الموارد البشرية والتوطين", "sector": "government", "scam_type": "job_offer", "emirate": "Dubai",
-     "domains": ["mohre.gov.ae"], "keywords": ["mohre", "ministry of human resources"], "aliases": []}
-  ]
+ "_note": "Protected entities: UAE organisations that scammers commonly pretend to be. Official domains are the only ones Raqib treats as legitimate for that brand. Verify against each organisation before operational use.",
+ "entities": [
+  {
+   "id": "salik",
+   "name": "Salik",
+   "name_ar": "سالك",
+   "sector": "toll",
+   "scam_type": "toll_topup",
+   "emirate": "Dubai",
+   "domains": [
+    "salik.ae"
+   ],
+   "keywords": [
+    "salik",
+    "سالك"
+   ],
+   "aliases": [
+    "salik toll",
+    "salik account"
+   ]
+  },
+  {
+   "id": "rta",
+   "name": "RTA",
+   "name_ar": "هيئة الطرق والمواصلات",
+   "sector": "government",
+   "scam_type": "traffic_fine",
+   "emirate": "Dubai",
+   "domains": [
+    "rta.ae"
+   ],
+   "keywords": [
+    "rta",
+    "roads and transport",
+    "هيئة الطرق"
+   ],
+   "aliases": [
+    "rta fines",
+    "rta dubai"
+   ]
+  },
+  {
+   "id": "dubaipolice",
+   "name": "Dubai Police",
+   "name_ar": "شرطة دبي",
+   "sector": "government",
+   "scam_type": "traffic_fine",
+   "emirate": "Dubai",
+   "domains": [
+    "dubaipolice.gov.ae"
+   ],
+   "keywords": [
+    "dubai police",
+    "شرطة دبي"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "adpolice",
+   "name": "Abu Dhabi Police",
+   "name_ar": "شرطة أبوظبي",
+   "sector": "government",
+   "scam_type": "traffic_fine",
+   "emirate": "Abu Dhabi",
+   "domains": [
+    "adpolice.gov.ae"
+   ],
+   "keywords": [
+    "abu dhabi police",
+    "شرطة أبوظبي"
+   ],
+   "aliases": [
+    "ad police",
+    "adpolice",
+    "abu dhabi traffic fines"
+   ]
+  },
+  {
+   "id": "emiratespost",
+   "name": "Emirates Post",
+   "name_ar": "بريد الإمارات",
+   "sector": "courier",
+   "scam_type": "parcel_fee",
+   "emirate": "Abu Dhabi",
+   "domains": [
+    "emiratespost.ae"
+   ],
+   "keywords": [
+    "emirates post",
+    "emiratespost",
+    "بريد الإمارات"
+   ],
+   "aliases": [
+    "emirates post group"
+   ]
+  },
+  {
+   "id": "aramex",
+   "name": "Aramex",
+   "name_ar": "أرامكس",
+   "sector": "courier",
+   "scam_type": "parcel_fee",
+   "emirate": "Dubai",
+   "domains": [
+    "aramex.com"
+   ],
+   "keywords": [
+    "aramex",
+    "أرامكس"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "dhl",
+   "name": "DHL",
+   "name_ar": "دي إتش إل",
+   "sector": "courier",
+   "scam_type": "parcel_fee",
+   "emirate": "Dubai",
+   "domains": [
+    "dhl.com"
+   ],
+   "keywords": [
+    "dhl"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "adcb",
+   "name": "ADCB",
+   "name_ar": "بنك أبوظبي التجاري",
+   "sector": "bank",
+   "scam_type": "bank_verification",
+   "emirate": "Abu Dhabi",
+   "domains": [
+    "adcb.com"
+   ],
+   "keywords": [
+    "adcb",
+    "abu dhabi commercial bank",
+    "بنك أبوظبي التجاري"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "enbd",
+   "name": "Emirates NBD",
+   "name_ar": "الإمارات دبي الوطني",
+   "sector": "bank",
+   "scam_type": "bank_verification",
+   "emirate": "Dubai",
+   "domains": [
+    "emiratesnbd.com"
+   ],
+   "keywords": [
+    "emirates nbd",
+    "emiratesnbd",
+    "الإمارات دبي الوطني"
+   ],
+   "aliases": [
+    "enbd"
+   ]
+  },
+  {
+   "id": "fab",
+   "name": "First Abu Dhabi Bank",
+   "name_ar": "بنك أبوظبي الأول",
+   "sector": "bank",
+   "scam_type": "bank_verification",
+   "emirate": "Abu Dhabi",
+   "domains": [
+    "bankfab.com"
+   ],
+   "keywords": [
+    "first abu dhabi bank",
+    "bankfab",
+    "بنك أبوظبي الأول"
+   ],
+   "aliases": [
+    "fab bank"
+   ]
+  },
+  {
+   "id": "mashreq",
+   "name": "Mashreq",
+   "name_ar": "المشرق",
+   "sector": "bank",
+   "scam_type": "bank_verification",
+   "emirate": "Dubai",
+   "domains": [
+    "mashreq.com"
+   ],
+   "keywords": [
+    "mashreq",
+    "المشرق"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "dib",
+   "name": "Dubai Islamic Bank",
+   "name_ar": "بنك دبي الإسلامي",
+   "sector": "bank",
+   "scam_type": "bank_verification",
+   "emirate": "Dubai",
+   "domains": [
+    "dib.ae"
+   ],
+   "keywords": [
+    "dubai islamic bank",
+    "بنك دبي الإسلامي"
+   ],
+   "aliases": [
+    "dib"
+   ]
+  },
+  {
+   "id": "eand",
+   "name": "e& (Etisalat)",
+   "name_ar": "إي آند",
+   "sector": "telecom",
+   "scam_type": "bill_refund",
+   "emirate": "Abu Dhabi",
+   "domains": [
+    "eand.com",
+    "etisalat.ae"
+   ],
+   "keywords": [
+    "etisalat",
+    "e&",
+    "إتصالات"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "du",
+   "name": "du",
+   "name_ar": "دو",
+   "sector": "telecom",
+   "scam_type": "bill_refund",
+   "emirate": "Dubai",
+   "domains": [
+    "du.ae"
+   ],
+   "keywords": [
+    "du telecom",
+    "du.ae"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "dewa",
+   "name": "DEWA",
+   "name_ar": "هيئة كهرباء ومياه دبي",
+   "sector": "utility",
+   "scam_type": "bill_refund",
+   "emirate": "Dubai",
+   "domains": [
+    "dewa.gov.ae"
+   ],
+   "keywords": [
+    "dewa",
+    "هيئة كهرباء ومياه دبي"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "tamm",
+   "name": "TAMM",
+   "name_ar": "تم",
+   "sector": "government",
+   "scam_type": "government_service",
+   "emirate": "Abu Dhabi",
+   "domains": [
+    "tamm.abudhabi"
+   ],
+   "keywords": [
+    "tamm",
+    "tamm abu dhabi",
+    "منصة تم"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "icp",
+   "name": "ICP (Identity & Citizenship)",
+   "name_ar": "الهيئة الاتحادية للهوية والجنسية",
+   "sector": "government",
+   "scam_type": "government_service",
+   "emirate": "Abu Dhabi",
+   "domains": [
+    "icp.gov.ae"
+   ],
+   "keywords": [
+    "icp",
+    "emirates id",
+    "identity and citizenship",
+    "الهوية والجنسية"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "uae_gov",
+   "name": "UAE Government Portal",
+   "name_ar": "البوابة الرسمية لحكومة الإمارات",
+   "sector": "government",
+   "scam_type": "government_service",
+   "emirate": "Abu Dhabi",
+   "domains": [
+    "u.ae"
+   ],
+   "keywords": [
+    "uae government",
+    "u.ae"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "fta",
+   "name": "Federal Tax Authority",
+   "name_ar": "الهيئة الاتحادية للضرائب",
+   "sector": "government",
+   "scam_type": "government_service",
+   "emirate": "Abu Dhabi",
+   "domains": [
+    "tax.gov.ae"
+   ],
+   "keywords": [
+    "federal tax authority",
+    "الهيئة الاتحادية للضرائب"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "centralbank",
+   "name": "Central Bank of the UAE",
+   "name_ar": "مصرف الإمارات المركزي",
+   "sector": "regulator",
+   "scam_type": "investment",
+   "emirate": "Abu Dhabi",
+   "domains": [
+    "centralbank.ae"
+   ],
+   "keywords": [
+    "central bank of the uae",
+    "مصرف الإمارات المركزي"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "etihad",
+   "name": "Etihad Airways",
+   "name_ar": "الاتحاد للطيران",
+   "sector": "travel",
+   "scam_type": "prize_travel",
+   "emirate": "Abu Dhabi",
+   "domains": [
+    "etihad.com"
+   ],
+   "keywords": [
+    "etihad"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "emirates",
+   "name": "Emirates",
+   "name_ar": "طيران الإمارات",
+   "sector": "travel",
+   "scam_type": "prize_travel",
+   "emirate": "Dubai",
+   "domains": [
+    "emirates.com"
+   ],
+   "keywords": [
+    "emirates airline",
+    "skywards"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "noon",
+   "name": "noon",
+   "name_ar": "نون",
+   "sector": "retail",
+   "scam_type": "fake_shop",
+   "emirate": "Dubai",
+   "domains": [
+    "noon.com"
+   ],
+   "keywords": [
+    "noon.com",
+    "noon shop"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "amazonae",
+   "name": "Amazon.ae",
+   "name_ar": "أمازون",
+   "sector": "retail",
+   "scam_type": "fake_shop",
+   "emirate": "Dubai",
+   "domains": [
+    "amazon.ae"
+   ],
+   "keywords": [
+    "amazon.ae",
+    "amazon"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "careem",
+   "name": "Careem",
+   "name_ar": "كريم",
+   "sector": "mobility",
+   "scam_type": "prize_travel",
+   "emirate": "Dubai",
+   "domains": [
+    "careem.com"
+   ],
+   "keywords": [
+    "careem"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "mohre",
+   "name": "MOHRE",
+   "name_ar": "وزارة الموارد البشرية والتوطين",
+   "sector": "government",
+   "scam_type": "job_offer",
+   "emirate": "Dubai",
+   "domains": [
+    "mohre.gov.ae"
+   ],
+   "keywords": [
+    "mohre",
+    "ministry of human resources"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "uaepass",
+   "name": "UAE PASS",
+   "name_ar": "الهوية الرقمية",
+   "sector": "government",
+   "scam_type": "government_service",
+   "emirate": "Abu Dhabi",
+   "domains": [
+    "uaepass.ae"
+   ],
+   "keywords": [
+    "uae pass",
+    "uaepass",
+    "الهوية الرقمية",
+    "يو إيه إي باس"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "moi",
+   "name": "Ministry of Interior",
+   "name_ar": "وزارة الداخلية",
+   "sector": "government",
+   "scam_type": "traffic_fine",
+   "emirate": "Abu Dhabi",
+   "domains": [
+    "moi.gov.ae"
+   ],
+   "keywords": [
+    "ministry of interior",
+    "وزارة الداخلية"
+   ],
+   "aliases": [
+    "moi uae"
+   ]
+  },
+  {
+   "id": "adib",
+   "name": "ADIB",
+   "name_ar": "مصرف أبوظبي الإسلامي",
+   "sector": "bank",
+   "scam_type": "bank_verification",
+   "emirate": "Abu Dhabi",
+   "domains": [
+    "adib.ae"
+   ],
+   "keywords": [
+    "adib",
+    "abu dhabi islamic bank",
+    "مصرف أبوظبي الإسلامي"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "rakbank",
+   "name": "RAKBANK",
+   "name_ar": "بنك رأس الخيمة الوطني",
+   "sector": "bank",
+   "scam_type": "bank_verification",
+   "emirate": "Ras Al Khaimah",
+   "domains": [
+    "rakbank.ae"
+   ],
+   "keywords": [
+    "rakbank",
+    "rak bank",
+    "بنك رأس الخيمة"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "cbd",
+   "name": "Commercial Bank of Dubai",
+   "name_ar": "بنك دبي التجاري",
+   "sector": "bank",
+   "scam_type": "bank_verification",
+   "emirate": "Dubai",
+   "domains": [
+    "cbd.ae"
+   ],
+   "keywords": [
+    "commercial bank of dubai",
+    "بنك دبي التجاري"
+   ],
+   "aliases": [
+    "cbd bank"
+   ]
+  },
+  {
+   "id": "emiratesislamic",
+   "name": "Emirates Islamic",
+   "name_ar": "الإمارات الإسلامي",
+   "sector": "bank",
+   "scam_type": "bank_verification",
+   "emirate": "Dubai",
+   "domains": [
+    "emiratesislamic.ae"
+   ],
+   "keywords": [
+    "emirates islamic",
+    "الإمارات الإسلامي"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "adnoc",
+   "name": "ADNOC",
+   "name_ar": "أدنوك",
+   "sector": "energy",
+   "scam_type": "prize_travel",
+   "emirate": "Abu Dhabi",
+   "domains": [
+    "adnoc.ae",
+    "adnocdistribution.ae"
+   ],
+   "keywords": [
+    "adnoc",
+    "أدنوك"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "lulu",
+   "name": "Lulu Hypermarket",
+   "name_ar": "لولو هايبر ماركت",
+   "sector": "retail",
+   "scam_type": "fake_shop",
+   "emirate": "Abu Dhabi",
+   "domains": [
+    "luluhypermarket.com"
+   ],
+   "keywords": [
+    "lulu hypermarket",
+    "luluhypermarket",
+    "لولو"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "sharjahpolice",
+   "name": "Sharjah Police",
+   "name_ar": "شرطة الشارقة",
+   "sector": "government",
+   "scam_type": "traffic_fine",
+   "emirate": "Sharjah",
+   "domains": [
+    "shjpolice.gov.ae"
+   ],
+   "keywords": [
+    "sharjah police",
+    "شرطة الشارقة"
+   ],
+   "aliases": []
+  },
+  {
+   "id": "addc",
+   "name": "ADDC / TAQA",
+   "name_ar": "شركة أبوظبي للتوزيع",
+   "sector": "utility",
+   "scam_type": "bill_refund",
+   "emirate": "Abu Dhabi",
+   "domains": [
+    "addc.ae",
+    "aadc.ae",
+    "taqa.com"
+   ],
+   "keywords": [
+    "addc",
+    "abu dhabi distribution",
+    "taqa"
+   ],
+   "aliases": []
+  }
+ ]
 }

@@ -9,7 +9,7 @@ import { STRENGTH, scoreColor, verdictOf } from '../meta'
 import type { Block } from '../types'
 import { Gauge } from './Gauge'
 import { Num, Reveal, Scramble, Typewriter, spring } from './fx'
-import { HostingBars, UaeMap } from './Maps'
+import { UaeMap } from './Maps'
 import { WorldMap } from './WorldMap'
 
 export interface BlockActions {
@@ -34,6 +34,7 @@ const STAT_ICON: Record<string, ReactNode> = {
 /** What each block type is called and drawn as, shown in the layout strip. */
 export const BLOCK_META: Record<string, { en: string; ar: string; icon: ReactNode }> = {
   verdict_hero: { en: 'Verdict', ar: 'الحكم', icon: <Sparkles size={13} /> },
+  screenshot: { en: 'Screenshot', ar: 'لقطة الشاشة', icon: <Globe2 size={13} /> },
   stat_row: { en: 'Key figures', ar: 'أرقام رئيسية', icon: <GaugeIcon size={13} /> },
   callout: { en: 'Alert', ar: 'تنبيه', icon: <ShieldAlert size={13} /> },
   markdown: { en: 'Narrative', ar: 'سرد', icon: <FileText size={13} /> },
@@ -78,6 +79,35 @@ function Verdict({ b }: { b: Block }) {
           {(b.chips ?? []).map((c: any, i: number) => (
             <motion.span key={i} className={`chip ${c.tone}`} initial={{ opacity: 0, y: 8 }} animate={done ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.12 * i, ...spring }}>{f(c, 'label')}</motion.span>
           ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function Screenshot({ b }: { b: Block }) {
+  const { f, p } = useLang()
+  return (
+    <div className="card">
+      <Title b={b} icon={<Globe2 size={16} color="#e5b85c" />} />
+      <div className="card-b shot-block">
+        <a className="shot-frame" href={b.src} target="_blank" rel="noreferrer"><img src={b.src} alt="" /></a>
+        <div className="col" style={{ gap: 10, minWidth: 0 }}>
+          <div><div className="eyebrow">{p('Landing page', 'صفحة الهبوط')}</div><div className="mono" style={{ fontSize: 12, wordBreak: 'break-all' }}>{b.final_url}</div></div>
+          {b.chain?.length > 1 && (
+            <div><div className="eyebrow">{p('Redirect chain', 'سلسلة التحويل')}</div>
+              {b.chain.map((h: any, i: number) => <div key={i} className="mono chain-hop"><span className={`st s${String(h.status)[0]}`}>{h.status}</span>{h.url}</div>)}
+            </div>
+          )}
+          <div className="row wrap" style={{ gap: 6 }}>
+            {b.engine && <span className="chip">{b.engine === 'browser' ? p('Rendered in isolated Chrome', 'عُرض في Chrome معزول') : p('HTTP fetch', 'جلب HTTP')}</span>}
+            {b.cloaking && <span className="chip danger">{p('Cloaking', 'إخفاء')}: {b.cloaking}</span>}
+            {b.trusted && <span className="chip ok">{b.trusted}</span>}
+            {b.ai && b.ai.impersonates && b.ai.impersonates !== 'none' && <span className="chip violet"><Sparkles size={11} /> Claude: {b.ai.impersonates} ({Math.round((b.ai.confidence ?? 0) * 100)}%)</span>}
+          </div>
+          {b.ai?.reason && <div className="faint" style={{ fontSize: 12 }}>{b.ai.reason}</div>}
+          <div className="faint" style={{ fontSize: 11.5 }}>{p('Captured', 'التُقطت')} {b.captured} · {p('mobile profile, UAE locale · SHA-256 in the evidence list', 'ملف جوال بإعدادات الإمارات · بصمة SHA-256 في قائمة الأدلة')}</div>
+          {f(b, 'note')}
         </div>
       </div>
     </div>
@@ -378,7 +408,7 @@ export function LayoutStrip({ blocks, source }: { blocks: Block[]; source: strin
   )
 }
 
-const SPAN = new Set(['verdict_hero', 'stat_row', 'journey', 'callout', 'markdown'])
+const SPAN = new Set(['verdict_hero', 'stat_row', 'journey', 'callout', 'markdown', 'screenshot'])
 
 export function BlockRenderer({ blocks, act }: { blocks: Block[]; act: BlockActions }) {
   return (
@@ -387,6 +417,7 @@ export function BlockRenderer({ blocks, act }: { blocks: Block[]; act: BlockActi
         let node: ReactNode
         switch (b.type) {
           case 'verdict_hero': node = <Verdict b={b} />; break
+          case 'screenshot': node = <Screenshot b={b} />; break
           case 'stat_row': node = <Stats b={b} />; break
           case 'callout': node = <Callout b={b} />; break
           case 'markdown': node = <Markdown b={b} />; break
@@ -407,4 +438,3 @@ export function BlockRenderer({ blocks, act }: { blocks: Block[]; act: BlockActi
   )
 }
 
-export { HostingBars }

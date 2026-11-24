@@ -8,6 +8,7 @@ import socket
 import httpx
 
 from .domains import registrable
+from .netutil import ssl_context
 
 
 async def lookup(host: str) -> dict:
@@ -20,7 +21,7 @@ async def lookup(host: str) -> dict:
         pass
     domain = registrable(host)
     try:
-        async with httpx.AsyncClient(timeout=5.0, follow_redirects=True, headers={"User-Agent": "raqib-investigator"}) as c:
+        async with httpx.AsyncClient(timeout=6.0, follow_redirects=True, verify=ssl_context(), headers={"User-Agent": "raqib-investigator"}) as c:
             r = await c.get(f"https://rdap.org/domain/{domain}")
             if r.status_code == 200:
                 d = r.json()
@@ -33,6 +34,9 @@ async def lookup(host: str) -> dict:
                         for item in ent.get("vcardArray", [None, []])[1]:
                             if item[0] == "fn":
                                 out["registrar"] = item[3]
+                for ev in d.get("events", []):
+                    if ev.get("eventAction") == "expiration":
+                        out["domain_expires"] = ev["eventDate"][:10]
             if out.get("ip"):
                 r = await c.get(f"https://rdap.org/ip/{out['ip']}")
                 if r.status_code == 200:

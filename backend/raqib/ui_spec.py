@@ -15,7 +15,7 @@ from collections import Counter
 
 from .detectors import SCAM_TYPE_LABELS, forms_of
 
-LAYOUT_BLOCKS = ["verdict", "stats", "callout", "narrative", "journey", "signals", "breakdown", "campaign", "indicators", "infrastructure", "evidence", "actions", "map"]
+LAYOUT_BLOCKS = ["verdict", "screenshot", "stats", "callout", "narrative", "journey", "signals", "breakdown", "campaign", "indicators", "infrastructure", "evidence", "actions", "map"]
 
 VICTIM_FLOW = {
     "toll_topup": ("Victims are told their {brand} balance is low or fines are pending, then sent to a look-alike page that collects card details and the SMS verification code.",
@@ -182,7 +182,10 @@ def offline_refine(ctx: dict) -> dict:
     def L(b, t="", ta="", tn="info", text="", text_ar=""):
         return {"block": b, "title": t, "title_ar": ta, "text": text, "text_ar": text_ar, "tone": tn}
 
-    layout = [L("verdict", tn=tone), L("stats")]
+    layout = [L("verdict", tn=tone)]
+    if ctx.get("screenshot"):
+        layout.append(L("screenshot", "What the isolated browser saw", "ما رآه المتصفح المعزول"))
+    layout.append(L("stats"))
     if scam:
         if len(ctx.get("journey", [])) >= 3:
             layout.append(L("journey", "How the victim is deceived", "كيف يُخدع الضحية"))
@@ -242,6 +245,16 @@ def _block_campaign(ctx: dict, item: dict) -> dict | None:
             "items": [{"case_id": r["case_id"], "host": r["host"], "label": r["label"], "kind": r.get("kind", "site"), "score": r["score"], "verdict": r["verdict"],
                        "strength": r["strength"], "on_blocklist": r.get("on_blocklist", False),
                        "reason": r["reasons"][0]["text"], "reason_ar": r["reasons"][0]["text_ar"]} for r in rel]}
+
+
+def _block_screenshot(ctx: dict, item: dict) -> dict | None:
+    if not ctx.get("screenshot"):
+        return None
+    scan = ctx.get("scan") or {}
+    return {"type": "screenshot", "title": item.get("title") or "What the isolated browser saw", "title_ar": item.get("title_ar") or "ما رآه المتصفح المعزول",
+            "src": ctx["screenshot"], "final_url": ctx.get("final_url") or ctx.get("input_url"), "chain": ctx.get("redirect_chain", []),
+            "engine": scan.get("engine"), "cloaking": scan.get("cloaking"), "trusted": (scan.get("trusted") or {}).get("reason"),
+            "ai": scan.get("ai"), "captured": ctx.get("observed_at")}
 
 
 def _block_stats(ctx: dict, item: dict) -> dict:
@@ -384,6 +397,8 @@ def compose(ctx: dict, refined: dict) -> list[dict]:
                      "text": item.get("text", ""), "text_ar": item.get("text_ar", "")}
         elif kind == "narrative":
             block = {"type": "markdown", "title": item.get("title", ""), "title_ar": item.get("title_ar", ""), "text": item.get("text", ""), "text_ar": item.get("text_ar", "")}
+        elif kind == "screenshot":
+            block = _block_screenshot(ctx, item)
         elif kind == "stats":
             block = _block_stats(ctx, item)
         elif kind == "journey":

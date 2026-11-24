@@ -34,23 +34,3 @@ export function UaeMap({ counts, unit }: { counts: Record<string, number>; unit?
     </svg>
   )
 }
-
-export function HostingBars({ data }: { data: Record<string, number> }) {
-  const { p } = useLang()
-  const rows = Object.entries(data).sort((a, b) => b[1] - a[1])
-  const max = Math.max(1, ...rows.map((r) => r[1]))
-  const NAMES: Record<string, [string, string]> = { NL: ['Netherlands', 'هولندا'], US: ['United States', 'الولايات المتحدة'], DE: ['Germany', 'ألمانيا'], SG: ['Singapore', 'سنغافورة'], TR: ['Türkiye', 'تركيا'], AE: ['UAE', 'الإمارات'] }
-  return (
-    <div className="col" style={{ gap: 8 }}>
-      {rows.map(([cc, n]) => (
-        <div key={cc} className="row" style={{ gap: 10 }}>
-          <span className="chip mono" style={{ width: 38, justifyContent: 'center' }}>{cc}</span>
-          <span className="muted" style={{ width: 118, fontSize: 12.5 }}>{p(NAMES[cc]?.[0] ?? cc, NAMES[cc]?.[1] ?? cc)}</span>
-          <div className="grow f-bar"><motion.i initial={{ width: 0 }} animate={{ width: `${(n / max) * 100}%` }} transition={{ duration: 0.8, ease: 'easeOut' }} style={{ background: 'linear-gradient(90deg,#9a8cff,#e5b85c)' }} /></div>
-          <b style={{ width: 24, textAlign: 'end' }}>{n}</b>
-        </div>
-      ))}
-      <div className="faint" style={{ fontSize: 11.5, marginTop: 2 }}>{p('Where the servers are. This is an infrastructure indicator, not the location of the people running the scam.', 'مواقع الخوادم فقط، وهو مؤشر تقني ولا يدل على مكان المحتالين.')}</div>
-    </div>
-  )
-}

@@ -19,3 +19,5 @@ backend/raqib/data/evidence/
 *.log
 .DS_Store
 .claude/
+backend/raqib/data/live_cases/
+backend/raqib/data/feeds/nrd/

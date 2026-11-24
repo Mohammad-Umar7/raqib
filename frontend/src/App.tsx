@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion'
-import { Building2, Languages, LayoutDashboard, Network, Radar, Search, Settings, ShieldCheck, Sparkles, X } from 'lucide-react'
+import { Building2, FlaskConical, Languages, LayoutDashboard, Network, Radar, Search, Settings, ShieldCheck, Sparkles, X } from 'lucide-react'
 import { api } from './api'
 import { useLang } from './i18n'
 import type { Status } from './types'
@@ -9,6 +9,7 @@ import { CommandCenter } from './views/CommandCenter'
 import { Investigation, type Nav } from './views/Investigation'
 import { Registry } from './views/Registry'
 import { Cases } from './views/Cases'
+import { Batch } from './views/Batch'
 
 function parseRoute(): { name: string; id?: string; tab?: string } {
   const [path, query] = (location.hash.replace(/^#/, '') || '/command').split('?')
@@ -44,7 +45,7 @@ function SettingsModal({ status, onClose, onChange }: { status: Status | null; o
         {msg && <div className="muted" style={{ marginTop: 12, fontSize: 12.5 }}>{msg}</div>}
         <hr className="hr" />
         <div className="faint" style={{ fontSize: 12 }}>
-          {p('Mode', 'الوضع')}: <b>{status?.requested_mode}</b> · Playwright: <b>{status?.playwright ? 'yes' : 'no'}</b> · {p('live browsing', 'التصفح المباشر')}: <b>{status?.live_ready ? p('ready', 'جاهز') : p('off (replay mode)', 'متوقف (وضع الإعادة)')}</b>
+          {p('Mode', 'الوضع')}: <b>{status?.requested_mode}</b> · Playwright: <b>{status?.playwright ? 'yes' : 'no'}</b> · {p('Claude browser agent', 'وكيل متصفح Claude')}: <b>{status?.live_ready ? p('on', 'مفعّل') : p('off (real scanner is used)', 'متوقف (يُستخدم الفاحص الحقيقي)')}</b>
         </div>
       </motion.div>
     </motion.div>
@@ -85,7 +86,7 @@ export default function App() {
   }, [])
   const nav: Nav = useMemo(() => ({ go, investigate }), [go, investigate])
 
-  const nameOf = (n: string) => ({ command: p('Command', 'القيادة'), case: p('Cases', 'القضايا'), campaigns: p('Campaigns', 'الحملات'), registry: p('Brands', 'الجهات') }[n] ?? n)
+  const nameOf = (n: string) => ({ command: p('Command', 'القيادة'), case: p('Cases', 'القضايا'), campaigns: p('Campaigns', 'الحملات'), batch: p('Evaluate', 'التقييم'), registry: p('Brands', 'الجهات') }[n] ?? n)
 
   return (
     <MotionConfig reducedMotion="user">
@@ -96,7 +97,7 @@ export default function App() {
             <path d="M32 8 12 16v15c0 12 8.500 20.500 20 25 11.500-4.500 20-13 20-25V16L32 8Z" fill="none" stroke="url(#lg)" strokeWidth="4" strokeLinejoin="round" /><circle cx="32" cy="30" r="8" fill="none" stroke="url(#lg)" strokeWidth="4" /><circle cx="32" cy="30" r="3" fill="#e5b85c" /></svg>
         </div>
         {([['command', <LayoutDashboard size={20} key="i" />, () => go('/command')], ['case', <Radar size={20} key="i" />, () => go('/cases')],
-          ['campaigns', <Network size={20} key="i" />, () => go('/campaigns')], ['registry', <Building2 size={20} key="i" />, () => go('/registry')]] as const).map(([k, icon, fn]) => (
+          ['batch', <FlaskConical size={20} key="i" />, () => go('/batch')], ['campaigns', <Network size={20} key="i" />, () => go('/campaigns')], ['registry', <Building2 size={20} key="i" />, () => go('/registry')]] as const).map(([k, icon, fn]) => (
           <button key={k} className={`rail-btn ${route.name === k || (k === 'case' && route.name === 'cases') ? 'active' : ''}`} onClick={fn}>
             {(route.name === k || (k === 'case' && route.name === 'cases')) && <motion.span layoutId="rail-ind" className="rail-ind" transition={{ type: 'spring', stiffness: 420, damping: 32 }} />}
             <span className="rail-in">{icon}{nameOf(k)}</span>
@@ -119,7 +120,7 @@ export default function App() {
             <button className={`chip ${status?.claude.enabled ? 'violet' : 'warn'}`} style={{ cursor: 'pointer' }} onClick={() => setShowSettings(true)}>
               <span className={`dot ${status?.claude.enabled ? 'live' : 'warn'}`} /> {status?.claude.enabled ? p('Claude connected', 'Claude متصل') : p('Claude offline', 'Claude غير متصل')}
             </button>
-            <span className="chip info">{status?.live_ready ? p('Live mode', 'الوضع المباشر') : p('Replay mode', 'وضع الإعادة')}</span>
+            <span className="chip info">{status?.live_ready ? p('Claude agent mode', 'وضع وكيل Claude') : p('Real scanner + demo cases', 'فاحص حقيقي + حالات تجريبية')}</span>
           </div>
         </header>
         <AnimatePresence mode="wait" initial={false}>
@@ -127,6 +128,7 @@ export default function App() {
             {route.name === 'command' && <CommandCenter nav={nav} />}
             {route.name === 'case' && route.id && <Investigation key={route.id} runId={route.id} nav={nav} initialTab={route.tab} />}
             {route.name === 'cases' && <Cases nav={nav} />}
+            {route.name === 'batch' && <Batch nav={nav} />}
             {route.name === 'campaigns' && <Campaigns nav={nav} />}
             {route.name === 'registry' && <Registry />}
           </motion.div>

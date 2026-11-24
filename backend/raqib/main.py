@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import re
 from collections import Counter
 
 from fastapi import FastAPI, HTTPException, Query
@@ -11,7 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, PlainTextResponse, Response, StreamingResponse
 from pydantic import BaseModel
 
-from . import __version__, config, hunters, knowledge, report
+from . import __version__, batch, config, hunters, hunters_live, knowledge, report
 from .domains import host_of
 from .claude_service import service as claude
 from .investigations import default_speed, manager
@@ -39,7 +40,8 @@ def _playwright_available() -> bool:
 def status() -> dict:
     return {"version": __version__, "requested_mode": config.requested_mode(), "claude": claude.status(), "playwright": _playwright_available(),
             "live_ready": config.requested_mode() == "live" and claude.enabled and _playwright_available(), "speed": default_speed(),
-            "cases": len(K().cases), "entities": len(K().reg.entities)}
+            "cases": len(K().cases), "entities": len(K().reg.entities),
+            "sources": {"nrd": True, "serpapi": bool(hunters_live.serpapi_key()), "browser": _playwright_available()}}
 
 
 class KeyBody(BaseModel):
@@ -240,6 +242,115 @@ def report_pdf(run_id: str) -> Response:
 def blocklist_csv(run_id: str) -> PlainTextResponse:
     return PlainTextResponse(report.blocklist_csv(_result(run_id)["ctx"]), media_type="text/csv",
                              headers={"Content-Disposition": f'attachment; filename="raqib-blocklist-{run_id}.csv"'})
+
+
+# --------------------------------------------------------------------------- live hunting
+
+@app.get("/api/hunt/new-domains")
+async def hunt_new_domains(days: int = Query(2, ge=1, le=7), force: bool = False) -> dict:
+    try:
+        return await hunters_live.nrd_hunt(days=days, force=force)
+    except Exception as exc:
+        raise HTTPException(502, f"New-domain feed unavailable: {exc}")
+
+
+@app.get("/api/hunt/search-maps")
+async def hunt_search_maps(force: bool = False) -> dict:
+    return await hunters_live.serp_hunt(force=force)
+
+
+# --------------------------------------------------------------------------- batch scanning and evaluation
+
+class BatchBody(BaseModel):
+    text: str
+    use_browser: bool = True
+    use_ai: bool = False
+    concurrency: int = 4
+
+
+@app.post("/api/batch")
+async def batch_start(body: BatchBody) -> dict:
+    try:
+        job = batch.start(body.text, body.use_browser, body.use_ai, body.concurrency)
+    except ValueError as exc:
+        raise HTTPException(400, str(exc))
+    return {"id": job.id, "total": len(job.rows)}
+
+
+def _job(job_id: str) -> batch.Job:
+    job = batch.JOBS.get(job_id)
+    if not job:
+        raise HTTPException(404, "Unknown batch")
+    return job
+
+
+@app.get("/api/batch/sample")
+async def batch_sample(kind: str = "mixed", n: int = 15) -> dict:
+    """Ready-made labelled lists: recorded demo cases, real legitimate UAE sites, live phishing from OpenPhish."""
+    rows: list[dict] = []
+    if kind in ("mixed", "recorded"):
+        rows += batch.recorded_sample()
+    if kind in ("mixed", "legit"):
+        rows += [{"url": u, "label": "legit"} for u in batch.LEGIT_SAMPLE]
+    if kind == "openphish":
+        try:
+            rows += await batch.openphish_sample(n)
+        except Exception as exc:
+            raise HTTPException(502, f"OpenPhish feed unavailable: {exc}")
+    return {"text": "url,label\n" + "\n".join(f"{r['url']},{r['label']}" for r in rows), "count": len(rows)}
+
+
+@app.get("/api/batch/{job_id}")
+def batch_status(job_id: str) -> dict:
+    return _job(job_id).snapshot()
+
+
+@app.post("/api/batch/{job_id}/cancel")
+def batch_cancel(job_id: str) -> dict:
+    job = _job(job_id)
+    job.cancelled = True
+    return {"ok": True}
+
+
+@app.get("/api/batch/{job_id}/results.csv")
+def batch_csv(job_id: str) -> PlainTextResponse:
+    return PlainTextResponse(batch.to_csv(_job(job_id)), media_type="text/csv", headers={"Content-Disposition": f'attachment; filename="raqib-batch-{job_id}.csv"'})
+
+
+@app.get("/api/batch/{job_id}/results.json")
+def batch_json(job_id: str) -> Response:
+    data = json.dumps(_job(job_id).snapshot(), ensure_ascii=False, indent=1, default=str)
+    return Response(data, media_type="application/json", headers={"Content-Disposition": f'attachment; filename="raqib-batch-{job_id}.json"'})
+
+
+# --------------------------------------------------------------------------- evidence files and exports
+
+@app.get("/api/evidence/{run_id}/{name}")
+def evidence_file(run_id: str, name: str) -> FileResponse:
+    if not run_id.isalnum() or not re.fullmatch(r"[A-Za-z0-9_.-]+", name) or ".." in name:
+        raise HTTPException(400, "bad name")
+    path = config.EVIDENCE_DIR / run_id / name
+    if not path.is_file():
+        raise HTTPException(404, "not found")
+    return FileResponse(path)
+
+
+@app.get("/api/investigations/{run_id}/bundle.json")
+def evidence_bundle(run_id: str) -> Response:
+    """Machine-readable case bundle for takedown partners and other agencies."""
+    res = _result(run_id)
+    ctx = res["ctx"]
+    out = {
+        "case": run_id, "generated_by": f"Raqib {__version__}", "input_url": ctx["input_url"], "final_url": ctx.get("final_url"), "domain": ctx["domain"],
+        "score": ctx["score"], "verdict": ctx["verdict"], "scam_type": ctx["scam_type"], "impersonates": (ctx.get("brand") or {}).get("name"),
+        "signals": [{"id": g["id"], "label": g["label"], "weight": g["weight"]} for g in ctx["signals"]],
+        "indicators": {**ctx.get("iocs", {}), **ctx.get("contacts", {})}, "infrastructure": ctx.get("infra", {}),
+        "redirect_chain": ctx.get("redirect_chain"), "campaign": ctx.get("cluster_id"),
+        "related": [{"domain": r["host"], "strength": r["strength"], "why": r["reasons"][0]["text"]} for r in ctx.get("related", [])],
+        "evidence": ctx["evidence"], "manifest_sha256": ctx["manifest"], "actions": report.action_pack(ctx)["takedowns"],
+    }
+    return Response(json.dumps(out, ensure_ascii=False, indent=1, default=str), media_type="application/json",
+                    headers={"Content-Disposition": f'attachment; filename="raqib-case-{run_id}.json"'})
 
 
 # --------------------------------------------------------------------------- campaigns

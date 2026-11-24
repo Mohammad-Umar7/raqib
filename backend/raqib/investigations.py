@@ -19,7 +19,7 @@ import secrets
 
 from . import config, fingerprint, hunters, knowledge, ui_spec
 from .claude_service import service as claude
-from .detectors import analyse, classify_scam, risk_score, verdict_for, SCAM_TYPE_LABELS
+from .detectors import analyse, classify_scam, enrich, final_score, risk_score, verdict_for, SCAM_TYPE_LABELS
 from .domains import host_of, registrable
 from .events import Run
 from .evidence import EvidenceStore
@@ -60,24 +60,28 @@ def build_ctx(case: dict | None, analysis: dict, K: knowledge.Knowledge, store: 
         "on_blocklist": (K.on_blocklist(case["case_id"]) if case["case_id"] in K.cases else registrable(host) in hunters.blocklist()) if case else False,
         "evidence": store.items, "manifest": store.manifest(),
         "journey": ui_spec.journey_steps(case, analysis),
+        "screenshot": (case or {}).get("screenshot"),
+        "redirect_chain": (case or {}).get("redirect_chain", []),
+        "scan": {k: v for k, v in ((case or {}).get("scan") or {}).items() if k in ("engine", "cloaking", "trusted", "ai")},
         "kit_files": ([{"name": n, "sha256": h} for h, n in fingerprint.build(case)["kit_names"].items()] if case else []),
     }
 
 
 async def analyze_emit(run: Run, case: dict, K: knowledge.Knowledge, seen: set[str], speed: float, upto_page: int | None = None) -> dict:
     """Run every detector over the evidence so far and stream newly found signals and the rising score."""
-    analysis = analyse(case, K.reg, upto_page=upto_page)
+    analysis = enrich(analyse(case, K.reg, upto_page=upto_page), case)
     shown = [g for g in analysis["signals"] if g["id"] in seen]
     for sig in analysis["signals"]:
         if sig["id"] not in seen:
             seen.add(sig["id"])
             shown.append(sig)
-            sc = risk_score(shown)
+            sc = final_score({**analysis, "signals": shown})
             run.emit("signal", **sig)
             run.emit("score", score=sc, verdict=verdict_for(sc, False))
             await _pause(0.45, speed)
-    score = risk_score(analysis["signals"])
-    run.emit("score", score=score, verdict=verdict_for(score, analysis["official"]))
+    score = final_score(analysis)
+    analysis.update(score=score, verdict=verdict_for(score, bool(analysis.get("official"))), scam_type=classify_scam(analysis))
+    run.emit("score", score=score, verdict=analysis["verdict"])
     run.emit("indicators", contacts=analysis["contacts"], iocs=analysis["iocs"], brand=analysis["brand"],
              brand_confidence=analysis["brand_confidence"], lookalike=analysis["lookalike"])
     return analysis
@@ -142,13 +146,14 @@ async def run_replay(run: Run, case: dict, K: knowledge.Knowledge, speed: float)
     await _finish(run, case, K, store, speed)
 
 
-async def _finish(run: Run, case: dict, K: knowledge.Knowledge, store: EvidenceStore, speed: float) -> None:
+async def _finish(run: Run, case: dict, K: knowledge.Knowledge, store: EvidenceStore, speed: float, analysis: dict | None = None) -> None:
     """Shared tail: fingerprint, link to known campaigns, let Claude write the case view, compose the UI."""
-    analysis = K.analysis[case["case_id"]] if case["case_id"] in K.analysis else None
+    if analysis is None and case["case_id"] in K.analysis:
+        analysis = K.analysis[case["case_id"]]
     if analysis is None:
-        analysis = analyse(case, K.reg)
-        score = risk_score(analysis["signals"])
-        analysis.update(score=score, verdict=verdict_for(score, analysis["official"]), scam_type=classify_scam(analysis))
+        analysis = enrich(analyse(case, K.reg), case)
+        score = final_score(analysis)
+        analysis.update(score=score, verdict=verdict_for(score, bool(analysis.get("official"))), scam_type=classify_scam(analysis))
     run.emit("status", phase="fingerprinting", label="Building the scam fingerprint")
     fp = K.fps.get(case["case_id"]) or fingerprint.build(case)
     run.emit("fingerprint", domain=fp["domain"], kit_files=len(fp["kit_files"]), exfil=fp["exfil"], wallets=fp["wallets"], phones=fp["phones"] + fp["whatsapp"],
@@ -238,6 +243,84 @@ async def run_listing(run: Run, case: dict, K: knowledge.Knowledge, speed: float
     await _finish(run, case, K, store, speed)
 
 
+async def run_scan(run: Run, url: str, K: knowledge.Knowledge, speed: float) -> None:
+    """Real investigation of any URL: follow it, load it in the isolated browser, read it, score it, link it."""
+    from . import scanner
+    from .claude_service import service as claude
+
+    store = EvidenceStore()
+    run.emit("meta", case_id="scan", input_url=url, mode="scan", viewport={"w": 390, "h": 760},
+             profile="Headless Chrome · mobile · UAE locale (en-AE, Asia/Dubai) · fresh profile",
+             sandbox="isolated browser context · nothing typed or submitted · destroyed after the run")
+    run.emit("status", phase="browsing", label="Isolated browser started")
+    run.emit("note", text="Opening the link in an isolated browser. Nothing is typed, submitted or downloaded.",
+             text_ar="فتح الرابط في متصفح معزول. لا يتم إدخال أو إرسال أو تنزيل أي شيء.")
+
+    def on_progress(kind: str, **data) -> None:
+        if kind == "progress":
+            run.emit("note", text=data["text"])
+        elif kind == "request":
+            run.emit("request", **data)
+
+    res = await scanner.scan(url, use_browser=True, use_ai=claude.enabled, emit=on_progress, reg=K.reg)
+    if res.get("error") and not res.get("case"):
+        raise RuntimeError(res["error"])
+    case, analysis = res["case"], res["analysis"]
+    page = case["pages"][0] if case["pages"] else None
+    chain = case["redirect_chain"]
+    if len(chain) > 1:
+        run.emit("note", text=f"The link went through {len(chain) - 1} redirect(s) before landing on {case['host']}.",
+                 text_ar=f"مرّ الرابط عبر {len(chain) - 1} تحويل قبل الوصول إلى {case['host']}.")
+    if res["png"]:
+        scanner.save_screenshot(run.id, "p1.png", res["png"])
+        run.emit("frame", page_id="p1", url=case["final_url"], title=(page or {}).get("title", ""), kind="image",
+                 image=scanner.png_b64_jpeg(res["png"]), elements=[], viewport={"w": 390, "h": 760})
+        run.emit("evidence", **store.add("screenshot", f"Screenshot · {case['final_url']}", res["png"], "p1"))
+    elif page:
+        run.emit("frame", page_id="p1", url=case["final_url"], title=page.get("title", ""), elements=page["elements"][:40],
+                 viewport={"w": 390, "h": 760}, kind="wireframe")
+    else:
+        run.emit("note", text=f"The page could not be loaded ({res.get('error') or 'no response'}). Scoring the link itself.",
+                 text_ar="تعذّر تحميل الصفحة. يتم تقييم الرابط نفسه.")
+    await _pause(0.6, speed)
+    if page:
+        for req in page.get("network", [])[:30]:
+            run.emit("request", **req)
+        run.emit("evidence", **store.add("dom", f"Rendered page · {case['final_url']}", res.get("html") or page["elements"], "p1"))
+        run.emit("evidence", **store.add("network", f"Network log · {len(page.get('network', []))} requests", page.get("network", []), "p1"))
+        for sc in page.get("scripts", []):
+            if not sc.get("library"):
+                run.emit("evidence", **store.add("script", f"Script · {sc['src'][:80]}", sc["src"], "p1", sha256=sc["sha256"]))
+    run.emit("evidence", **store.add("redirects", f"Redirect chain · {len(chain)} hop(s)", chain))
+    info = case.get("infra") or {}
+    if info:
+        run.emit("evidence", **store.add("whois", f"RDAP / WHOIS · registered {info.get('domain_created', 'unknown')}",
+                                         {k: info.get(k) for k in ("registrar", "domain_created", "domain_expires", "nameservers")}))
+        run.emit("evidence", **store.add("hosting", f"Hosting · {info.get('asn_org', '?')} · {info.get('ip', '?')}",
+                                         {k: info.get(k) for k in ("ip", "asn_org", "country")}))
+    if res.get("cloaking"):
+        run.emit("note", text=f"Cloaking detected: {res['cloaking']}.")
+    if res.get("trusted"):
+        run.emit("note", text=f"{case['host']} is {res['trusted']['reason']}.")
+
+    # stream what the detectors found, strongest first, with the score climbing
+    run.emit("status", phase="analyzing", label="Scoring the evidence")
+    shown: list[dict] = []
+    for sig in sorted(analysis["signals"], key=lambda g: -g["weight"]):
+        shown.append(sig)
+        sc = final_score({**analysis, "signals": shown})
+        run.emit("signal", **sig)
+        run.emit("score", score=sc, verdict=verdict_for(sc, False))
+        await _pause(0.4, speed)
+    run.emit("score", score=analysis["score"], verdict=analysis["verdict"])
+    run.emit("indicators", contacts=analysis["contacts"], iocs=analysis["iocs"], brand=analysis["brand"],
+             brand_confidence=analysis.get("brand_confidence", 0), lookalike=analysis.get("lookalike", {}))
+    case["screenshot"] = f"/api/evidence/{run.id}/p1.png" if res["png"] else None
+    if analysis["score"] >= 30 and not res.get("trusted"):
+        K.add_live(case, analysis)  # future scans link to this one
+    await _finish(run, case, K, store, speed, analysis=analysis)
+
+
 def _persist(run: Run) -> None:
     try:
         config.RUNS_DIR.mkdir(parents=True, exist_ok=True)
@@ -304,12 +387,14 @@ class Manager:
         cid = K.resolve(url)
         case = K.cases.get(cid) if cid else None
         live_ok = config.requested_mode() == "live" and claude.enabled
+        if case and case.get("source") == "scan":
+            case = None  # an earlier real scan: scan the URL again rather than replaying
         if mode == "auto":
-            mode = "replay" if case and case["kind"] == "site" else ("live" if live_ok else "static")
+            mode = "replay" if case and case["kind"] == "site" else ("live" if live_ok else "scan")
         if case and case["kind"] == "maps_listing":
             mode = "listing"
         elif mode == "replay" and (not case or case["kind"] != "site"):
-            mode = "live" if live_ok else "static"
+            mode = "live" if live_ok else "scan"
         run = Run(secrets.token_hex(4), url, mode)
         self.runs[run.id] = run
         run.emit("status", phase="queued", label="Investigation queued")
@@ -324,6 +409,8 @@ class Manager:
                     from . import live
 
                     await live.run_live(run, url, K, spd)
+                elif mode == "scan":
+                    await run_scan(run, url, K, spd)
                 else:
                     await run_static(run, url, K, spd)
                 run.finish()

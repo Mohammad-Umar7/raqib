@@ -12,6 +12,7 @@ CASES_DIR = DATA_DIR / "cases"
 FEEDS_DIR = DATA_DIR / "feeds"
 RUNS_DIR = DATA_DIR / "runs"
 EVIDENCE_DIR = DATA_DIR / "evidence"
+LIVE_CASES_DIR = DATA_DIR / "live_cases"  # real scans kept for campaign linking (git-ignored)
 FRONTEND_DIST = ROOT_DIR / "frontend" / "dist"
 
 
@@ -40,7 +41,7 @@ def model_name() -> str:
 
 
 def requested_mode() -> str:
-    return os.environ.get("RAQIB_MODE", "replay").strip().lower()
+    return os.environ.get("RAQIB_MODE", "auto").strip().lower()
 
 
 def set_api_key(key: str) -> None:

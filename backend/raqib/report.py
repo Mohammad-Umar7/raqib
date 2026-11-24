@@ -7,6 +7,7 @@ import io
 from datetime import datetime, timezone
 from pathlib import Path
 
+from . import config
 from .domains import registrable
 
 STRENGTH_COLORS = {"strong": "#D6336C", "medium": "#F08C00", "weak": "#868E96"}
@@ -149,6 +150,20 @@ def build_pdf(result: dict) -> bytes:
     story += [hero, Paragraph("Subject", H2), table([["Input URL", ctx["input_url"]], ["Final URL", ctx.get("final_url") or "-"], ["Domain", ctx["domain"]], ["Scam type", ctx["scam_label"]["en"]],
                                                     ["Impersonated", (ctx.get("brand") or {}).get("name", "-")], ["Campaign", f"{ctx.get('cluster_id') or '-'} ({ctx.get('cluster_size', 1)} sites)"],
                                                     ["Public blocklist", "listed" if ctx.get("on_blocklist") else "not listed"]], [35 * mm, 135 * mm], header=False)]
+    shot = config.EVIDENCE_DIR / result["run_id"] / "p1.png"
+    if shot.is_file():
+        from reportlab.platypus import Image as RLImage
+
+        img = RLImage(str(shot))
+        ratio = img.imageHeight / float(img.imageWidth or 1)
+        img.drawWidth, img.drawHeight = 52 * mm, 52 * mm * ratio
+        chain = " → ".join(h["url"] for h in ctx.get("redirect_chain", [])[:4]) or ctx.get("final_url") or ctx["input_url"]
+        side = [Paragraph("<b>Screenshot captured by the isolated browser</b>", P), Spacer(1, 4),
+                Paragraph(f"Mobile Chrome, UAE locale. Captured {ctx.get('observed_at', '')}. SHA-256 in the evidence table.", SM), Spacer(1, 6),
+                Paragraph("<b>Redirect chain</b>", P), Paragraph(chain, MONO)]
+        t = Table([[img, side]], colWidths=[58 * mm, 112 * mm])
+        t.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP")]))
+        story += [Paragraph("Evidence screenshot", H2), t]
     if ctx["verdict"] not in ("no_indicators", "official"):
         story += [Paragraph("How the victim is deceived", H2), Paragraph(refined["victim_impact"], P)]
     story += [Paragraph("Why this score", H2),

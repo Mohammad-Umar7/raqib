@@ -46,7 +46,7 @@ export function Scramble({ text, ms = 700 }: { text: string; ms?: number }) {
 
 export function Num({ value, ms = 900, suffix = '' }: { value: number; ms?: number; suffix?: string }) {
   const v = useCountUp(value, ms)
-  return <>{Math.round(v)}{suffix}</>
+  return <>{Math.round(v).toLocaleString('en-US')}{suffix}</>
 }
 
 /** Fade + rise on mount, staggered by index. */

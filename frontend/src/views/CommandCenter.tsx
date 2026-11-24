@@ -5,6 +5,7 @@ import { ArrowRight, Globe2, Layers, Map as MapIcon, Megaphone, MessageSquare, P
 import { api, stream } from '../api'
 import { UaeMap } from '../components/Maps'
 import { WorldMap } from '../components/WorldMap'
+import { LiveHunt } from '../components/LiveHunt'
 import { Num, Rise, soft, spring } from '../components/fx'
 import { Radar, type Dot } from '../components/Radar'
 import { useLang } from '../i18n'
@@ -143,6 +144,8 @@ export function CommandCenter({ nav }: { nav: Nav }) {
           <Step i={4} label={p('Not on any blocklist', 'غير مدرجة في أي قائمة حجب')} hint={p('still live, no public block', 'ما زالت تعمل دون حجب')} value={view.unblocked} of={view.confirmed} color="#a78bfa" />
         </div>
       )}
+
+      <Rise i={2}><div style={{ marginBottom: 18 }}><LiveHunt onScan={(h) => nav.investigate(h)} /></div></Rise>
 
       <div className="grid-2" style={{ gridTemplateColumns: 'minmax(0,1.6fr) minmax(0,1fr)', alignItems: 'start' }}>
         <div className="card">

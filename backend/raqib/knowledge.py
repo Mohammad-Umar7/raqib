@@ -6,7 +6,7 @@ import json
 import threading
 
 from . import campaign, config, fingerprint, hunters
-from .detectors import analyse, classify_scam, risk_score, verdict_for
+from .detectors import analyse, classify_scam, enrich, final_score, verdict_for
 from .domains import host_of, registrable
 from .registry import load_registry
 
@@ -26,7 +26,8 @@ class Knowledge:
     def reload(self) -> None:
         with self._lock:
             self.cases.clear(), self.analysis.clear(), self.fps.clear()
-            for path in sorted(config.CASES_DIR.glob("*.json")):
+            paths = sorted(config.CASES_DIR.glob("*.json")) + (sorted(config.LIVE_CASES_DIR.glob("*.json")) if config.LIVE_CASES_DIR.is_dir() else [])
+            for path in paths:
                 c = json.loads(path.read_text(encoding="utf-8"))
                 self.cases[c["case_id"]] = c
             for cid, c in self.cases.items():
@@ -35,10 +36,25 @@ class Knowledge:
             self.graph = campaign.build_graph(self.fps)
             self.index = hunters.case_index(self.cases)
 
+    def add_live(self, case: dict, analysis: dict) -> None:
+        """Remember a real scan so later scans can link to it (and persist it across restarts)."""
+        with self._lock:
+            cid = case["case_id"]
+            self.cases[cid] = case
+            self.analysis[cid] = analysis
+            self.fps[cid] = fingerprint.build(case)
+            self.graph = campaign.build_graph(self.fps)
+            self.index = hunters.case_index(self.cases)
+        try:
+            config.LIVE_CASES_DIR.mkdir(parents=True, exist_ok=True)
+            (config.LIVE_CASES_DIR / f"{cid}.json").write_text(json.dumps(case, ensure_ascii=False, default=str), encoding="utf-8")
+        except OSError:
+            pass
+
     def _analyse_case(self, c: dict) -> dict:
         if c["kind"] == "site":
-            a = analyse(c, self.reg)
-            score = risk_score(a["signals"])
+            a = enrich(analyse(c, self.reg), c)
+            score = final_score(a)
             a.update(score=score, verdict=verdict_for(score, a["official"]), scam_type=classify_scam(a))
             return a
         # Maps listing: no site to browse, so score it from listing triage

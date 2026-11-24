@@ -76,10 +76,10 @@ function RiskCard({ s }: { s: InvState }) {
           </AnimatePresence>
           <div className="row wrap">
             <AnimatePresence>
-              {brand && <motion.span key="b" className="chip danger" initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} transition={spring}>{p('Imitates', 'ينتحل')} {lang === 'ar' ? brand.name_ar : brand.name}</motion.span>}
+              {brand && <motion.span key="b" className={`chip ${s.verdict === 'official' ? 'ok' : 'danger'}`} initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} transition={spring}>{s.verdict === 'official' ? p('Official', 'رسمي') : p('Imitates', 'ينتحل')} {lang === 'ar' ? brand.name_ar : brand.name}</motion.span>}
             </AnimatePresence>
             {s.indicators?.brand_confidence ? <span className="chip">{p('confidence', 'الثقة')} {Math.round(s.indicators.brand_confidence * 100)}%</span> : null}
-            {s.mode && <span className="chip info">{s.mode === 'replay' ? p('Replay · recorded evidence', 'إعادة · أدلة مسجّلة') : s.mode === 'live' ? p('Live browser', 'متصفح مباشر') : s.mode === 'listing' ? p('Maps listing', 'موقع خرائط') : p('Triage only', 'فحص النطاق فقط')}</span>}
+            {s.mode && <span className="chip info">{s.mode === 'replay' ? p('Replay · recorded evidence', 'إعادة · أدلة مسجّلة') : s.mode === 'scan' ? p('Real scan · isolated browser', 'فحص حقيقي · متصفح معزول') : s.mode === 'live' ? p('Claude agent · live browser', 'وكيل Claude · متصفح مباشر') : s.mode === 'listing' ? p('Maps listing', 'موقع خرائط') : p('Triage only', 'فحص النطاق فقط')}</span>}
           </div>
         </div>
       </div>

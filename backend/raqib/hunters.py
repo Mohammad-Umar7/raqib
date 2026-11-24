@@ -46,6 +46,16 @@ def blocklist() -> set[str]:
     return {registrable(d) for d in _feed("blocklist.json")["domains"]}
 
 
+# Brands whose name is also an everyday word or a common foreign brand: only suspicious with UAE or lure context.
+AMBIGUOUS_BRANDS = {"amazonae", "fta", "moi", "cbd", "emirates", "noon", "careem", "du", "fab", "dib", "icp", "tamm", "lulu", "dhl", "adnoc", "uae_gov", "etihad"}
+UAE_MARKERS = {"ae", "uae", "dubai", "dxb", "abudhabi", "auh", "sharjah", "shj", "ajman", "rak", "fujairah", "emirati", "gov", "khaleej"}
+
+
+def _uae_context(host: str) -> bool:
+    tokens = {t for t in re.split(r"[-_.\d]+", host.lower()) if t}
+    return bool(tokens & UAE_MARKERS) or host.endswith(".ae") or _lure_count(host) >= 1
+
+
 def themes_in_label(host: str) -> bool:
     compact = re.sub(r"[^a-z]", "", label_of(host))
     return any(w in compact for w in THEME_WORDS if len(w) >= 4)
@@ -75,6 +85,8 @@ def triage_host(host: str, reg: Registry, *, title: str = "", ad: bool = False, 
         return {"score": 0, "reasons": [], "brand": None}
     score, reasons = 0, []
     look, brand_id, why = _best_lookalike(host, reg)
+    if brand_id in AMBIGUOUS_BRANDS and not _uae_context(host):
+        look, brand_id, why = 0.0, None, []  # "amazon", "tax", "emirates"... are ordinary words without a UAE or lure context
     if look >= 0.55:
         pts = int(30 + 30 * look)
         score += pts

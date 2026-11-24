@@ -61,6 +61,11 @@ def compare(a: dict, b: dict) -> list[dict]:
     elif ia.get("asn") and ia["asn"] == ib.get("asn") and not (ia.get("cdn") or ib.get("cdn")):
         reasons.append(_reason("asn", "weak", f"Same hosting provider ({ia.get('asn_org') or ia['asn']})",
                                f"نفس مزوّد الاستضافة ({ia.get('asn_org') or ia['asn']})", ia["asn"]))
+    near = [(x, y) for x in a.get("shots", []) for y in b.get("shots", []) if bin(int(x, 16) ^ int(y, 16)).count("1") <= 6]
+    if near:
+        dist = bin(int(near[0][0], 16) ^ int(near[0][1], 16)).count("1")
+        reasons.append(_reason("visual", "weak", f"Screenshots are visually near-identical ({64 - dist}/64 matching bits)",
+                               "لقطات الشاشة متطابقة تقريباً بصرياً", str(dist)))
     lay = layout_similarity(a, b)
     if lay >= 0.7:
         reasons.append(_reason("layout", "weak", f"Page layout is {int(lay * 100)}% similar (could be a copied template)",

@@ -30,6 +30,7 @@ def build(bundle: dict) -> dict:
 
     kit_files, kit_names = set(), {}
     favicon = None
+    shots: list[str] = []
     for p in pages:
         for s in p.get("scripts", []) + p.get("assets", []):
             if s.get("library"):
@@ -38,6 +39,9 @@ def build(bundle: dict) -> dict:
                 kit_files.add(s["sha256"])
                 kit_names[s["sha256"]] = s.get("src", "")
         favicon = favicon or p.get("meta", {}).get("favicon_hash")
+        shot = p.get("meta", {}).get("screenshot_dhash")
+        if shot:
+            shots.append(shot)
 
     layout: list[str] = []
     for p in pages:
@@ -64,6 +68,7 @@ def build(bundle: dict) -> dict:
         "layout": sorted(_shingles(layout, 3)),
         "text": sorted(hashlib.sha1(s.encode()).hexdigest()[:10] for s in _shingles(words, 4)),
         "redirect_hosts": redirect_hosts,
+        "shots": shots,
         "infra": {
             "asn": infra.get("asn"), "asn_org": infra.get("asn_org"), "ip": infra.get("ip"),
             "country": infra.get("country"), "registrar": infra.get("registrar"),
