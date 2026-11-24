@@ -1,42 +1,28 @@
 import type React from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowRight, Globe2, Layers, Map as MapIcon, Megaphone, MessageSquare, Play, Radar as RadarIcon, Search, ShieldCheck, Sparkles, Square } from 'lucide-react'
+import { ArrowRight, Inbox as InboxIcon, Map as MapIcon, Megaphone, MessageSquare, Network, Play, Search, ShieldCheck, Square } from 'lucide-react'
 import { api, stream } from '../api'
 import { WorldMap } from '../components/WorldMap'
-import { LiveHunt } from '../components/LiveHunt'
-import { Num, Rise, soft, spring } from '../components/fx'
+import { RadarStatus } from '../components/RadarStatus'
+import { RadarRow } from './Inbox'
+import { Num, Rise, soft } from '../components/fx'
 import { Radar, type Dot } from '../components/Radar'
 import { useLang } from '../i18n'
 import { SCAM_TYPES, SOURCES, scoreColor, verdictOf } from '../meta'
-import type { Candidate, Overview } from '../types'
+import type { Candidate, Overview, RadarItem, RadarSnap } from '../types'
 import type { Nav } from './Investigation'
 
 type Cand = Candidate & { verdict?: string | null; score?: number | null; kind?: string | null; blocked?: boolean }
-const ICON: Record<string, React.ReactElement> = { shield: <ShieldCheck size={20} />, search: <Search size={20} />, megaphone: <Megaphone size={20} />, map: <MapIcon size={20} />, message: <MessageSquare size={20} /> }
+const ICON: Record<string, React.ReactElement> = { shield: <ShieldCheck size={14} strokeWidth={1.5} />, search: <Search size={14} strokeWidth={1.5} />, megaphone: <Megaphone size={14} strokeWidth={1.5} />, network: <Network size={14} strokeWidth={1.5} />, map: <MapIcon size={14} strokeWidth={1.5} />, message: <MessageSquare size={14} strokeWidth={1.5} /> }
 
-function Ring({ value }: { value: number }) {
-  const r = 20, len = 2 * Math.PI * r
-  const c = scoreColor(value)
+function Step({ label, sub, value, tone }: { label: string; sub?: string; value: number; tone?: string }) {
   return (
-    <svg width="50" height="50" viewBox="0 0 50 50" style={{ flex: 'none' }}>
-      <circle cx="25" cy="25" r={r} fill="none" stroke="#1d1d26" strokeWidth="4" />
-      <motion.circle cx="25" cy="25" r={r} fill="none" stroke={c} strokeWidth="4" strokeLinecap="round" transform="rotate(-90 25 25)" strokeDasharray={len}
-        initial={{ strokeDashoffset: len }} animate={{ strokeDashoffset: len * (1 - value / 100) }} transition={{ duration: 0.9, ease: 'easeOut' }} />
-      <text x="25" y="29.5" textAnchor="middle" fontSize="13" fontWeight="750" fill={c}>{value}</text>
-    </svg>
-  )
-}
-
-function Step({ label, hint, value, of, color, i }: { label: string; hint?: string; value: number; of: number; color: string; i: number }) {
-  const pct = of > 0 ? Math.round((value / of) * 100) : 0
-  return (
-    <motion.div className="fstep" style={{ ['--fc' as any]: color }} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ ...soft, delay: i * 0.07 }}>
-      <div className="fs-top"><span>{label}</span>{i > 0 && of > 0 && <em>{pct}%</em>}</div>
-      <div className="fs-num"><Num value={value} ms={420} /></div>
-      <div className="fs-bar"><motion.i animate={{ width: `${Math.max(value > 0 ? 6 : 0, Math.min(100, (value / Math.max(of, 1)) * 100))}%` }} transition={{ duration: 0.5 }} /></div>
-      {hint && <div className="fs-hint">{hint}</div>}
-    </motion.div>
+    <div>
+      <div className="fig-label">{label}</div>
+      <div className="fig" style={tone ? { color: tone } : undefined}><Num value={value} ms={420} /></div>
+      {sub && <div className="fig-sub">{sub}</div>}
+    </div>
   )
 }
 
@@ -48,6 +34,18 @@ export function CommandCenter({ nav }: { nav: Nav }) {
   const [dots, setDots] = useState<Dot[]>([])
   const [run, setRun] = useState<{ on: boolean; scanned: number; flagged: number; investigated: number; confirmed: number; unblocked: number; total: number; line: string } | null>(null)
   const stop = useRef<(() => void) | null>(null)
+  const [snap, setSnap] = useState<RadarSnap | null>(null)
+  const [live, setLive] = useState<RadarItem[]>([])
+
+  useEffect(() => {
+    const load = () => {
+      api.radar().then(setSnap).catch(() => {})
+      api.radarItems('all', 200).then((r) => setLive(r.items)).catch(() => {})
+    }
+    load()
+    const id = window.setInterval(load, 4000)
+    return () => window.clearInterval(id)
+  }, [])
 
   useEffect(() => {
     api.overview().then(setOv)
@@ -90,29 +88,46 @@ export function CommandCenter({ nav }: { nav: Nav }) {
 
   const fn = ov?.funnel
   const view = run ?? (fn && { on: false, scanned: fn.unique, flagged: fn.flagged, investigated: fn.investigated, confirmed: fn.confirmed, unblocked: fn.unblocked, total: fn.unique, line: '' })
-  const radarDots = run ? dots : idleDots
+  const liveDots = useMemo<Dot[]>(() => {
+    const quiet: Dot[] = Array.from({ length: Math.min(160, Math.round(((snap?.today.names ?? 0) + (snap?.today.nrd ?? 0)) / 500)) }, (_, i) => ({ id: `n${i}`, source: ['ct', 'search', 'maps', 'ct'][i % 4], flagged: false, host: '' }))
+    const found: Dot[] = live.filter((r) => r.state !== 'dismissed' && r.state !== 'cleared').map((r) => {
+      const src = r.sources[0] === 'nrd' ? 'ct' : r.sources[0] === 'sibling' ? 'report' : r.sources[0]
+      return { id: r.domain, source: src, flagged: true, verdict: r.state === 'confirmed' ? 'confirmed_scam' : r.state === 'down' ? null : null, host: r.domain, case_id: r.run_id }
+    })
+    return [...quiet, ...found]
+  }, [live, snap])
+  const radarLive = !!snap?.started && !snap.paused
+  const showLive = !run && (live.length > 0 || radarLive)
+  const radarDots = run ? dots : showLive ? liveDots : idleDots
+  const liveConfirmed = (snap?.states.confirmed ?? 0) + (snap?.states.down ?? 0)
+  const pct = (a: number, b: number) => (b > 0 ? Math.round((a / b) * 100) : 0)
 
   return (
     <div className="page">
       <div className="hero">
         <Rise>
-          <div className="card hero-main">
-            <div className="eyebrow row"><RadarIcon size={14} /> {p('Proactive scam hunting', 'رصد استباقي للاحتيال')}</div>
-            <h2>{p('Find scam sites before citizens click them.', 'اكتشف مواقع الاحتيال قبل أن يضغط عليها المواطنون.')}</h2>
-            <p>{p(`Raqib watches newly registered domains, Google Search ads and Google Maps listings for look-alikes of ${ov?.entities ?? 36} protected UAE brands, then investigates the dangerous ones in an isolated browser and links them into campaigns.`, `يراقب رقيب النطاقات المسجلة حديثاً وإعلانات بحث جوجل ومواقع خرائط جوجل بحثاً عن مواقع تنتحل صفة ${ov?.entities ?? 36} جهة إماراتية محمية، ثم يحقق في الخطيرة منها داخل متصفح معزول ويربطها في حملات.`)}</p>
-            <div className="row wrap">
+          <div className="hero-main">
+            <div className="eyebrow">{p('Autonomous scam hunting', 'رصد ذاتي للاحتيال')}</div>
+            <h2>{p('Find scam sites before citizens click them', 'اكتشف مواقع الاحتيال قبل أن يضغط عليها المواطنون')}</h2>
+            <p>{p(`Around the clock, Raqib reads new HTTPS certificates, newly registered domains and Google Search, ads and Maps for look-alikes of ${ov?.entities ?? 36} protected UAE brands. It opens the live ones in an isolated browser, actions hard evidence, sends the rest to you, and searches for every confirmed site's siblings.`, `يقرأ رقيب على مدار الساعة شهادات HTTPS الجديدة والنطاقات المسجلة حديثاً وبحث جوجل وإعلاناته وخرائطه بحثاً عن مواقع تنتحل صفة ${ov?.entities ?? 36} جهة إماراتية محمية، ثم يفتح العاملة منها في متصفح معزول، ويتخذ الإجراء عند وجود أدلة قاطعة، ويرسل الباقي إليك، ويبحث عن المواقع الشقيقة لكل موقع مؤكد.`)}</p>
+            <div className="row wrap" style={{ gap: 16 }}>
               {run?.on
-                ? <button className="btn btn-primary" onClick={stopHunt}><Square size={15} /> {p('Stop hunt', 'إيقاف الرصد')}</button>
-                : <button className="btn btn-primary pulse-btn" onClick={startHunt} disabled={!ov}><Play size={15} /> {p('Run hunt', 'ابدأ الرصد')}</button>}
+                ? <button className="btn btn-lg" onClick={stopHunt}><Square size={14} strokeWidth={1.5} /> {p('Stop hunt', 'إيقاف الرصد')}</button>
+                : <>
+                  <button className="btn btn-primary btn-lg" onClick={() => nav.go('/inbox')}><InboxIcon size={14} strokeWidth={1.5} /> {p('Open inbox', 'افتح الوارد')}{snap?.pending ? ` · ${snap.pending} ${p('waiting', 'بالانتظار')}` : ''}</button>
+                  <button className="btn btn-lg" onClick={startHunt} disabled={!ov}><Play size={14} strokeWidth={1.5} className="flip-rtl" /> {p('Replay demo hunt', 'إعادة عرض الرصد التجريبي')}</button>
+                </>}
+              <span className="hero-note">{p('The demo replay uses recorded feeds and fictional domains', 'العرض التجريبي يستخدم مصادر مسجّلة ونطاقات وهمية')}</span>
             </div>
-            <div className="faint" style={{ fontSize: 12, marginTop: 10 }}>{p('Demo dataset: recorded feeds and fictional domains.', 'بيانات تجريبية: مصادر مسجّلة ونطاقات وهمية.')}</div>
-            <div style={{ marginTop: 20 }}>
-              <div className="eyebrow" style={{ marginBottom: 8 }}>{p('Or investigate a recorded demo target', 'أو حقّق في هدف تجريبي مسجّل')}</div>
-              <div className="row wrap">
-                {targets.map((t, i) => (
-                  <motion.button key={t.case_id} className={`chip ${t.truth === 'benign' ? 'ok' : 'info'} chip-btn`} onClick={() => nav.investigate(t.url)} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ ...spring, delay: 0.3 + i * 0.05 }} whileHover={{ y: -2 }} whileTap={{ scale: 0.95 }}>
-                    <Play size={11} /> {t.label}
-                  </motion.button>
+            <div className="targets">
+              <div className="eyebrow">{p('Or open a recorded demo target', 'أو افتح هدفاً تجريبياً مسجّلاً')}</div>
+              <div className="targets-grid">
+                {targets.map((t) => (
+                  <button key={t.case_id} className="target" onClick={() => nav.investigate(t.url)}>
+                    <span className={`dot ${t.truth === 'benign' ? 'ok' : 'danger'}`} style={{ width: 6, height: 6 }} />
+                    <span className="ellipsis">{t.label}</span>
+                    <ArrowRight size={14} className="go flip-rtl" />
+                  </button>
                 ))}
               </div>
             </div>
@@ -120,81 +135,100 @@ export function CommandCenter({ nav }: { nav: Nav }) {
         </Rise>
         <Rise i={1}>
           <div className="card radar-card">
-            <div className="row between" style={{ padding: '14px 18px 0' }}>
-              <div className="eyebrow">{p('Hunt radar', 'رادار الرصد')}</div>
-              <span className="chip">{run?.on ? <><span className="dot live" /> {p('hunting', 'يرصد')}</> : p('last hunt', 'آخر رصد')}</span>
+            <div className="card-h">
+              <h3>{p('Hunt radar', 'رادار الرصد')}</h3>
+              <span className="row right" style={{ fontSize: 13 }}>{run?.on ? <><span className="dot live" /> {p('Replaying demo', 'عرض تجريبي')}</> : radarLive ? <><span className="dot live" /> {p('Watching live', 'مراقبة مباشرة')}</> : snap?.paused ? p('Paused', 'متوقف') : p('Last hunt', 'آخر رصد')}</span>
             </div>
-            <Radar dots={radarDots} running={!!run?.on} confirmed={view?.confirmed ?? 0} onPick={(d) => d.case_id && nav.investigate('case:' + d.case_id)} />
-            <div className="scan-line mono">{run?.on ? `› ${run.line}` : p('Click a red blip to investigate it', 'اضغط على نقطة حمراء للتحقيق فيها')}</div>
+            <Radar dots={radarDots} running={!!run?.on || radarLive} confirmed={showLive ? liveConfirmed : view?.confirmed ?? 0} onPick={(d) => d.case_id && (showLive ? nav.go(`/case/${d.case_id}`) : nav.investigate('case:' + d.case_id))} />
+            <div className={`radar-foot ${run?.on ? 'mono' : ''}`}>{run?.on ? run.line : showLive ? p('Grey: names read. Light: flagged and being checked. Red: confirmed scam.', 'رمادي: أسماء قُرئت. فاتح: مشتبه قيد الفحص. أحمر: احتيال مؤكد.') : p('Click a red point to open its investigation', 'اضغط على نقطة حمراء لفتح التحقيق')}</div>
           </div>
         </Rise>
       </div>
 
-      {view && (
-        <div className="funnel-row">
-          <Step i={0} label={p('Candidates scanned', 'مرشّحون تم فحصهم')} hint={p('new domains · search · maps · reports', 'نطاقات جديدة · بحث · خرائط · بلاغات')} value={view.scanned} of={view.total} color="#75737f" />
-          <Step i={1} label={p('Flagged by triage', 'مشتبه بهم بعد الفرز')} hint={`${p('score', 'الدرجة')} ≥ ${ov?.threshold ?? 40}`} value={view.flagged} of={view.scanned} color="#ff8a3d" />
-          <Step i={2} label={p('Investigated in sandbox', 'فُحصوا في البيئة المعزولة')} value={view.investigated} of={view.flagged} color="#e5b85c" />
-          <Step i={3} label={p('Confirmed scams', 'احتيال مؤكد')} value={view.confirmed} of={view.investigated} color="#fb4a6c" />
-          <Step i={4} label={p('Not on any blocklist', 'غير مدرجة في أي قائمة حجب')} hint={p('still live, no public block', 'ما زالت تعمل دون حجب')} value={view.unblocked} of={view.confirmed} color="#a78bfa" />
-        </div>
+      {showLive && snap && (
+        <Rise i={2}>
+          <div className="card funnel">
+            <Step label={p('Names checked today', 'أسماء فُحصت اليوم')} sub={p('Certificates and new-domain lists', 'الشهادات وقوائم النطاقات الجديدة')} value={(snap.today.names ?? 0) + (snap.today.nrd ?? 0)} />
+            <Step label={p('Flagged by triage', 'مشتبه بهم بعد الفرز')} sub={`${p('score', 'الدرجة')} ≥ ${ov?.threshold ?? 40}`} value={snap.today.flagged ?? 0} />
+            <Step label={p('Opened in sandbox', 'فُتحت في البيئة المعزولة')} sub={p('Only pages that are online', 'الصفحات العاملة فقط')} value={snap.today.scanned ?? 0} />
+            <Step label={p('Confirmed scams', 'احتيال مؤكد')} sub={`${snap.blocklisted} ${p('on the blocklist feed', 'في قائمة الحجب')}`} value={snap.today.confirmed ?? 0} />
+            <Step label={p('Waiting for you', 'بانتظارك')} sub={p('Approve or reject in the inbox', 'وافق أو ارفض في الوارد')} value={snap.pending} tone={snap.pending > 0 ? 'var(--red)' : undefined} />
+          </div>
+        </Rise>
       )}
 
-      <Rise i={2}><div style={{ marginBottom: 18 }}><LiveHunt onScan={(h) => nav.investigate(h)} /></div></Rise>
+      {!showLive && view && (
+        <Rise i={2}>
+          <div className="card funnel">
+            <Step label={p('Candidates scanned', 'مرشّحون تم فحصهم')} sub={p('New domains, search, maps and reports', 'نطاقات جديدة وبحث وخرائط وبلاغات')} value={view.scanned} />
+            <Step label={p('Flagged by triage', 'مشتبه بهم بعد الفرز')} sub={`${pct(view.flagged, view.scanned)}% ${p('of scanned', 'من المفحوصين')} · ${p('score', 'الدرجة')} ≥ ${ov?.threshold ?? 40}`} value={view.flagged} />
+            <Step label={p('Investigated in sandbox', 'فُحصوا في البيئة المعزولة')} sub={`${pct(view.investigated, view.flagged)}% ${p('of flagged', 'من المشتبه بهم')}`} value={view.investigated} />
+            <Step label={p('Confirmed scams', 'احتيال مؤكد')} sub={`${pct(view.confirmed, view.investigated)}% ${p('of investigated', 'ممن جرى التحقيق فيهم')}`} value={view.confirmed} />
+            <Step label={p('Not on any blocklist', 'غير مدرجة في أي قائمة حجب')} sub={p('Still live, no public block', 'ما زالت تعمل دون حجب')} value={view.unblocked} tone={view.unblocked > 0 ? 'var(--red)' : undefined} />
+          </div>
+        </Rise>
+      )}
 
-      <div className="grid-2" style={{ gridTemplateColumns: 'minmax(0,1.6fr) minmax(0,1fr)', alignItems: 'start' }}>
+      <Rise i={3}><RadarStatus snap={snap} onChange={setSnap} /></Rise>
+
+      <div className="grid-2" style={{ gridTemplateColumns: 'minmax(0,1.6fr) minmax(0,1fr)' }}>
+        {showLive ? (
+          <div className="card">
+            <div className="card-h"><h3>{p('Latest finds', 'أحدث الاكتشافات')}</h3><button className="btn btn-sm btn-ghost right" onClick={() => nav.go('/inbox')}>{p('Inbox', 'الوارد')} <ArrowRight size={13} className="flip-rtl" /></button></div>
+            <div className="feed list">
+              {[...live].sort((a, b) => b.last_seen - a.last_seen).slice(0, 30).map((r) => <RadarRow key={r.domain} r={r} nav={nav} compact />)}
+              {!live.length && <div className="empty">{p('Watching. The first look-alikes usually appear within minutes.', 'المراقبة جارية. تظهر أولى النطاقات المشابهة عادة خلال دقائق.')}</div>}
+            </div>
+          </div>
+        ) : (
         <div className="card">
-          <div className="card-h"><Sparkles size={16} color="#ff8a3d" /><h3>{p('Flagged candidates', 'المرشّحون المشتبه بهم')}</h3><span className="chip right"><Num value={cands.length} ms={250} /></span></div>
-          <div className="feed">
+          <div className="card-h"><h3>{p('Flagged candidates', 'المرشّحون المشتبه بهم')}</h3><span className="right mono num" style={{ fontSize: 12 }}><Num value={cands.length} ms={250} /></span></div>
+          <div className="feed list">
             <AnimatePresence initial={false}>
               {cands.map((c) => {
                 const src = SOURCES[c.source] ?? SOURCES.search
                 const v = c.verdict ? verdictOf(c.verdict) : null
                 return (
-                  <motion.div key={c.id} layout className="cand" initial={{ opacity: 0, y: -26, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0 }} transition={spring} whileHover={{ x: lang === 'ar' ? -3 : 3 }}>
-                    <div className="ico">{ICON[src.icon]}</div>
+                  <motion.div key={c.id} className="cand list-row" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={soft}>
+                    <div className="score-n" style={{ color: scoreColor(c.triage.score) }}>{c.triage.score}</div>
                     <div style={{ minWidth: 0 }}>
-                      <div className="row" style={{ gap: 8 }}><span className="chip">{lang === 'ar' ? src.ar : src.en}</span>{v && <span className={`chip ${v.tone}`}>{lang === 'ar' ? v.ar : v.en}</span>}</div>
-                      <h4 className="ellipsis" style={{ marginTop: 6 }}>{c.title}</h4>
-                      <div className="mono faint ellipsis" style={{ fontSize: 11.5 }}>{c.host || c.detail}</div>
-                      <div className="reasons">{c.triage.reasons.slice(0, 2).map((r) => r.text).join(' · ')}</div>
+                      <h4 className="ellipsis">{c.title}</h4>
+                      <div className="meta">
+                        <span className="mono ellipsis">{c.host || c.detail}</span>
+                        <span>{ICON[src.icon]} {lang === 'ar' ? src.ar : src.en}</span>
+                        {v && <span><span className={`dot ${v.tone}`} style={{ width: 6, height: 6 }} /> {lang === 'ar' ? v.ar : v.en}</span>}
+                      </div>
+                      <div className="reasons ellipsis">{c.triage.reasons.slice(0, 2).map((r) => r.text).join(' · ')}</div>
                     </div>
-                    <div className="col" style={{ alignItems: 'center', gap: 6 }}>
-                      <Ring value={c.triage.score} />
-                      <button className="btn btn-sm" onClick={() => nav.investigate(c.case_id ? 'case:' + c.case_id : c.host)}>{p('Investigate', 'تحقيق')} <ArrowRight size={13} /></button>
-                    </div>
+                    <button className="btn btn-sm" onClick={() => nav.investigate(c.case_id ? 'case:' + c.case_id : c.host)}>{p('Investigate', 'تحقيق')}</button>
                   </motion.div>
                 )
               })}
             </AnimatePresence>
-            {!cands.length && <div className="muted" style={{ padding: 20, textAlign: 'center' }}>{run?.on ? p('Scanning… flagged candidates appear here.', 'جارٍ الفحص… يظهر المشتبه بهم هنا.') : p('Run a hunt to discover candidates.', 'ابدأ الرصد لاكتشاف المرشّحين.')}</div>}
+            {!cands.length && <div className="empty">{run?.on ? p('Scanning. Flagged candidates appear here.', 'جارٍ الفحص. يظهر المشتبه بهم هنا.') : p('Run a hunt to discover candidates', 'ابدأ الرصد لاكتشاف المرشّحين')}</div>}
           </div>
         </div>
+        )}
 
-        <div className="col" style={{ gap: 18 }}>
-          <Rise i={2}>
-            <div className="card">
-              <div className="card-h"><Layers size={16} color="#a78bfa" /><h3>{p('Active campaigns', 'الحملات النشطة')}</h3></div>
-              <div className="card-b col" style={{ gap: 10 }}>
-                {ov?.clusters.map((c, i) => (
-                  <motion.button key={c.cluster_id} className="camp-item" style={{ textAlign: 'start', cursor: 'pointer' }} onClick={() => nav.go('/campaigns')} initial={{ opacity: 0, x: 18 }} animate={{ opacity: 1, x: 0 }} transition={{ ...spring, delay: 0.2 + i * 0.07 }} whileHover={{ y: -2 }}>
-                    <div className="row"><span className="chip violet">{c.cluster_id}</span><b>{SCAM_TYPES[c.headline] ? (lang === 'ar' ? SCAM_TYPES[c.headline].ar : SCAM_TYPES[c.headline].en) : c.headline}</b></div>
-                    <div className="row"><span className="chip">{c.size} {p('sites', 'موقعاً')}</span>{c.unblocked > 0 && <span className="chip warn">{c.unblocked} {p('unblocked', 'غير محجوب')}</span>}</div>
-                    <div className="why mono">{c.shared_indicators.slice(0, 2).join(' · ') || p('shared contact details', 'بيانات اتصال مشتركة')}</div>
-                  </motion.button>
-                ))}
-              </div>
-            </div>
-          </Rise>
+        <div className="card">
+          <div className="card-h"><h3>{p('Active campaigns', 'الحملات النشطة')}</h3><span className="right mono num" style={{ fontSize: 12 }}>{ov?.clusters.length ?? 0}</span></div>
+          <div className="list">
+            {ov?.clusters.map((c) => (
+              <button key={c.cluster_id} className="list-row camp-row" onClick={() => nav.go('/campaigns')}>
+                <span className="tag-id">{c.cluster_id}</span>
+                <b>{SCAM_TYPES[c.headline] ? (lang === 'ar' ? SCAM_TYPES[c.headline].ar : SCAM_TYPES[c.headline].en) : c.headline}</b>
+                <span className="counts">{c.size} {p('sites', 'موقعاً')}{c.unblocked > 0 && <> · <span style={{ color: 'var(--red)' }}>{c.unblocked} {p('not blocklisted', 'غير محجوب')}</span></>}</span>
+                <span className="why">{c.shared_indicators.slice(0, 2).join(' · ') || p('shared contact details', 'بيانات اتصال مشتركة')}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      <Rise i={3}>
-        <div className="card" style={{ marginTop: 18 }}>
-          <div className="card-h"><Globe2 size={16} color="#e5b85c" /><h3>{p('Scam infrastructure worldwide', 'البنية التحتية للاحتيال حول العالم')}</h3><span className="sub">{p('where the servers are, not where the operators are', 'مواقع الخوادم لا مواقع المحتالين')}</span></div>
-          <div className="card-b"><WorldMap data={ov?.hosting_countries ?? {}} /></div>
-        </div>
-      </Rise>
+      <div className="card">
+        <div className="card-h"><h3>{p('Scam infrastructure worldwide', 'البنية التحتية للاحتيال حول العالم')}</h3><span className="sub">{p('Where the servers are, not where the operators are', 'مواقع الخوادم لا مواقع المحتالين')}</span></div>
+        <div className="card-b"><WorldMap data={ov?.hosting_countries ?? {}} /></div>
+      </div>
     </div>
   )
 }

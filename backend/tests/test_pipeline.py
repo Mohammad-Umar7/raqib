@@ -35,8 +35,8 @@ def test_lookalike_flags_brand_in_domain_but_not_unrelated_names():
 
 def test_every_recorded_case_gets_the_expected_verdict(K):
     for cid, case in K.cases.items():
-        if case["kind"] != "site":
-            continue
+        if case["kind"] != "site" or case.get("source") == "scan":
+            continue  # real scans saved on this machine have no ground truth
         a = K.analysis[cid]
         truth = case["ground_truth"]["label"]
         if truth == "scam":

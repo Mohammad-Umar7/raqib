@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowRight, FolderOpen, Network, Search, Sparkles } from 'lucide-react'
+import { ArrowRight, FolderOpen, Search } from 'lucide-react'
 import { api } from '../api'
-import { spring } from '../components/fx'
 import { useLang } from '../i18n'
 import { SCAM_TYPES, scoreColor, verdictOf } from '../meta'
 import type { Nav } from './Investigation'
@@ -14,23 +12,10 @@ export interface CaseRow {
 
 function ago(ts: number, p: (en: string, ar: string) => string): string {
   const s = Math.max(0, Date.now() / 1000 - ts)
-  if (s < 60) return p('just now', 'الآن')
+  if (s < 60) return p('Just now', 'الآن')
   if (s < 3600) return `${Math.round(s / 60)} ${p('min ago', 'دقيقة')}`
   if (s < 86400) return `${Math.round(s / 3600)} ${p('h ago', 'ساعة')}`
   return `${Math.round(s / 86400)} ${p('d ago', 'يوم')}`
-}
-
-function Score({ v }: { v: number | null }) {
-  const r = 19, len = 2 * Math.PI * r
-  const c = v == null ? '#6c6a76' : scoreColor(v)
-  return (
-    <svg width="48" height="48" viewBox="0 0 48 48" style={{ flex: 'none' }}>
-      <circle cx="24" cy="24" r={r} fill="none" stroke="#1e1e27" strokeWidth="4" />
-      {v != null && <motion.circle cx="24" cy="24" r={r} fill="none" stroke={c} strokeWidth="4" strokeLinecap="round" transform="rotate(-90 24 24)" strokeDasharray={len}
-        initial={{ strokeDashoffset: len }} animate={{ strokeDashoffset: len * (1 - v / 100) }} transition={{ duration: 0.9, ease: 'easeOut' }} />}
-      <text x="24" y="28.5" textAnchor="middle" fontSize="13" fontWeight="750" fill={c}>{v ?? '…'}</text>
-    </svg>
-  )
 }
 
 export function Cases({ nav }: { nav: Nav }) {
@@ -64,53 +49,52 @@ export function Cases({ nav }: { nav: Nav }) {
         </div>
         <div className="seg">
           {([['all', p('All', 'الكل'), rows?.length ?? 0], ['scam', p('Scams', 'احتيال'), scams], ['clean', p('Clean', 'سليم'), (rows?.length ?? 0) - scams]] as const).map(([k, label, n]) => (
-            <button key={k} className={filter === k ? 'on' : ''} onClick={() => setFilter(k)}>{label} <span className="faint">{n}</span></button>
+            <button key={k} className={filter === k ? 'on' : ''} onClick={() => setFilter(k)}>{label} <span className="faint num">{n}</span></button>
           ))}
         </div>
-        <div className="search-box"><Search size={14} /><input value={q} onChange={(e) => setQ(e.target.value)} placeholder={p('Search cases…', 'ابحث في القضايا…')} /></div>
+        <div className="search-box"><Search size={14} strokeWidth={1.5} /><input value={q} onChange={(e) => setQ(e.target.value)} placeholder={p('Search cases', 'ابحث في القضايا')} aria-label={p('Search cases', 'ابحث في القضايا')} /></div>
       </div>
 
       {rows === null ? (
-        <div className="case-grid">{Array.from({ length: 6 }, (_, i) => <div key={i} className="skeleton" style={{ height: 150, borderRadius: 18 }} />)}</div>
+        <div className="card card-p col" style={{ gap: 12 }}>{Array.from({ length: 6 }, (_, i) => <div key={i} className="skeleton" style={{ height: 40 }} />)}</div>
       ) : shown.length ? (
-        <div className="case-grid">
-          <AnimatePresence initial={false}>
-            {shown.map((r, i) => {
+        <div className="card">
+          <div className="cases-grid cases-head">
+            <span>{p('Score', 'الدرجة')}</span><span>{p('Site', 'الموقع')}</span><span>{p('Verdict', 'الحكم')}</span>
+            <span className="c-type">{p('Scam type', 'نوع الاحتيال')}</span><span className="c-brand">{p('Imitates', 'ينتحل')}</span><span className="c-camp">{p('Campaign', 'الحملة')}</span>
+            <span>{p('Started', 'البدء')}</span><span />
+          </div>
+          <div className="list">
+            {shown.map((r) => {
               const v = r.verdict ? verdictOf(r.verdict) : null
               const st = r.scam_type ? SCAM_TYPES[r.scam_type] : null
+              const flaggedType = st && r.verdict !== 'no_indicators'
               return (
-                <motion.button key={r.id} layout className={`case-card ${v?.tone ?? ''}`} onClick={() => nav.go(`/case/${r.id}`)}
-                  initial={{ opacity: 0, y: 18, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0 }} transition={{ ...spring, delay: Math.min(i, 10) * 0.04 }} whileHover={{ y: -4 }}>
-                  <div className="row" style={{ alignItems: 'flex-start', gap: 12 }}>
-                    <Score v={r.finished ? r.score : null} />
-                    <div className="grow" style={{ minWidth: 0 }}>
-                      <div className="mono ellipsis cc-host">{r.host || r.input_url}</div>
-                      <div className="faint ellipsis" style={{ fontSize: 12 }}>{r.input_url}</div>
-                      <div className="row wrap" style={{ gap: 6, marginTop: 8 }}>
-                        {v && <span className={`chip ${v.tone}`}>{lang === 'ar' ? v.ar : v.en}</span>}
-                        {!r.finished && <span className="chip info"><span className="dot live" /> {p('running', 'قيد التشغيل')}</span>}
-                        {st && r.verdict !== 'no_indicators' && <span className="chip">{lang === 'ar' ? st.ar : st.en}</span>}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="cc-foot">
-                    {r.brand && r.verdict !== 'no_indicators' && <span>{p('Imitates', 'ينتحل')} <b>{r.brand}</b></span>}
-                    {r.cluster_id && <span className="row" style={{ gap: 5 }}><Network size={12} /> {r.cluster_id} · {r.related}</span>}
-                    {r.source === 'claude' && <span className="row" style={{ gap: 5, color: '#c4b5fd' }}><Sparkles size={12} /> Claude</span>}
-                    <span className="right faint">{ago(r.started, p)}</span>
-                    <ArrowRight size={14} className="cc-go" />
-                  </div>
-                </motion.button>
+                <button key={r.id} className="list-row case-row cases-grid" onClick={() => nav.go(`/case/${r.id}`)}>
+                  <span className="score-n" style={{ color: r.finished && r.score != null ? scoreColor(r.score) : 'var(--text-3)', fontSize: 15 }}>{r.finished ? r.score ?? '–' : '…'}</span>
+                  <span style={{ minWidth: 0 }}>
+                    <div className="host ellipsis">{r.host || r.input_url}</div>
+                    <div className="sub ellipsis">{r.input_url}</div>
+                  </span>
+                  <span className="cell row" style={{ gap: 8 }}>
+                    {!r.finished ? <><span className="dot live" style={{ width: 6, height: 6 }} />{p('Running', 'قيد التشغيل')}</> : v ? <><span className={`dot ${v.tone}`} style={{ width: 6, height: 6 }} />{lang === 'ar' ? v.ar : v.en}</> : '–'}
+                  </span>
+                  <span className="cell c-type">{flaggedType ? (lang === 'ar' ? st.ar : st.en) : '–'}</span>
+                  <span className="cell c-brand">{r.brand && r.verdict !== 'no_indicators' ? r.brand : '–'}</span>
+                  <span className="cell c-camp">{r.cluster_id ? <span className="row" style={{ gap: 8 }}><span className="tag-id">{r.cluster_id}</span><span className="num">{r.related}</span></span> : '–'}</span>
+                  <span className="cell faint">{ago(r.started, p)}</span>
+                  <ArrowRight size={14} className="go flip-rtl" />
+                </button>
               )
             })}
-          </AnimatePresence>
+          </div>
         </div>
       ) : (
-        <div className="empty-big">
-          <FolderOpen size={38} />
+        <div className="card empty-big">
+          <FolderOpen size={32} strokeWidth={1.5} />
           <h3>{rows.length ? p('No case matches', 'لا توجد قضية مطابقة') : p('No investigations yet', 'لا توجد تحقيقات بعد')}</h3>
-          <p className="muted">{p('Paste a suspicious link in the bar above, or start one from the command centre.', 'الصق رابطاً مشبوهاً في الشريط أعلاه، أو ابدأ من مركز القيادة.')}</p>
-          <button className="btn btn-primary" onClick={() => nav.go('/command')}>{p('Go to command centre', 'إلى مركز القيادة')} <ArrowRight size={14} /></button>
+          <p className="muted" style={{ margin: '0 0 8px' }}>{p('Paste a suspicious link in the bar above, or start one from Command', 'الصق رابطاً مشبوهاً في الشريط أعلاه، أو ابدأ من صفحة القيادة')}</p>
+          <button className="btn btn-primary" onClick={() => nav.go('/command')}>{p('Go to Command', 'إلى القيادة')} <ArrowRight size={14} className="flip-rtl" /></button>
         </div>
       )}
     </div>

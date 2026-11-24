@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import os
 import re
 from collections import Counter
 
@@ -12,7 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, PlainTextResponse, Response, StreamingResponse
 from pydantic import BaseModel
 
-from . import __version__, batch, config, hunters, hunters_live, knowledge, report
+from . import __version__, batch, config, hunters, hunters_live, knowledge, radar, report
 from .claude_service import service as claude
 from .investigations import default_speed, manager
 
@@ -244,6 +245,68 @@ async def hunt_new_domains(days: int = Query(2, ge=1, le=7), force: bool = False
 @app.get("/api/hunt/search-maps")
 async def hunt_search_maps(force: bool = False) -> dict:
     return await hunters_live.serp_hunt(force=force)
+
+
+# --------------------------------------------------------------------------- the radar (autonomous loop)
+
+@app.on_event("startup")
+async def _radar_start() -> None:
+    if os.environ.get("RAQIB_RADAR", "1") != "0":
+        radar.get().start()
+
+
+@app.on_event("shutdown")
+async def _radar_stop() -> None:
+    if radar._radar and radar._radar.started:
+        await radar._radar.stop()
+
+
+@app.get("/api/radar")
+def radar_status() -> dict:
+    return radar.get().snapshot()
+
+
+@app.get("/api/radar/items")
+def radar_items(view: str = "all", limit: int = Query(300, ge=1, le=1000)) -> dict:
+    return {"items": radar.get().items(view, limit)}
+
+
+class DecideBody(BaseModel):
+    approve: bool
+
+
+@app.post("/api/radar/domains/{domain}/decide")
+def radar_decide(domain: str, body: DecideBody) -> dict:
+    r = radar.get()
+    if not r.s.q("select 1 from domains where domain=?", domain):
+        raise HTTPException(404, "Unknown domain")
+    r.decide(domain, body.approve)
+    return {"ok": True}
+
+
+class ControlBody(BaseModel):
+    paused: bool | None = None
+    auto_actions: bool | None = None
+    run: str | None = None
+
+
+@app.post("/api/radar/control")
+def radar_control(body: ControlBody) -> dict:
+    r = radar.get()
+    if body.paused is not None:
+        r.set_paused(body.paused)
+    if body.auto_actions is not None:
+        r.set_auto(body.auto_actions)
+    if body.run:
+        r.run_now(body.run)
+    return r.snapshot()
+
+
+@app.get("/api/radar/blocklist.txt")
+def radar_blocklist() -> PlainTextResponse:
+    """Plain domain list a telco DNS resolver or firewall can pull."""
+    doms = radar.get().blocklist()
+    return PlainTextResponse("".join(f"{line}\n" for line in ["# Raqib blocklist feed: scam domains confirmed by the radar", *doms]))
 
 
 # --------------------------------------------------------------------------- batch scanning and evaluation

@@ -71,10 +71,10 @@ function toLine(ev: { id: number; t: number; type: string; data: any }, s: InvSt
 }
 
 const TAGS: Record<string, string> = {
-  card_number: 'CARD', card_cvv: 'CVV', card_expiry: 'EXPIRY', card_holder: 'CARD', otp: 'OTP', emirates_id: 'EMIRATES ID', password: 'PASSWORD', username: 'LOGIN',
+  card_number: 'Card number', card_cvv: 'CVV', card_expiry: 'Expiry', card_holder: 'Card holder', otp: 'OTP', emirates_id: 'Emirates ID', password: 'Password', username: 'Login',
 }
 const SOFT_TAGS: Record<string, string> = {
-  'fraud.urgency': 'PRESSURE', 'fraud.guaranteed_returns': 'GUARANTEED RETURNS', 'fraud.upfront_fee': 'UPFRONT FEE', 'fraud.fake_license': 'UNVERIFIED LICENCE',
+  'fraud.urgency': 'Pressure', 'fraud.guaranteed_returns': 'Guaranteed returns', 'fraud.upfront_fee': 'Upfront fee', 'fraud.fake_license': 'Unverified licence',
 }
 
 type Action = { type: 'reset'; runId: string } | { type: 'ev'; ev: { type: string; data: any } }
@@ -95,7 +95,7 @@ function reduce(s0: InvState, a: Action): InvState {
       const flagged = { ...s.flagged }
       for (const e of d.evidence ?? []) {
         if (e.page && e.element) {
-          const tag = e.type === 'field' ? TAGS[e.note] ?? 'SENSITIVE' : SOFT_TAGS[d.id] ?? ''
+          const tag = e.type === 'field' ? TAGS[e.note] ?? 'Sensitive field' : SOFT_TAGS[d.id] ?? ''
           if (tag) flagged[`${e.page}:${e.element}`] = { tag, soft: e.type !== 'field' }
         }
       }

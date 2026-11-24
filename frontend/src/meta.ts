@@ -1,22 +1,28 @@
 import type { Tone, Verdict } from './types'
 
+/** Colour carries risk and nothing else: red scam, orange suspicious, green clean. */
+export const RISK = { high: '#e5484d', mid: '#e2803c', low: '#4cc38a', none: '#85858b' } as const
+
 export const VERDICT: Record<Verdict, { en: string; ar: string; tone: Tone; color: string }> = {
-  confirmed_scam: { en: 'Confirmed scam', ar: 'احتيال مؤكد', tone: 'danger', color: '#fb4a6c' },
-  likely_scam: { en: 'Likely scam', ar: 'احتيال محتمل', tone: 'danger', color: '#fb6a4a' },
-  suspicious: { en: 'Suspicious', ar: 'مشبوه', tone: 'warn', color: '#ff8a3d' },
-  no_indicators: { en: 'No scam indicators', ar: 'لا مؤشرات احتيال', tone: 'ok', color: '#34d399' },
-  official: { en: 'Official domain', ar: 'نطاق رسمي', tone: 'ok', color: '#34d399' },
+  confirmed_scam: { en: 'Confirmed scam', ar: 'احتيال مؤكد', tone: 'danger', color: RISK.high },
+  likely_scam: { en: 'Likely scam', ar: 'احتيال محتمل', tone: 'danger', color: RISK.high },
+  suspicious: { en: 'Suspicious', ar: 'مشبوه', tone: 'warn', color: RISK.mid },
+  no_indicators: { en: 'No scam indicators', ar: 'لا مؤشرات احتيال', tone: 'ok', color: RISK.low },
+  official: { en: 'Official domain', ar: 'نطاق رسمي', tone: 'ok', color: RISK.low },
 }
 
 export const verdictOf = (v?: string) => VERDICT[(v as Verdict) ?? 'no_indicators'] ?? VERDICT.no_indicators
 
-export const scoreColor = (s: number) => (s >= 85 ? '#fb4a6c' : s >= 60 ? '#fb7a4a' : s >= 30 ? '#ff8a3d' : '#34d399')
+export const scoreColor = (s: number) => (s >= 60 ? RISK.high : s >= 30 ? RISK.mid : RISK.low)
 
+/** Link strength is a magnitude, so it is drawn in neutral steps, not hues. */
 export const STRENGTH = {
-  strong: { en: 'Strong link', ar: 'ارتباط قوي', color: '#fb4a6c', width: 2.8 },
-  medium: { en: 'Medium link', ar: 'ارتباط متوسط', color: '#ff8a3d', width: 2 },
-  weak: { en: 'Weak link', ar: 'ارتباط ضعيف', color: '#75737f', width: 1.2 },
+  strong: { en: 'Strong link', ar: 'ارتباط قوي', color: '#d4d4d8', width: 2.5 },
+  medium: { en: 'Medium link', ar: 'ارتباط متوسط', color: '#85858b', width: 1.75 },
+  weak: { en: 'Weak link', ar: 'ارتباط ضعيف', color: '#55555a', width: 1.25 },
 } as const
+
+export const cap = (s?: string | null) => (s ? s.charAt(0).toUpperCase() + s.slice(1).replace(/_/g, ' ') : '')
 
 export const SCAM_TYPES: Record<string, { en: string; ar: string }> = {
   toll_topup: { en: 'Fake toll top-up', ar: 'رسوم سالك مزيفة' },
@@ -42,6 +48,8 @@ export const SOURCES: Record<string, { en: string; ar: string; icon: string }> =
   maps: { en: 'Maps listing', ar: 'موقع على الخرائط', icon: 'map' },
   report: { en: 'Citizen report', ar: 'بلاغ مواطن', icon: 'message' },
   sms: { en: 'SMS link', ar: 'رابط رسالة', icon: 'message' },
+  nrd: { en: 'New domain', ar: 'نطاق جديد', icon: 'shield' },
+  sibling: { en: 'Sibling site', ar: 'موقع شقيق', icon: 'network' },
 }
 
 export const REASON_SHORT: Record<string, { en: string; ar: string }> = {
@@ -58,4 +66,40 @@ export const REASON_SHORT: Record<string, { en: string; ar: string }> = {
   asn: { en: 'Same hosting', ar: 'نفس الاستضافة' },
   layout: { en: 'Similar layout', ar: 'تخطيط مشابه' },
   text: { en: 'Similar wording', ar: 'صياغة مشابهة' },
+}
+
+/** Where a radar item stands, in plain words. */
+export const RADAR_STATE: Record<string, { en: string; ar: string; tone: string }> = {
+  queued: { en: 'Queued', ar: 'في الانتظار', tone: '' },
+  checking: { en: 'Checking now', ar: 'قيد الفحص', tone: 'live' },
+  watching: { en: 'Watching', ar: 'تحت المراقبة', tone: '' },
+  confirmed: { en: 'Confirmed scam', ar: 'احتيال مؤكد', tone: 'danger' },
+  down: { en: 'Offline now', ar: 'متوقف الآن', tone: 'ok' },
+  cleared: { en: 'Cleared', ar: 'سليم', tone: 'ok' },
+  dismissed: { en: 'Not a scam', ar: 'ليس احتيالاً', tone: 'ok' },
+}
+
+export const ACTION_KIND: Record<string, { en: string; ar: string }> = {
+  blocklist: { en: 'Blocklist feed', ar: 'قائمة الحجب' },
+  safebrowsing: { en: 'Google Safe Browsing', ar: 'التصفح الآمن من جوجل' },
+  brand_alert: { en: 'Brand alert', ar: 'تنبيه الجهة' },
+  registrar: { en: 'Registrar takedown', ar: 'طلب إيقاف لدى المسجّل' },
+  host: { en: 'Host takedown', ar: 'طلب إيقاف لدى المستضيف' },
+}
+
+export const ACTION_STATUS: Record<string, { en: string; ar: string; tone: string }> = {
+  done: { en: 'done', ar: 'تم', tone: 'ok' },
+  drafted: { en: 'drafted', ar: 'مسودة جاهزة', tone: '' },
+  pending: { en: 'waiting for you', ar: 'بانتظارك', tone: 'warn' },
+  approved: { en: 'approved', ar: 'تمت الموافقة', tone: 'ok' },
+  rejected: { en: 'rejected', ar: 'مرفوض', tone: '' },
+  revoked: { en: 'withdrawn', ar: 'مسحوب', tone: '' },
+}
+
+export function ago(ts: number | null | undefined, p: (en: string, ar: string) => string): string {
+  if (!ts) return '–'
+  const s = Date.now() / 1000 - ts
+  const a = Math.abs(s)
+  const v = a < 60 ? p('seconds', 'ثوانٍ') : a < 3600 ? `${Math.round(a / 60)} ${p('min', 'دقيقة')}` : a < 86400 ? `${Math.round(a / 3600)} ${p('h', 'ساعة')}` : `${Math.round(a / 86400)} ${p('d', 'يوم')}`
+  return s >= 0 ? p(`${v} ago`, `قبل ${v}`) : p(`in ${v}`, `بعد ${v}`)
 }

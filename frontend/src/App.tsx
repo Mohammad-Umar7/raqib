@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion'
-import { Building2, FlaskConical, Languages, LayoutDashboard, Network, Radar, Search, Settings, Sparkles, X } from 'lucide-react'
+import { ArrowRight, Building2, FlaskConical, FolderSearch, Inbox as InboxIcon, Languages, LayoutDashboard, Network, Search, Settings, X } from 'lucide-react'
 import { api } from './api'
 import { useLang } from './i18n'
 import type { Status } from './types'
@@ -10,6 +10,8 @@ import { Investigation, type Nav } from './views/Investigation'
 import { Registry } from './views/Registry'
 import { Cases } from './views/Cases'
 import { Batch } from './views/Batch'
+import { Inbox } from './views/Inbox'
+import { ease, soft } from './components/fx'
 
 function parseRoute(): { name: string; id?: string; tab?: string } {
   const [path, query] = (location.hash.replace(/^#/, '') || '/command').split('?')
@@ -19,33 +21,44 @@ function parseRoute(): { name: string; id?: string; tab?: string } {
   return { name: parts[0] || 'command' }
 }
 
+/** Raqib's mark: a shield with a watching eye, drawn flat in brass. */
+export function Mark({ size = 20 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden="true">
+      <path d="M32 8 12 16v15c0 12 8.5 20.5 20 25 11.5-4.5 20-13 20-25V16L32 8Z" fill="none" stroke="#c9a35b" strokeWidth="4.5" strokeLinejoin="round" />
+      <circle cx="32" cy="30" r="7" fill="none" stroke="#c9a35b" strokeWidth="4.5" />
+      <circle cx="32" cy="30" r="2.5" fill="#c9a35b" />
+    </svg>
+  )
+}
+
 function SettingsModal({ status, onClose, onChange }: { status: Status | null; onClose: () => void; onChange: () => void }) {
   const { p } = useLang()
   const [key, setKey] = useState('')
   const [msg, setMsg] = useState<string | null>(null)
   const save = async () => {
-    try { await api.setKey(key); setKey(''); setMsg(p('Key saved on this computer. Claude is now writing the case files.', 'تم حفظ المفتاح على هذا الجهاز. يكتب Claude ملفات القضايا الآن.')); onChange() } catch (e: any) { setMsg(e.message) }
+    try { await api.setKey(key); setKey(''); setMsg(p('Key saved on this computer. Claude now writes the case files.', 'تم حفظ المفتاح على هذا الجهاز. يكتب Claude ملفات القضايا الآن.')); onChange() } catch (e: any) { setMsg(e.message) }
   }
-  const clear = async () => { await api.clearKey(); setMsg(p('Key removed.', 'تمت إزالة المفتاح.')); onChange() }
+  const clear = async () => { await api.clearKey(); setMsg(p('Key removed', 'تمت إزالة المفتاح')); onChange() }
   return (
-    <motion.div className="modal-back" onClick={onClose} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <motion.div className="card modal" onClick={(e) => e.stopPropagation()} initial={{ opacity: 0, y: 24, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 12, scale: 0.97 }} transition={{ type: 'spring', stiffness: 380, damping: 30 }}>
-        <div className="row between"><h2 style={{ margin: 0, fontSize: 18 }}>{p('Settings', 'الإعدادات')}</h2><button className="btn btn-sm btn-ghost" onClick={onClose}><X size={15} /></button></div>
+    <motion.div className="modal-back" onClick={onClose} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.16, ease }}>
+      <motion.div className="card modal" onClick={(e) => e.stopPropagation()} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 4 }} transition={{ duration: 0.2, ease }}>
+        <div className="row between"><h2>{p('Settings', 'الإعدادات')}</h2><button className="btn btn-sm btn-ghost" onClick={onClose} aria-label={p('Close', 'إغلاق')}><X size={16} /></button></div>
         <div className="field">
           <label>{p('Claude connection', 'الاتصال بـ Claude')}</label>
           <div className="row"><span className={`chip ${status?.claude.enabled ? 'ok' : 'warn'}`}>{status?.claude.enabled ? p('Connected', 'متصل') : p('Offline writer in use', 'الكاتب غير المتصل قيد الاستخدام')}</span>{status?.claude.enabled && <span className="chip mono">{status.claude.model}</span>}</div>
-          {status?.claude.last_error && <div className="callout danger" style={{ padding: 10, fontSize: 12 }}>{status.claude.last_error}</div>}
+          {status?.claude.last_error && <div className="callout card danger" style={{ padding: 12, fontSize: 12 }}>{status.claude.last_error}</div>}
         </div>
         <div className="field">
-          <label>{p('Anthropic API key', 'مفتاح Anthropic API')}</label>
-          <input className="input mono" type="password" value={key} onChange={(e) => setKey(e.target.value)} placeholder="sk-ant-…" dir="ltr" autoComplete="off" />
+          <label htmlFor="api-key">{p('Anthropic API key', 'مفتاح Anthropic API')}</label>
+          <input id="api-key" className="input mono" type="password" value={key} onChange={(e) => setKey(e.target.value)} placeholder="sk-ant-…" dir="ltr" autoComplete="off" />
           <div className="faint" style={{ fontSize: 12 }}>{p('Stored only in a local .env file that git ignores. It is used for case summaries, the layout of the case view and the live browser agent.', 'يُحفظ فقط في ملف .env محلي يتجاهله git. يُستخدم لملخصات القضايا وتخطيط ملف القضية ووكيل المتصفح المباشر.')}</div>
         </div>
         <div className="row"><button className="btn btn-primary" disabled={key.length < 20} onClick={save}>{p('Save key', 'حفظ المفتاح')}</button>{status?.claude.enabled && <button className="btn" onClick={clear}>{p('Remove key', 'إزالة المفتاح')}</button>}</div>
-        {msg && <div className="muted" style={{ marginTop: 12, fontSize: 12.5 }}>{msg}</div>}
+        {msg && <div className="muted" style={{ marginTop: 12, fontSize: 13 }}>{msg}</div>}
         <hr className="hr" />
         <div className="faint" style={{ fontSize: 12 }}>
-          {p('Mode', 'الوضع')}: <b>{status?.requested_mode}</b> · Playwright: <b>{status?.playwright ? 'yes' : 'no'}</b> · {p('Claude browser agent', 'وكيل متصفح Claude')}: <b>{status?.live_ready ? p('on', 'مفعّل') : p('off (real scanner is used)', 'متوقف (يُستخدم الفاحص الحقيقي)')}</b>
+          {p('Mode', 'الوضع')}: <span className="mono">{status?.requested_mode}</span> · Playwright: <span className="mono">{status?.playwright ? 'yes' : 'no'}</span> · {p('Claude browser agent', 'وكيل متصفح Claude')}: {status?.live_ready ? p('on', 'مفعّل') : p('off, the real scanner is used', 'متوقف، يُستخدم الفاحص الحقيقي')}
         </div>
       </motion.div>
     </motion.div>
@@ -62,6 +75,13 @@ export default function App() {
 
   const refresh = useCallback(() => { api.status().then(setStatus).catch(() => {}) }, [])
   useEffect(() => { refresh() }, [refresh])
+  const [waiting, setWaiting] = useState(0)
+  useEffect(() => {
+    const load = () => api.radar().then((r) => setWaiting(r.pending)).catch(() => {})
+    load()
+    const id = window.setInterval(load, 10000)
+    return () => window.clearInterval(id)
+  }, [])
   useEffect(() => {
     const on = () => { setRoute(parseRoute()); window.scrollTo({ top: 0 }) }
     window.addEventListener('hashchange', on)
@@ -86,45 +106,48 @@ export default function App() {
   }, [])
   const nav: Nav = useMemo(() => ({ go, investigate }), [go, investigate])
 
-  const nameOf = (n: string) => ({ command: p('Command', 'القيادة'), case: p('Cases', 'القضايا'), campaigns: p('Campaigns', 'الحملات'), batch: p('Evaluate', 'التقييم'), registry: p('Brands', 'الجهات') }[n] ?? n)
+  const items = [
+    { k: 'command', icon: <LayoutDashboard size={16} strokeWidth={1.5} />, label: p('Command', 'القيادة'), to: '/command' },
+    { k: 'inbox', icon: <InboxIcon size={16} strokeWidth={1.5} />, label: p('Inbox', 'الوارد'), to: '/inbox', count: waiting },
+    { k: 'cases', icon: <FolderSearch size={16} strokeWidth={1.5} />, label: p('Cases', 'القضايا'), to: '/cases' },
+    { k: 'campaigns', icon: <Network size={16} strokeWidth={1.5} />, label: p('Campaigns', 'الحملات'), to: '/campaigns' },
+    { k: 'batch', icon: <FlaskConical size={16} strokeWidth={1.5} />, label: p('Evaluate', 'التقييم'), to: '/batch' },
+    { k: 'registry', icon: <Building2 size={16} strokeWidth={1.5} />, label: p('Brands', 'الجهات'), to: '/registry' },
+  ]
+  const isActive = (k: string) => route.name === k || (k === 'cases' && route.name === 'case')
 
   return (
     <MotionConfig reducedMotion="user">
     <div className="shell">
-      <aside className="rail">
-        <div className="logo" title="Raqib">
-          <svg width="26" height="26" viewBox="0 0 64 64"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#e5b85c" /><stop offset="1" stopColor="#b0a6ff" /></linearGradient></defs>
-            <path d="M32 8 12 16v15c0 12 8.500 20.500 20 25 11.500-4.500 20-13 20-25V16L32 8Z" fill="none" stroke="url(#lg)" strokeWidth="4" strokeLinejoin="round" /><circle cx="32" cy="30" r="8" fill="none" stroke="url(#lg)" strokeWidth="4" /><circle cx="32" cy="30" r="3" fill="#e5b85c" /></svg>
-        </div>
-        {([['command', <LayoutDashboard size={20} key="i" />, () => go('/command')], ['case', <Radar size={20} key="i" />, () => go('/cases')],
-          ['batch', <FlaskConical size={20} key="i" />, () => go('/batch')], ['campaigns', <Network size={20} key="i" />, () => go('/campaigns')], ['registry', <Building2 size={20} key="i" />, () => go('/registry')]] as const).map(([k, icon, fn]) => (
-          <button key={k} className={`rail-btn ${route.name === k || (k === 'case' && route.name === 'cases') ? 'active' : ''}`} onClick={fn}>
-            {(route.name === k || (k === 'case' && route.name === 'cases')) && <motion.span layoutId="rail-ind" className="rail-ind" transition={{ type: 'spring', stiffness: 420, damping: 32 }} />}
-            <span className="rail-in">{icon}{nameOf(k)}</span>
+      <aside className="side">
+        <div className="side-brand" title={p('Raqib · Scam hunting for police', 'رقيب · رصد الاحتيال للشرطة')}><Mark /><b>{p('Raqib', 'رقيب')}</b><span>{p('رقيب', 'Raqib')}</span></div>
+        {items.map((it) => (
+          <button key={it.k} className={`nav ${isActive(it.k) ? 'active' : ''}`} onClick={() => go(it.to)} title={it.label} aria-current={isActive(it.k) ? 'page' : undefined}>
+            {isActive(it.k) && <motion.span layoutId="nav-ind" className="nav-ind" transition={{ duration: 0.2, ease }} />}
+            <span>{it.icon}<em>{it.label}</em>{'count' in it && it.count ? <b className="nav-count num">{it.count}</b> : null}</span>
           </button>
         ))}
-        <div className="rail-sp" />
-        <button className="rail-btn" onClick={() => setLang(lang === 'en' ? 'ar' : 'en')} title="Language"><Languages size={20} />{lang === 'en' ? 'عربي' : 'EN'}</button>
-        <button className="rail-btn" onClick={() => setShowSettings(true)}><Settings size={20} />{p('Settings', 'الإعدادات')}</button>
+        <div className="side-sp" />
+        <button className="nav" onClick={() => setShowSettings(true)} title={p('Claude connection', 'الاتصال بـ Claude')}>
+          <span><span className={`dot ${status?.claude.enabled ? 'ok' : 'warn'}`} style={{ margin: '0 4px' }} /><em>{status?.claude.enabled ? p('Claude connected', 'Claude متصل') : p('Claude offline', 'Claude غير متصل')}</em></span>
+        </button>
+        <button className="nav" onClick={() => setLang(lang === 'en' ? 'ar' : 'en')} title={p('Language', 'اللغة')}><span><Languages size={16} strokeWidth={1.5} /><em>{lang === 'en' ? 'العربية' : 'English'}</em></span></button>
+        <button className="nav" onClick={() => setShowSettings(true)} title={p('Settings', 'الإعدادات')}><span><Settings size={16} strokeWidth={1.5} /><em>{p('Settings', 'الإعدادات')}</em></span></button>
       </aside>
       <div className="main">
         <header className="topbar">
-          <div className="brand"><b>{p('Raqib', 'رقيب')}</b><span>{p('Scam hunting for police', 'رصد الاحتيال للشرطة')}</span></div>
           <form className="analyze" onSubmit={(e) => { e.preventDefault(); if (url.trim()) investigate(url.trim()) }}>
-            <Search size={16} color="#6c6a76" />
-            <input id="analyze-input" value={url} onChange={(e) => setUrl(e.target.value)} placeholder={p('Paste a suspicious URL to investigate…', 'الصق رابطاً مشبوهاً للتحقيق…')} dir="ltr" spellCheck={false} />
-            <button className="btn btn-primary btn-sm" type="submit" disabled={busy}><Sparkles size={14} /> {p('Analyze', 'تحليل')}</button>
+            <Search size={16} strokeWidth={1.5} />
+            <input id="analyze-input" value={url} onChange={(e) => setUrl(e.target.value)} placeholder={p('Paste a suspicious URL', 'الصق رابطاً مشبوهاً')} dir="ltr" spellCheck={false} aria-label={p('Suspicious URL', 'رابط مشبوه')} />
+            {!url && <span className="kbd" aria-hidden="true">/</span>}
+            <button className="btn btn-primary btn-sm" type="submit" disabled={busy || !url.trim()}>{p('Investigate', 'تحقيق')} <ArrowRight size={14} className="flip-rtl" /></button>
           </form>
-          <div className="row right wrap" style={{ gap: 8 }}>
-            <button className={`chip ${status?.claude.enabled ? 'violet' : 'warn'}`} style={{ cursor: 'pointer' }} onClick={() => setShowSettings(true)}>
-              <span className={`dot ${status?.claude.enabled ? 'live' : 'warn'}`} /> {status?.claude.enabled ? p('Claude connected', 'Claude متصل') : p('Claude offline', 'Claude غير متصل')}
-            </button>
-          </div>
         </header>
         <AnimatePresence mode="wait" initial={false}>
-          <motion.div key={route.name + (route.id ?? '')} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2 }}>
+          <motion.div key={route.name + (route.id ?? '')} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={soft}>
             {route.name === 'command' && <CommandCenter nav={nav} />}
             {route.name === 'case' && route.id && <Investigation key={route.id} runId={route.id} nav={nav} initialTab={route.tab} />}
+            {route.name === 'inbox' && <Inbox nav={nav} />}
             {route.name === 'cases' && <Cases nav={nav} />}
             {route.name === 'batch' && <Batch nav={nav} />}
             {route.name === 'campaigns' && <Campaigns nav={nav} />}
@@ -133,7 +156,7 @@ export default function App() {
         </AnimatePresence>
       </div>
       <AnimatePresence>{showSettings && <SettingsModal status={status} onClose={() => setShowSettings(false)} onChange={refresh} />}</AnimatePresence>
-      <AnimatePresence>{toast && <motion.div className="toast" initial={{ opacity: 0, y: 20, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10 }}>{toast}</motion.div>}</AnimatePresence>
+      <AnimatePresence>{toast && <motion.div className="toast" role="status" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={soft}>{toast}</motion.div>}</AnimatePresence>
     </div>
     </MotionConfig>
   )

@@ -3,6 +3,7 @@ import { geoNaturalEarth1, geoPath } from 'd3-geo'
 import { feature } from 'topojson-client'
 import world from 'world-atlas/countries-110m.json'
 import { useLang } from '../i18n'
+import { RISK } from '../meta'
 
 const W = 960, H = 470
 
@@ -45,29 +46,21 @@ export function WorldMap({ data, compact = false }: { data: Record<string, numbe
   // place labels greedily so neighbouring countries (e.g. NL and DE) never overlap
   const placed: { x: number; y: number; w: number; h: number }[] = [{ x: ux - 60, y: uy + 10, w: 120, h: 20 }]
   const labelAt: Record<string, { x: number; y: number }> = {}
-  const LW = lang === 'ar' ? 66 : 74
+  const LW = lang === 'ar' ? 68 : 76
   for (const [cc, n] of entries) {
     const [x, y] = pt(cc)
-    const r = 6 + (n / max) * 6
-    const options = [{ x: x + r + 4, y: y - 9 }, { x: x - r - 4 - LW, y: y - 9 }, { x: x - LW / 2, y: y - r - 22 }, { x: x - LW / 2, y: y + r + 4 }, { x: x + r + 4, y: y + 12 }, { x: x - r - 4 - LW, y: y - 30 }]
-    const hit = (o: { x: number; y: number }) => placed.some((b) => o.x < b.x + b.w && o.x + LW > b.x && o.y < b.y + b.h && o.y + 18 > b.y)
+    const r = 4 + (n / max) * 4
+    const options = [{ x: x + r + 4, y: y - 10 }, { x: x - r - 4 - LW, y: y - 10 }, { x: x - LW / 2, y: y - r - 24 }, { x: x - LW / 2, y: y + r + 4 }, { x: x + r + 4, y: y + 12 }, { x: x - r - 4 - LW, y: y - 32 }]
+    const hit = (o: { x: number; y: number }) => placed.some((b) => o.x < b.x + b.w && o.x + LW > b.x && o.y < b.y + b.h && o.y + 20 > b.y)
     const pick = options.find((o) => !hit(o)) ?? options[0]
-    placed.push({ x: pick.x, y: pick.y, w: LW, h: 18 })
+    placed.push({ x: pick.x, y: pick.y, w: LW, h: 20 })
     labelAt[cc] = pick
   }
   return (
     <div className="worldmap">
       <svg viewBox={`0 0 ${W} ${H}`} width="100%" role="img" aria-label={p('Hosting indicators on a world map', 'مؤشرات الاستضافة على خريطة العالم')}>
-        <defs>
-          <linearGradient id="arcg" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2={W} y2="0"><stop offset="0" stopColor="#e5b85c" /><stop offset="1" stopColor="#fb4a6c" /></linearGradient>
-          <radialGradient id="dotg"><stop offset="0" stopColor="#f8e6c2" /><stop offset="1" stopColor="#e5b85c" /></radialGradient>
-          <pattern id="wmdots" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="0.9" fill="#34333e" /></pattern>
-        </defs>
         {SHAPES.map((s: { id: string; d: string }) => (
-          <g key={s.id}>
-            <path d={s.d} fill={s.id === '784' ? 'rgba(251,74,108,0.38)' : hot.has(s.id) ? 'rgba(229,184,92,0.26)' : '#1a1a22'} stroke={hot.has(s.id) || s.id === '784' ? 'rgba(229,184,92,0.55)' : '#2a2a34'} strokeWidth={0.6} />
-            {!hot.has(s.id) && s.id !== '784' && <path d={s.d} fill="url(#wmdots)" stroke="none" />}
-          </g>
+          <path key={s.id} d={s.d} fill={s.id === '784' ? 'rgba(229,72,77,0.35)' : hot.has(s.id) ? '#2b2b2e' : '#1e1e20'} stroke={hot.has(s.id) ? 'rgba(237,237,237,0.2)' : 'rgba(237,237,237,0.06)'} strokeWidth={0.6} />
         ))}
         {entries.map(([cc, n], i) => {
           const [x, y] = pt(cc)
@@ -75,35 +68,31 @@ export function WorldMap({ data, compact = false }: { data: Record<string, numbe
           const d = `M ${x} ${y} Q ${mx} ${my} ${ux} ${uy}`
           return (
             <g key={cc}>
-              <motion.path d={d} fill="none" stroke="url(#arcg)" strokeWidth={1.2 + (n / max) * 1.8} strokeLinecap="round" initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 0.85 }} transition={{ duration: 1.2, delay: 0.3 + i * 0.15, ease: 'easeInOut' }} />
-              <path d={d} fill="none" stroke="#fff" strokeWidth="1.3" className="flow" opacity="0.5" />
-              <motion.circle cx={x} cy={y} fill="url(#dotg)" initial={{ r: 0 }} animate={{ r: 4 + (n / max) * 6 }} transition={{ type: 'spring', stiffness: 260, damping: 14, delay: 0.2 + i * 0.15 }} />
-              <circle cx={x} cy={y} r={6 + (n / max) * 6} fill="none" stroke="#e5b85c" className="wm-pulse" style={{ animationDelay: `${i * 0.3}s` }} />
+              <motion.path d={d} fill="none" stroke={RISK.high} strokeOpacity={0.45} strokeWidth={1 + (n / max) * 1.5} strokeLinecap="round" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 0.9, delay: 0.2 + i * 0.08, ease: [0.22, 1, 0.36, 1] }} />
+              <circle cx={x} cy={y} r={3 + (n / max) * 4} fill="#a1a1a6" stroke="#19191b" strokeWidth="1.5" />
               {!compact && (
                 <g>
-                  <rect x={labelAt[cc].x} y={labelAt[cc].y} width={LW} height="18" rx="9" fill="rgba(12,12,16,0.92)" stroke="rgba(229,184,92,0.45)" />
-                  <text x={labelAt[cc].x + LW / 2} y={labelAt[cc].y + 12.5} textAnchor="middle" fontSize="10.5" fontWeight="650" fill="#f2d39a">{cc} · {n} {p('sites', 'مواقع')}</text>
+                  <rect x={labelAt[cc].x} y={labelAt[cc].y} width={LW} height="20" rx="4" fill="#19191b" stroke="rgba(237,237,237,0.14)" />
+                  <text x={labelAt[cc].x + LW / 2} y={labelAt[cc].y + 14} textAnchor="middle" fontSize="11" fill="#a1a1a6" style={{ fontVariantNumeric: 'tabular-nums' }}>{cc} · {n} {p('sites', 'مواقع')}</text>
                 </g>
               )}
             </g>
           )
         })}
         <g>
-          <circle cx={ux} cy={uy} r="7" fill="#fb4a6c" />
-          <circle cx={ux} cy={uy} r="7" fill="none" stroke="#fb4a6c" className="wm-ping" />
-          <circle cx={ux} cy={uy} r="7" fill="none" stroke="#fb4a6c" className="wm-ping" style={{ animationDelay: '1s' }} />
-          <text x={ux} y={uy + 24} textAnchor="middle" fontSize="11" fontWeight="700" fill="#ff9bb0">{p('Victims in the UAE', 'الضحايا في الإمارات')}</text>
+          <circle cx={ux} cy={uy} r="6" fill={RISK.high} stroke="#19191b" strokeWidth="2" />
+          <text x={ux} y={uy + 24} textAnchor="middle" fontSize="12" fill="#ededed">{p('Victims in the UAE', 'الضحايا في الإمارات')}</text>
         </g>
       </svg>
       <div className="wm-legend">
         <span><i className="g" /> {p('Server location (hosting)', 'موقع الخادم (الاستضافة)')}</span>
         <span><i className="r" /> {p('Targeted residents', 'السكان المستهدفون')}</span>
-        <span className="faint">{p('Infrastructure indicator only, not where the scammers are.', 'مؤشر تقني فقط، ولا يدل على مكان المحتالين.')}</span>
+        <span className="faint">{p('Infrastructure indicator only, not where the scammers are', 'مؤشر تقني فقط، ولا يدل على مكان المحتالين')}</span>
       </div>
       {!compact && entries.length > 0 && (
         <div className="wm-list">
           {entries.map(([cc, n]) => (
-            <span key={cc} className="chip"><b className="mono" style={{ color: '#f2d39a' }}>{cc}</b> {lang === 'ar' ? COUNTRY[cc].ar : COUNTRY[cc].en} · {n}</span>
+            <span key={cc} className="chip"><span className="mono">{cc}</span> {lang === 'ar' ? COUNTRY[cc].ar : COUNTRY[cc].en} · <span className="num">{n}</span></span>
           ))}
         </div>
       )}

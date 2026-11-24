@@ -3,9 +3,8 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { AlertTriangle, BatteryFull, Bot, ChevronDown, Clock, Copy, Lock, MapPin, Menu, MessageCircle, Phone, RotateCw, ShieldCheck, Signal, Wifi } from 'lucide-react'
 import { useLang } from '../i18n'
 import type { InvState } from '../hooks'
-import { scoreColor } from '../meta'
 import type { El } from '../types'
-import { Typewriter } from './fx'
+import { Typewriter, ease } from './fx'
 
 interface Cur { x: number; y: number; vis: boolean; label: string }
 interface Chip { id: number; x: number; y: number; text: string; tone: 'danger' | 'warn' | 'info' }
@@ -91,7 +90,6 @@ export function BrowserPanel({ s }: { s: InvState }) {
   const frame = s.frame
   const lastNote = s.notes[s.notes.length - 1]
   const running = !s.done && s.phase !== 'queued' && !s.error
-  const risk = scoreColor(s.score)
   const noteText = lastNote ? (lang === 'ar' && lastNote.text_ar ? lastNote.text_ar : lastNote.text) : ''
   const theme = frame ? themeOf(frame.url) : '#334155'
 
@@ -167,36 +165,36 @@ export function BrowserPanel({ s }: { s: InvState }) {
       <div className="browser-chrome">
         <div className="lights"><i /><i /><i /></div>
         <div className="urlbar">
-          <ShieldCheck size={13} color="#34d399" />
+          <ShieldCheck size={14} strokeWidth={1.5} color="var(--green)" />
           <span className="muted">sandbox://</span>
           <AnimatePresence mode="wait" initial={false}>
-            <motion.span key={frame?.url ?? 'none'} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.18 }}>
+            <motion.span key={frame?.url ?? 'none'} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.16, ease }}>
               {frame?.url ?? s.meta?.input_url ?? 'about:blank'}
             </motion.span>
           </AnimatePresence>
         </div>
-        <div className="sandbox-tag"><span className={`dot ${running ? 'live' : ''}`} /> {running ? p('AGENT BROWSING', 'الوكيل يتصفح') : p('ISOLATED SANDBOX', 'بيئة معزولة')}</div>
+        <div className="sandbox-tag"><span className={`dot ${running ? 'live' : ''}`} /> {running ? p('Agent browsing', 'الوكيل يتصفح') : p('Isolated sandbox', 'بيئة معزولة')}</div>
       </div>
       <div className="stage">
-        <div className={`phone ${running ? 'running' : ''}`} style={{ ['--risk' as any]: risk }}>
+        <div className="phone">
           <div className="screen" ref={screenRef} style={{ ['--theme' as any]: theme }}>
             <div className="statusbar"><b>9:41</b><span className="sb-icons"><Signal size={12} /><Wifi size={12} /><BatteryFull size={15} /></span></div>
             <div className="m-url">
               <div className="m-pill"><Lock size={11} /><span>{frame ? hostOf(frame.url) : '…'}</span>{loading ? <span className="spin-sm" /> : <RotateCw size={11} />}</div>
-              <div className="m-progress"><motion.i key={frame?.page_id ?? 'x'} initial={{ width: '0%', opacity: 1 }} animate={{ width: '100%', opacity: [1, 1, 0] }} transition={{ duration: 0.7, times: [0, 0.8, 1] }} /></div>
+              <div className="m-progress"><motion.i key={frame?.page_id ?? 'x'} style={{ transformOrigin: 'left' }} initial={{ scaleX: 0, opacity: 1 }} animate={{ scaleX: 1, opacity: [1, 1, 0] }} transition={{ duration: 0.7, times: [0, 0.8, 1] }} /></div>
             </div>
             <div className="screen-scroll" ref={scrollRef}>
               <AnimatePresence mode="popLayout" initial={false}>
                 {frame?.kind === 'image' ? (
                   <img key={frame.page_id} src={`data:image/jpeg;base64,${frame.image}`} alt="" className="live-shot" />
                 ) : frame ? (
-                  <motion.div key={frame.page_id} className="page" initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -40 }} transition={{ duration: 0.3 }}>
+                  <motion.div key={frame.page_id} className="mpage" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.24, ease }}>
                     {frame.elements.map((el, i) => (
-                      <motion.div key={el.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 + i * 0.03, duration: 0.25 }}>
+                      <motion.div key={el.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.08 + Math.min(i, 6) * 0.04, duration: 0.24, ease }}>
                         <Element el={el} flag={s.flagged[`${frame.page_id}:${el.id}`]} reg={(n) => { if (n) refs.current.set(`${frame.page_id}:${el.id}`, n) }} />
                       </motion.div>
                     ))}
-                    <div className="lab-note">{p('Recorded evidence · rendered from the captured page structure', 'دليل مسجّل · معروض من بنية الصفحة الملتقطة')}</div>
+                    <div className="lab-note">{p('Recorded evidence, rendered from the captured page structure', 'دليل مسجّل، معروض من بنية الصفحة الملتقطة')}</div>
                   </motion.div>
                 ) : (
                   <div className="blank">
@@ -209,7 +207,7 @@ export function BrowserPanel({ s }: { s: InvState }) {
             {frame && <div key={frame.page_id} className="scan-sweep" />}
             <AnimatePresence>
               {chips.map((c) => (
-                <motion.div key={c.id} className={`chip-float ${c.tone}`} style={{ left: c.x, top: c.y }} initial={{ opacity: 0, y: 6, scale: 0.7 }} animate={{ opacity: [0, 1, 1, 0], y: -34, scale: 1 }} transition={{ duration: 1.8, times: [0, 0.12, 0.7, 1] }}>
+                <motion.div key={c.id} className={`chip-float ${c.tone}`} style={{ left: c.x, top: c.y }} initial={{ opacity: 0, y: 0 }} animate={{ opacity: [0, 1, 1, 0], y: -24 }} transition={{ duration: 1.8, times: [0, 0.12, 0.7, 1], ease }}>
                   {c.text}
                 </motion.div>
               ))}
@@ -217,7 +215,7 @@ export function BrowserPanel({ s }: { s: InvState }) {
             {cur.vis && (
               <>
                 <div className="cursor" style={{ transform: `translate(${cur.x - 4}px, ${cur.y - 3}px)` }}>
-                  <svg width="22" height="22" viewBox="0 0 22 22"><path d="M3 2l14 7.5-6 1.8-2.2 6.2L3 2z" fill="#111" stroke="#fff" strokeWidth="1.5" strokeLinejoin="round" /></svg>
+                  <svg width="22" height="22" viewBox="0 0 22 22"><path d="M3 2l14 7.5-6 1.8-2.2 6.2L3 2z" fill="#141415" stroke="#fff" strokeWidth="1.5" strokeLinejoin="round" /></svg>
                   <span className="cursor-label">{cur.label}</span>
                 </div>
                 {ripples.map((r) => <div key={r.id} className="ripple" style={{ left: r.x, top: r.y }} />)}
@@ -228,17 +226,17 @@ export function BrowserPanel({ s }: { s: InvState }) {
       </div>
       <div className="agent-box" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
         <div className="agent-note">
-          <div className={`avatar ${running ? 'busy' : ''}`}><Bot size={15} /></div>
+          <div className="avatar"><Bot size={14} strokeWidth={1.5} /></div>
           <div style={{ minWidth: 0 }}>
-            <div className="eyebrow" style={{ marginBottom: 2 }}>{p('Browser agent', 'وكيل المتصفح')}{running ? ' · ' + p('working', 'يعمل') : ''}</div>
-            {noteText ? <Typewriter key={s.notes.length} text={noteText} /> : <span className="faint">{p('Waiting for the first action…', 'بانتظار أول إجراء…')}</span>}
+            <div className="eyebrow" style={{ marginBottom: 2 }}>{p('Browser agent', 'وكيل المتصفح')}{running ? ', ' + p('working', 'يعمل') : ''}</div>
+            {noteText ? <Typewriter key={s.notes.length} text={noteText} /> : <span className="faint">{p('Waiting for the first action', 'بانتظار أول إجراء')}</span>}
           </div>
         </div>
       </div>
       <div className="reqs">
         <AnimatePresence initial={false}>
           {s.requests.slice(-8).map((r, i) => (
-            <motion.div key={`${s.requests.length - 8 + i}:${r.url}`} layout initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className={`req ${r.flag ?? ''}`}>
+            <motion.div key={`${s.requests.length - 8 + i}:${r.url}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.16, ease }} className={`req ${r.flag ?? ''}`}>
               <b>{r.method}</b>
               <span className={`st s${String(r.status)[0]}`}>{r.status}</span>
               <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.url}</span>
@@ -246,7 +244,7 @@ export function BrowserPanel({ s }: { s: InvState }) {
             </motion.div>
           ))}
         </AnimatePresence>
-        {!s.requests.length && <div className="req">{p('network log will appear here', 'سيظهر سجل الشبكة هنا')}</div>}
+        {!s.requests.length && <div className="req">{p('Network log appears here', 'يظهر سجل الشبكة هنا')}</div>}
       </div>
     </div>
   )

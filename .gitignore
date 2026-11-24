@@ -21,3 +21,4 @@ backend/raqib/data/evidence/
 .claude/
 backend/raqib/data/live_cases/
 backend/raqib/data/feeds/nrd/
+backend/raqib/data/radar.db*
