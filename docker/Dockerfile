@@ -23,4 +23,5 @@ COPY --from=web /web/dist frontend/dist
 RUN useradd --create-home --uid 10001 raqib && mkdir -p /app/backend/raqib/data/runs /app/backend/raqib/data/evidence && chown -R raqib /app/backend/raqib/data
 USER raqib
 EXPOSE 8600
-CMD ["python", "-m", "uvicorn", "raqib.main:app", "--app-dir", "backend", "--host", "0.0.0.0", "--port", "8600"]
+# Hosting platforms (Render, Railway...) pass the port in $PORT
+CMD ["sh", "-c", "python -m uvicorn raqib.main:app --app-dir backend --host 0.0.0.0 --port ${PORT:-8600}"]

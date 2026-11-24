@@ -21,6 +21,17 @@ app = FastAPI(title="Raqib", version=__version__)
 app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"], allow_methods=["*"], allow_headers=["*"])
 
 
+# Public demo (a hosted link for judges): only the recorded demo cases can be opened, nothing can be reconfigured,
+# and the server never fetches a URL a stranger pastes. Real links are scanned inside the sandbox VM (deploy/vm).
+PUBLIC_DEMO = os.environ.get("RAQIB_PUBLIC_DEMO") == "1"
+PUBLIC_MSG = "Public demo: only the recorded demo cases can be opened here. Real links are scanned inside Raqib's sandbox VM."
+
+
+def _no_public(what: str = "This") -> None:
+    if PUBLIC_DEMO:
+        raise HTTPException(403, f"{what} is switched off in the public demo.")
+
+
 def K() -> knowledge.Knowledge:
     return knowledge.get()
 
@@ -41,7 +52,7 @@ def status() -> dict:
     return {"version": __version__, "model_label": config.model_label(), "requested_mode": config.requested_mode(), "claude": claude.status(), "playwright": _playwright_available(),
             "live_ready": config.requested_mode() == "live" and claude.enabled and _playwright_available(), "speed": default_speed(),
             "cases": len(K().cases), "entities": sum(1 for e in K().reg.entities if e.emirate != "Global"),
-            "sources": {"nrd": True, "serpapi": bool(hunters_live.serpapi_key()), "browser": _playwright_available()}}
+            "public_demo": PUBLIC_DEMO, "sources": {"nrd": True, "serpapi": bool(hunters_live.serpapi_key()), "browser": _playwright_available()}}
 
 
 class KeyBody(BaseModel):
@@ -50,6 +61,7 @@ class KeyBody(BaseModel):
 
 @app.post("/api/settings/key")
 def set_key(body: KeyBody) -> dict:
+    _no_public("Changing settings")
     key = body.key.strip()
     if not key.startswith("sk-ant-") or len(key) < 20:
         raise HTTPException(400, "That does not look like an Anthropic API key (sk-ant-...).")
@@ -59,6 +71,7 @@ def set_key(body: KeyBody) -> dict:
 
 @app.delete("/api/settings/key")
 def clear_key() -> dict:
+    _no_public("Changing settings")
     config.set_api_key("")
     return {"ok": True, "claude": claude.status()}
 
@@ -162,6 +175,11 @@ async def start(body: StartBody) -> dict:
     url = body.url.strip()
     if not url:
         raise HTTPException(400, "Enter a URL to investigate.")
+    if PUBLIC_DEMO:
+        cid = K().resolve(url)
+        if not cid or K().cases[cid].get("source") == "scan":
+            raise HTTPException(403, PUBLIC_MSG)
+        body.mode = "auto"
     run = manager.start(url, mode=body.mode, speed=body.speed)
     return {"id": run.id, "mode": run.mode}
 
@@ -277,6 +295,7 @@ class DecideBody(BaseModel):
 
 @app.post("/api/radar/domains/{domain}/decide")
 def radar_decide(domain: str, body: DecideBody) -> dict:
+    _no_public("The radar")
     r = radar.get()
     if not r.s.q("select 1 from domains where domain=?", domain):
         raise HTTPException(404, "Unknown domain")
@@ -292,6 +311,7 @@ class ControlBody(BaseModel):
 
 @app.post("/api/radar/control")
 def radar_control(body: ControlBody) -> dict:
+    _no_public("The radar")
     r = radar.get()
     if body.paused is not None:
         r.set_paused(body.paused)
@@ -320,6 +340,8 @@ class BatchBody(BaseModel):
 
 @app.post("/api/batch")
 async def batch_start(body: BatchBody) -> dict:
+    if PUBLIC_DEMO and any(batch.from_recorded(r["url"]) is None for r in batch.parse_input(body.text)):
+        raise HTTPException(403, PUBLIC_MSG)
     try:
         job = batch.start(body.text, body.use_browser, body.use_ai, body.concurrency)
     except ValueError as exc:

@@ -1,0 +1,16 @@
+# Render Blueprint: the public demo link. Real scanning stays in the sandbox VM (deploy/vm).
+services:
+  - type: web
+    name: raqib
+    runtime: docker
+    dockerfilePath: ./docker/Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /api/status
+    envVars:
+      - key: RAQIB_PUBLIC_DEMO
+        value: "1"
+      - key: RAQIB_MODE
+        value: auto
+      - key: RAQIB_RADAR
+        value: "0"
