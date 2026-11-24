@@ -1,0 +1,22 @@
+# Render's free plan sleeps after 15 minutes without traffic and takes about a minute to wake.
+# Pinging the public demo every 10 minutes keeps it awake for judges. One always-on free service
+# fits inside Render's 750 free hours a month.
+name: Keep the public demo awake
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+env:
+  DEMO_URL: https://raqib-ygz3.onrender.com
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Ping the demo
+        run: |
+          curl -sS --retry 2 --max-time 150 -o /dev/null -w "status %{http_code} in %{time_total}s\n" "$DEMO_URL/api/status"
+          curl -sS --max-time 150 -o /dev/null -w "overview %{http_code} in %{time_total}s\n" "$DEMO_URL/api/overview"

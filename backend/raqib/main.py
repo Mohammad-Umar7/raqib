@@ -6,6 +6,7 @@ import asyncio
 import json
 import os
 import re
+import threading
 from collections import Counter
 
 from fastapi import FastAPI, HTTPException, Query
@@ -95,10 +96,25 @@ def _flag(c: dict) -> bool:
     return c["triage"]["score"] >= THRESH
 
 
+_cand_cache: tuple[tuple, dict] | None = None
+_cand_lock = threading.Lock()
+
+
+def _candidates(k: knowledge.Knowledge) -> dict:
+    """hunters.candidates() re-triages every recorded feed entry (seconds of CPU, far more on a small host).
+    The feeds are fixed files, so the result only changes when the set of cases does: cache it per case set."""
+    global _cand_cache
+    key = tuple(k.cases)
+    with _cand_lock:
+        if _cand_cache is None or _cand_cache[0] != key:
+            _cand_cache = (key, hunters.candidates(k.cases))
+        return _cand_cache[1]
+
+
 @app.get("/api/overview")
 def overview() -> dict:
     k = K()
-    cand = hunters.candidates(k.cases)
+    cand = _candidates(k)
     rows = cand["rows"]
     flagged = [c for c in rows if _flag(c)]
     investigated = [c for c in flagged if c["case_id"]]
@@ -121,7 +137,7 @@ def overview() -> dict:
 @app.get("/api/hunt/stream")
 async def hunt_stream(speed: float = Query(1.0, ge=0.0, le=20.0)) -> StreamingResponse:
     k = K()
-    rows = hunters.candidates(k.cases)["rows"]
+    rows = _candidates(k)["rows"]
 
     async def gen():
         scanned = flagged = 0
@@ -152,7 +168,7 @@ def _sse(obj: dict) -> str:
 @app.get("/api/candidates")
 def list_candidates() -> dict:
     k = K()
-    rows = hunters.candidates(k.cases)["rows"]
+    rows = _candidates(k)["rows"]
     out = []
     for c in rows:
         if _flag(c):
@@ -266,6 +282,12 @@ async def hunt_search_maps(force: bool = False) -> dict:
 
 
 # --------------------------------------------------------------------------- the radar (autonomous loop)
+
+@app.on_event("startup")
+async def _warm_candidates() -> None:
+    """Fill the candidates cache while the server boots, so the first visitor doesn't wait for it."""
+    threading.Thread(target=lambda: _candidates(K()), daemon=True).start()
+
 
 @app.on_event("startup")
 async def _radar_start() -> None:
