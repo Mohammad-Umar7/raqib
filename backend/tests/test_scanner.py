@@ -115,3 +115,48 @@ def test_global_brands_are_known():
     assert reg.official_domain_of("login.microsoftonline.com").id == "microsoft"
     assert reg.official_domain_of("docs.google.com") is None  # user-content hosts must never count as official
     assert scanner.url_signals("https://paypal-account-verify.web.app/", reg)
+
+
+def _score_html(html: str, url: str, created: str | None = None) -> tuple[set[str], int]:
+    page = scanner.html_page(html, url)
+    host = url.split("/")[2]
+    case = {"case_id": "h", "kind": "site", "final_url": url, "host": host, "observed_at": "2026-11-25", "redirect_chain": [],
+            "infra": {"domain_created": created} if created else {}, "contacts": {}, "pages": [scanner._page_from(page, [], [], None, None)],
+            "scan": {"extra_signals": scanner.url_signals(url, REG)}}
+    a = enrich(analyse(case, REG), case)
+    return {g["id"] for g in a["signals"]}, final_score(a)
+
+
+def test_hosting_provider_warning_page_counts_as_strong_evidence():
+    warning = ("<html><head><title>Suspected phishing site | Cloudflare</title></head><body><h1>Warning</h1><h2>Suspected Phishing</h2>"
+               "<p>This website has been reported for potential phishing.</p><p>Cloudflare Ray ID: a5faee8a0881e70c</p>"
+               "<p>Performance &amp; security by Cloudflare</p></body></html>")
+    got, score = _score_html(warning, "https://random-name-h7d2pe83.pages.dev/")
+    assert "host.provider_flagged" in got and score >= 85
+    # an ordinary article that talks about Cloudflare and phishing is not a warning page
+    article = ("<html><head><title>How Cloudflare handles suspected phishing</title></head><body><h1>Security blog</h1><p>"
+               + "Cloudflare reviews reports and may show a suspected phishing warning. " * 60 + "</p></body></html>")
+    got, score = _score_html(article, "https://blog.example.com/phishing", created="2015-01-01")
+    assert "host.provider_flagged" not in got and score < 30
+
+
+def test_disguised_password_label_is_caught():
+    kit = ("<html><head><title>Sign in</title></head><body><h1>Sign in with your account ID</h1><form id='f'>"
+           "<label for='e'>Email</label><input id='e' name='f1'><label for='p'>Pàsswørd</label><input id='p' name='f2'>"
+           "<button>Let's go</button></form></body></html>")
+    got, score = _score_html(kit, "https://user7076013.weebly.com/")
+    assert {"fraud.disguised_field", "pay.credentials_unbranded"} <= got and score >= scanner.FRAUD_THRESHOLD
+    plain = kit.replace("Pàsswørd", "Password")
+    got, _ = _score_html(plain, "https://user7076013.weebly.com/")
+    assert "fraud.disguised_field" not in got
+
+
+def test_money_brand_named_on_free_hosting_is_not_discounted():
+    wallet = ("<html><head><title>Metamask Extension - Browser extension</title></head><body><h1>MetaMask Extension</h1>"
+              "<p>Download the MetaMask wallet extension and log in.</p></body></html>")
+    _, score = _score_html(wallet, "https://wallet-help.gitbook.io/us")
+    assert score >= scanner.FRAUD_THRESHOLD
+    # a fan or clone page of a streaming brand on free hosting is suspicious but not flagged on its own
+    clone = ("<html><head><title>Netflix clone</title></head><body><h1>Netflix</h1><p>Unlimited movies, TV shows and more.</p></body></html>")
+    _, score = _score_html(clone, "https://student.github.io/netflix-clone/")
+    assert score < scanner.FRAUD_THRESHOLD

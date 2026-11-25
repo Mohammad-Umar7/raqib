@@ -20,7 +20,7 @@ PRIVATE_SUFFIXES = {
     "weebly.com", "wixsite.com", "wix.com", "square.site", "godaddysites.com", "mystrikingly.com", "webflow.io", "framer.website", "framer.app",
     "carrd.co", "000webhostapp.com", "ngrok.io", "ngrok-free.app", "ngrok.app", "trycloudflare.com", "duckdns.org", "sites.google.com",
     "s3.amazonaws.com", "storage.googleapis.com", "r2.dev", "myshopify.com", "wordpress.com", "tilda.ws", "notion.site", "canva.site",
-    "teachable.com", "jimdosite.com", "site123.me", "webnode.page", "yolasite.com", "byethost.com", "infinityfreeapp.com", "rf.gd",
+    "teachable.com", "gitbook.io", "jimdosite.com", "site123.me", "webnode.page", "yolasite.com", "byethost.com", "infinityfreeapp.com", "rf.gd",
 }
 # Top-level / second-level zones that only vetted organisations can register.
 RESTRICTED_SUFFIXES = ("gov.ae", "mil.ae", "ac.ae", "sch.ae", "bank", "gov", "mil", "edu", "int")

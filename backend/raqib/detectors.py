@@ -10,9 +10,10 @@ bilingual wording and pointers to the evidence that triggered it.
 from __future__ import annotations
 
 import re
+import unicodedata
 from datetime import date
 
-from .domains import host_of, is_official, lookalike, registrable
+from .domains import PRIVATE_SUFFIXES, host_of, is_official, lookalike, registrable
 from .ioc import normalise_phone
 from .registry import Entity, Registry
 
@@ -70,6 +71,12 @@ CATALOGUE: dict[str, dict] = {
     "url.offline_lookalike": dict(category="impersonation", weight=0.50,
         en="The page is offline, but the link itself looks like a scam: {why}",
         ar="الصفحة غير متاحة، لكن الرابط نفسه يبدو احتيالياً"),
+    "host.provider_flagged": dict(category="infrastructure", weight=0.90,
+        en="The hosting provider ({provider}) already shows a phishing / malware warning in front of this site",
+        ar="مزوّد الاستضافة ({provider}) يعرض بالفعل تحذيراً من التصيّد أو البرمجيات الخبيثة أمام هذا الموقع"),
+    "fraud.disguised_field": dict(category="fraud", weight=0.50,
+        en="Disguises a sensitive form label with look-alike letters ('{label}') to slip past scanners",
+        ar="يموّه اسم حقل حساس بحروف مشابهة ('{label}') للتهرب من أدوات الفحص"),
     "infra.new_domain": dict(category="infrastructure", weight=0.30,
         en="Domain was registered only {days} days before this investigation",
         ar="تم تسجيل النطاق قبل {days} يوماً فقط من هذا التحقيق"),
@@ -157,17 +164,84 @@ _FIELD_PATTERNS: list[tuple[str, re.Pattern]] = [
 ]
 
 
+# Letters from other scripts that look like Latin ones (Cyrillic, Greek) and letters NFKD does not fold.
+_CONFUSABLE = str.maketrans({
+    "ø": "o", "Ø": "O", "ð": "d", "đ": "d", "ł": "l", "ı": "i", "ɡ": "g", "ԁ": "d", "ѕ": "s", "ј": "j", "і": "i", "ӏ": "l",
+    "а": "a", "е": "e", "о": "o", "р": "p", "с": "c", "х": "x", "у": "y", "к": "k", "м": "m", "н": "h", "т": "t", "в": "b",
+    "А": "A", "В": "B", "Е": "E", "К": "K", "М": "M", "Н": "H", "О": "O", "Р": "P", "С": "C", "Т": "T", "Х": "X",
+    "α": "a", "ο": "o", "ρ": "p", "ν": "v", "τ": "t", "ε": "e", "ι": "i", "κ": "k", "Α": "A", "Ο": "O", "Ρ": "P",
+})
+SENSITIVE_FIELD_KINDS = {"card_number", "card_cvv", "card_expiry", "otp", "password", "emirates_id", "username"}
+
+
+def deconfuse(s: str) -> str:
+    """Fold accents and look-alike letters to plain Latin ('Pàsswørd' -> 'Password')."""
+    s = unicodedata.normalize("NFKD", s).translate(_CONFUSABLE)
+    return "".join(ch for ch in s if not unicodedata.combining(ch))
+
+
+def _match_kind(blob: str) -> str | None:
+    for kind, pat in _FIELD_PATTERNS:
+        if pat.search(blob):
+            return kind
+    return None
+
+
 def classify_field(field: dict) -> str:
     ac = (field.get("autocomplete") or "").lower().strip()
     if ac in _AUTOCOMPLETE:
         return _AUTOCOMPLETE[ac]
     blob = " ".join(str(field.get(k, "")) for k in ("name", "id", "placeholder", "label", "aria"))
-    for kind, pat in _FIELD_PATTERNS:
-        if pat.search(blob):
-            return kind
+    kind = _match_kind(blob)
+    if kind:
+        return kind
     if (field.get("type") or "").lower() == "password":
         return "password"
+    folded = deconfuse(blob)
+    if folded != blob:
+        return _match_kind(folded) or "other"
     return "other"
+
+
+def disguised_label(field: dict) -> str | None:
+    """The visible label of a sensitive field that only reads as sensitive once look-alike letters are folded."""
+    text = " ".join(str(field.get(k, "") or "") for k in ("label", "placeholder", "aria")).strip()
+    if not text or _match_kind(text):
+        return None
+    folded = deconfuse(text)
+    if folded == text or _match_kind(folded) not in SENSITIVE_FIELD_KINDS:
+        return None
+    return text[:40]
+
+
+# A hosting provider's own warning page in front of a reported site (Cloudflare "Suspected Phishing" and similar).
+# Matches the warning's own wording (a heading that is only "Suspected Phishing", or its fixed sentence), not articles about it.
+_PROVIDER_WARNING = re.compile(
+    r"has been reported for potential(?:ly)? (?:phishing|distributing malware)|^\s*suspected (?:phishing|malware)\s*$|"
+    r"^\s*(?:deceptive|phishing) site ahead\b", re.I | re.M)
+_PROVIDERS = (("Cloudflare", re.compile(r"cloudflare ray id|\bray id:?\s*[0-9a-f]{8,}|security by cloudflare", re.I)),
+              ("Google Safe Browsing", re.compile(r"google safe browsing", re.I)), ("Netlify", re.compile(r"netlify", re.I)),
+              ("Vercel", re.compile(r"vercel", re.I)))
+
+
+def provider_warning(title: str, text: str) -> str | None:
+    """Name of the provider whose phishing / malware warning page this is (short interstitial pages only)."""
+    blob = f"{title}\n{text}"
+    if len(text) > 2500 or not _PROVIDER_WARNING.search(blob):
+        return None
+    return next((name for name, pat in _PROVIDERS if pat.search(blob)), None)
+
+
+def on_free_hosting(host: str) -> bool:
+    return any(host == s or host.endswith("." + s) for s in PRIVATE_SUFFIXES)
+
+
+# Brands whose name alone is the lure on a throwaway site (wallet "download" pages, fake bank notices).
+MONEY_BRANDS = {"paypal", "binance", "coinbase", "metamask", "chase", "wellsfargo", "bankofamerica", "centralbank"}
+
+
+def is_money_brand(brand: Entity) -> bool:
+    return brand.sector == "bank" or brand.id in MONEY_BRANDS
 
 
 # --------------------------------------------------------------------------- text lexicons
@@ -216,7 +290,9 @@ def forms_of(page: dict) -> list[dict]:
         form = grouped.setdefault(fid, {"id": fid, "action": declared.get(fid, {}).get("action", ""), "fields": []})
         field = dict(el.get("field", {}))
         field["element_id"] = el["id"]
-        field["kind"] = classify_field({**field, "label": field.get("label") or el.get("text", "")})
+        labelled = {**field, "label": field.get("label") or el.get("text", "")}
+        field["kind"] = classify_field(labelled)
+        field["disguised"] = disguised_label(labelled)
         form["fields"].append(field)
     return list(grouped.values())
 
@@ -292,6 +368,15 @@ def analyse(bundle: dict, registry: Registry, upto_page: int | None = None, upto
     if official_entity:
         return {"signals": [], "brand": official_entity.to_dict(), "brand_confidence": 1.0, "forms": [f for _, f in all_forms],
                 "contacts": contacts, "iocs": iocs, "official": True, "lookalike": {"score": 0.0, "reasons": ["is an official domain"]}}
+    warned_by = provider_warning(title, text)
+    if warned_by:
+        signals.append(make_signal("host.provider_flagged", [{"type": "page", "page": pages[-1]["page_id"], "note": f"{warned_by} warning page"}],
+                                   provider=warned_by))
+    hidden = [(p, fld) for p, f in all_forms for fld in f["fields"] if fld.get("disguised")]
+    if hidden:
+        p0, fld0 = hidden[0]
+        signals.append(make_signal("fraud.disguised_field", [{"type": "field", "page": p0["page_id"], "element": fld0["element_id"], "note": fld0["kind"]}],
+                                   label=fld0["disguised"]))
     if brand and not (brand.mentions(title) + brand.mentions(headline_text(view))):
         # The brand is only discussed in the body (a news article, a comparison page...): that is not impersonation.
         brand, brand_conf = None, 0.0
@@ -301,7 +386,12 @@ def analyse(bundle: dict, registry: Registry, upto_page: int | None = None, upto
         look = lookalike(host, brand.domains, brand.keywords + brand.aliases)
         sig = make_signal("imp.brand_mismatch", [{"type": "page", "page": pages[0]["page_id"], "note": f"names {brand.name}"}], brand=brand.name)
         if not collects and look["score"] < 0.5:
-            sig["weight"], sig["severity"] = 0.15, _severity(0.15)  # names the brand but asks for nothing
+            # Names the brand but asks for nothing: usually commentary (0.15). On free hosting or a brand-new domain the name
+            # is the lure itself, fully for money brands, partly for others (fan pages and clones exist there too).
+            early_age = days_between((bundle.get("infra") or {}).get("domain_created"), bundle.get("observed_at"))
+            risky_host = on_free_hosting(host) or (early_age is not None and early_age <= 180)
+            w = 0.15 if not risky_host else (sig["weight"] if is_money_brand(brand) else 0.35)
+            sig["weight"], sig["severity"] = w, _severity(w)
         signals.append(sig)
         if look["score"] >= 0.5:
             signals.append(make_signal("imp.lookalike_domain", [{"type": "domain", "value": reg_domain, "note": "; ".join(look["reasons"])}],
@@ -399,10 +489,8 @@ def analyse(bundle: dict, registry: Registry, upto_page: int | None = None, upto
         signals.append(sig)
     # A password form with no named brand still matters on a brand-new or free-hosted site (global phishing kits).
     if "password" in kinds and "pay.credentials" not in {s["id"] for s in signals}:
-        from .domains import PRIVATE_SUFFIXES
-
         fresh = age is not None and age <= 90
-        if fresh or any(host.endswith("." + s) for s in PRIVATE_SUFFIXES):
+        if fresh or on_free_hosting(host):
             signals.append(make_signal("pay.credentials_unbranded", field_evidence({"password", "username"}),
                                        where=f"a domain registered {age} days ago" if fresh else "a free hosting platform"))
     cert_age = days_between(infra.get("cert_issued"), observed)
@@ -477,7 +565,8 @@ def final_score(analysis: dict) -> int:
         return 0
     score = risk_score(analysis["signals"])
     age = analysis.get("age_days")
-    if age is not None and age >= 730 and not analysis.get("collects"):
+    provider_flagged = any(s["id"] == "host.provider_flagged" for s in analysis["signals"])
+    if age is not None and age >= 730 and not analysis.get("collects") and not provider_flagged:
         score = min(score, 25)
     if analysis.get("cap") is not None:
         score = min(score, int(analysis["cap"]))
