@@ -108,7 +108,7 @@ Measured on 24 November 2026 inside the locked-down sandbox VM, with determinist
 | Phishing URLs caught (recall) | 3 of 40, 8% |
 | Median time per URL | 10.9 seconds |
 
-Raqib is tuned for trust first: a wrongful takedown hurts a real business, so it raised no false alarms across 60 real sites. Recall on this feed is low because almost all of it targets global brands from free hosting (`pages.dev`, `github.io`, `netlify`) with cloaked or script-loaded kits, while Raqib's rules are built around UAE brands and visible forms. The vision check, which can now name any brand, was not part of this run.
+Raqib is tuned for trust first: a wrongful takedown hurts a real business, so it raised no false alarms across 60 real sites. Recall on this feed is low because almost all of it targets global brands from free hosting (`pages.dev`, `github.io`, `netlify`) with cloaked or script-loaded kits, while Raqib's rules are built around UAE brands and visible forms. The vision check, which can now name any brand, was not part of this run, and the rules for disguised pages on free hosting were added after it, so they are not reflected in these numbers yet.
 
 Reviewing the 37 misses showed that most were pages Cloudflare had already replaced with its own "Suspected Phishing" warning, which Raqib did not read as evidence. Three fixes followed: the hosting provider's phishing / malware warning page now counts as strong evidence; sensitive form labels disguised with look-alike letters ("Pàsswørd") are recognised and flagged; and a bank or crypto-wallet brand named on free hosting or a brand-new domain is no longer discounted. After the fixes, 0 of 35 real sites (the 20 official UAE sites plus global login pages such as PayPal, Microsoft and Binance) scored 30 or more. A re-run on a fresh phishing sample inside the sandbox VM will replace the numbers above.
 
@@ -184,7 +184,7 @@ RAQIB_RADAR=1                    # the autonomous radar (only inside the sandbox
 
 **Public demo link.** `RAQIB_PUBLIC_DEMO=1` serves recorded cases only, with settings and radar changes switched off. [`render.yaml`](render.yaml) deploys exactly that. Real scanning stays in the sandbox VM.
 
-**Tests.** `cd backend` then `.venv\Scripts\python -m pytest` runs 28 tests: detectors on every recorded case, false-positive rules (news articles that mention a brand, old domains, trusted and vetted zones), URL tricks (short links, IP hosts, punycode, `@`, a brand in a sub-domain, free hosting), cloaking, campaign linking, triage, batch metrics, the radar, public demo mode, and the browser executor that must never type into a sensitive field.
+**Tests.** `cd backend` then `.venv\Scripts\python -m pytest` runs 31 tests: detectors on every recorded case, false-positive rules (news articles that mention a brand, old domains, trusted and vetted zones), URL tricks (short links, IP hosts, punycode, `@`, a brand in a sub-domain, free hosting), cloaking, campaign linking, triage, batch metrics, the radar, public demo mode, and the browser executor that must never type into a sensitive field.
 
 ### Using the dashboard
 
