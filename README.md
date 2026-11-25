@@ -245,7 +245,7 @@ backend/tools/     build_seed.py, the fictional demo data
 frontend/src/      views (Command, Inbox, Cases, Investigation, Campaigns, Evaluate, Brands) and components
 deploy/vm/         the sandbox VM: build, harden, checks, evaluation
 docker/            the hardened container
-docs/eval/         accuracy results and sandbox proof     docs/deck/  pitch deck     docs/readme/  these images
+docs/eval/         accuracy results and sandbox proof     docs/readme/  these images
 ```
 
 </details>
