@@ -151,8 +151,12 @@ async def serp_hunt(force: bool = False, search_queries: list[str] | None = None
 
         async def maps(q: str) -> None:
             r = await client.get("https://serpapi.com/search.json", params={"engine": "google_maps", "q": q, "ll": "@24.4539,54.3773,10z", "type": "search", "api_key": key})
-            for it in r.json().get("local_results", [])[:10]:
-                listing = {"name": it.get("title", ""), "category": it.get("type", ""), "area": it.get("address", ""), "emirate": "", "phone": it.get("phone"),
+            d = r.json()
+            # A query that matches one business exactly comes back as a single place, not a list.
+            items = d.get("local_results") or ([d["place_results"]] if d.get("place_results") else [])
+            for it in items[:10]:
+                kind = it.get("type", "")
+                listing = {"name": it.get("title", ""), "category": ", ".join(kind) if isinstance(kind, list) else kind, "area": it.get("address", ""), "emirate": "", "phone": it.get("phone"),
                            "whatsapp": None, "website": it.get("website"), "rating": it.get("rating", 0), "reviews": it.get("reviews", 0),
                            "claimed": not it.get("unclaimed_listing", False), "tags": [q.lower()]}
                 t = hunters.triage_listing(listing, reg)
