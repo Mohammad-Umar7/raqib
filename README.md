@@ -124,6 +124,8 @@ cd backend
 .venv\Scripts\python -m raqib.cli urls.txt --no-browser                              # faster HTTP-only mode
 ```
 
+To repeat the sandbox run: `tools\eval_sets.py` builds the lists (it opens none of the URLs), `deploy/vm/run-eval.sh` scans them inside the VM, and `tools\metrics_report.py` writes the report with defanged links.
+
 A URL counts as fraud at a score of 60 or more (`--threshold` changes it). The same evaluation runs in the dashboard under **Evaluate**.
 
 <br>
