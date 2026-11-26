@@ -42,7 +42,7 @@ Raqib (رقيب, "the watchful one") is an investigation desk for police analyst
 | 01 | **Watch** | Reads new HTTPS certificates from public Certificate Transparency logs within minutes of issue, the daily list of about 70,000 newly registered domains, Google Search, ads and Maps, and citizen or hotline reports. |
 | 02 | **Triage** | Cheap checks with no browser: look-alikes of 36 protected UAE brands and 17 global ones (homoglyphs, brand plus lure words, a brand hidden in a sub-domain), domain age, abused TLDs, odd Maps listings. |
 | 03 | **Investigate** | Opens only the suspects in an isolated, throwaway phone browser with a UAE locale. Follows every redirect, expands short links, compares what phones and computers are shown, and captures the screenshot, page, forms, scripts and network log. Nothing is typed, submitted or downloaded. |
-| 04 | **Explain** | 29 deterministic rules, plus an optional vision check, turn the evidence into a 0 to 100 score. Every point carries a reason in English and Arabic. |
+| 04 | **Explain** | 32 deterministic rules, plus an optional vision check, turn the evidence into a 0 to 100 score. Every point carries a reason in English and Arabic. |
 | 05 | **Link** | Fingerprints each site (scam-kit hashes, Telegram bot and Discord webhook IDs, crypto wallets, phone and WhatsApp numbers, favicon, analytics IDs, redirectors, registration batch, visual similarity) and links it to known campaigns with a graded strength. Looking alike is never treated as proof of the same operator. |
 | 06 | **Act** | SHA-256 chain of custody, a bilingual PDF case report, takedown drafts for the registrar, host, Google Safe Browsing and Google Maps, a blocklist feed and a public warning. |
 
