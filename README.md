@@ -56,7 +56,7 @@ Raqib (رقيب, "the watchful one") is an investigation desk for police analyst
 
 With `RAQIB_RADAR=1` the radar ([`radar.py`](backend/raqib/radar.py)) runs on its own from server start. It is off by default because it opens real suspicious sites, so turn it on only inside the [sandbox VM](#safety).
 
-1. **Watch.** Certificate logs continuously, the new-domain list every 6 hours, and one Search, ads or Maps query at a time inside the SerpAPI monthly budget.
+1. **Watch.** Certificate logs continuously (the newest entries, within a bandwidth budget, with the share read shown on screen), the new-domain list every 6 hours, and one Search, ads or Maps query at a time inside the SerpAPI monthly budget.
 2. **Triage.** Only look-alikes of protected brands go further. Official, vetted-zone and trusted domains are skipped.
 3. **Probe, then scan.** One quick HTTP request first. Pages that are online and not parked get a full sandbox investigation and case file.
 4. **Watchlist.** Domains that are not live yet, parked, or empty so far are checked again after 1 hour, 6 hours, 24 hours, 3 days and 7 days.
