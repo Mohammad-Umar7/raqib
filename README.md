@@ -109,7 +109,7 @@ Measured on 24 November 2026 inside the locked-down sandbox VM, with determinist
 | Official UAE sites wrongly flagged | **0 of 20** | 0–16% |
 | Flagged URLs that were real scams (precision) | 3 of 3 | 44–100% |
 | Phishing URLs caught (recall) | 3 of 40, 8% | 3–20% |
-| Median time per URL | 10.9 seconds |
+| Median time per URL | 10.9 seconds | |
 
 Raqib is tuned for trust first: a wrongful takedown hurts a real business, so it raised no false alarms across 60 real sites. Recall on this feed is low because almost all of it targets global brands from free hosting (`pages.dev`, `github.io`, `netlify`) with cloaked or script-loaded kits, while Raqib's rules are built around UAE brands and visible forms. The vision check, which can now name any brand, was not part of this run, and the rules for disguised pages on free hosting were added after it, so they are not reflected in these numbers yet.
 
