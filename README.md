@@ -198,6 +198,10 @@ RAQIB_CT_TILES_PER_MIN=2         # certificate-log tiles read per minute per log
 
 **Tests.** `cd backend` then `.venv\Scripts\python -m pytest` runs 31 tests: detectors on every recorded case, false-positive rules (news articles that mention a brand, old domains, trusted and vetted zones), URL tricks (short links, IP hosts, punycode, `@`, a brand in a sub-domain, free hosting), cloaking, campaign linking, triage, batch metrics, the radar, public demo mode, Chrome launch settings (sandbox on, no secrets passed), dead look-alike links, and the browser executor that must never type into a sensitive field.
 
+### Troubleshooting
+
+- **Claude shows offline:** add `ANTHROPIC_API_KEY` to `.env` or paste it in Settings, then restart the server.
+
 ### Using the dashboard
 
 | Page | What it shows |
