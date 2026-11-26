@@ -101,7 +101,7 @@ Raqib uses Anthropic **Claude Sonnet 5.5** (`claude-sonnet-5-5`, set with `RAQIB
 
 ## Accuracy
 
-Measured on 24 November 2026 inside the locked-down sandbox VM, with deterministic rules only and no Claude: 40 live phishing URLs from the OpenPhish feed, 40 ordinary websites from the Tranco list, and 20 official UAE sites. Full results, every mistake and its screenshot are in [`docs/eval/results.md`](docs/eval/results.md).
+Measured on 24 November 2026 inside the locked-down sandbox VM, with deterministic rules only and no Claude: 40 live phishing URLs from the OpenPhish feed, 40 ordinary websites from the Tranco list, and 20 official UAE sites. Full results, a threshold sweep, every mistake and its screenshot are in [`docs/eval/results.md`](docs/eval/results.md).
 
 | | Result | 95% interval |
 |---|---|---|
