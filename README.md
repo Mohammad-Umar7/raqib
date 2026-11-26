@@ -180,6 +180,7 @@ Optional settings go in a `.env` file at the repository root (see [`.env.example
 ANTHROPIC_API_KEY=sk-ant-...     # Claude features
 RAQIB_MODEL=claude-sonnet-5-5
 SERPAPI_KEY=...                  # live Google Search, ads and Maps
+SERPAPI_MONTHLY_BUDGET=250       # searches the radar may use per month (free plan: 250)
 RAQIB_MODE=live                  # let the Claude browser agent drive unknown URLs
 RAQIB_BROWSER_CHANNEL=chrome     # use installed Chrome if Playwright's Chromium is missing
 RAQIB_RADAR=1                    # the autonomous radar (only inside the sandbox VM)
