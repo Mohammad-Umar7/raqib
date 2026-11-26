@@ -184,6 +184,8 @@ SERPAPI_MONTHLY_BUDGET=250       # searches the radar may use per month (free pl
 RAQIB_MODE=live                  # let the Claude browser agent drive unknown URLs
 RAQIB_BROWSER_CHANNEL=chrome     # use installed Chrome if Playwright's Chromium is missing
 RAQIB_RADAR=1                    # the autonomous radar (only inside the sandbox VM)
+RAQIB_CHROME_SANDBOX=1           # Chrome's own sandbox (Linux, non-root); no fallback without it
+RAQIB_FRESH_BROWSER=1            # a new browser process for every page
 ```
 
 **Public demo link.** `RAQIB_PUBLIC_DEMO=1` serves recorded cases only, with settings and radar changes switched off. [`render.yaml`](render.yaml) deploys exactly that. Real scanning stays in the sandbox VM.
