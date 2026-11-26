@@ -20,6 +20,8 @@
 
 **Most scam sites are discovered by their victims. Raqib finds them first.**
 
+**Live demo:** [raqib-ygz3.onrender.com](https://raqib-ygz3.onrender.com) (recorded demo cases; the free server may take a minute to wake up).
+
 Fake RTA fines, Salik top-ups, Emirates Post parcel fees and bank "account restricted" pages reach UAE residents through SMS links, sponsored search ads and fake Google Maps helplines. Today each one is handled after someone reports it, and the operator simply moves the same kit to a fresh domain.
 
 Raqib (رقيب, "the watchful one") is an investigation desk for police analysts. It watches where scam sites appear, opens the suspicious ones in a sealed phone browser, explains every point of its risk score, links each site to the rest of its operator's network, and prepares the evidence and takedown drafts. An officer approves every action.
