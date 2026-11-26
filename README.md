@@ -103,12 +103,12 @@ Raqib uses Anthropic **Claude Sonnet 5.5** (`claude-sonnet-5-5`, set with `RAQIB
 
 Measured on 24 November 2026 inside the locked-down sandbox VM, with deterministic rules only and no Claude: 40 live phishing URLs from the OpenPhish feed, 40 ordinary websites from the Tranco list, and 20 official UAE sites. Full results, every mistake and its screenshot are in [`docs/eval/results.md`](docs/eval/results.md).
 
-| | Result |
-|---|---|
-| Ordinary websites wrongly flagged | **0 of 40** |
-| Official UAE sites wrongly flagged | **0 of 20** |
-| Flagged URLs that were real scams (precision) | 3 of 3 |
-| Phishing URLs caught (recall) | 3 of 40, 8% |
+| | Result | 95% interval |
+|---|---|---|
+| Ordinary websites wrongly flagged | **0 of 40** | 0–9% |
+| Official UAE sites wrongly flagged | **0 of 20** | 0–16% |
+| Flagged URLs that were real scams (precision) | 3 of 3 | 44–100% |
+| Phishing URLs caught (recall) | 3 of 40, 8% | 3–20% |
 | Median time per URL | 10.9 seconds |
 
 Raqib is tuned for trust first: a wrongful takedown hurts a real business, so it raised no false alarms across 60 real sites. Recall on this feed is low because almost all of it targets global brands from free hosting (`pages.dev`, `github.io`, `netlify`) with cloaked or script-loaded kits, while Raqib's rules are built around UAE brands and visible forms. The vision check, which can now name any brand, was not part of this run, and the rules for disguised pages on free hosting were added after it, so they are not reflected in these numbers yet.
