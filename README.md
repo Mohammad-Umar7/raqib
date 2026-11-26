@@ -145,6 +145,8 @@ Opening real scam pages is the risky part, so it happens in layers.
 | Secrets | No API key ever enters the VM. Verdicts come from the deterministic rules. |
 | Reset | The `clean-hardened` snapshot is restored after every run. |
 
+Rebuild it on Windows with VirtualBox 7.2: `deploy\vm\create-vm.ps1 -Iso <ubuntu-server.iso>`, then `host-firewall.ps1` as administrator, then `deploy.ps1 -User <admin> -Step harden`, `-Step app` and `-Step checks`.
+
 For production, the design is one gVisor or Firecracker micro-VM per site, with a broker outside the sandbox holding the keys.
 
 **The container** (`docker compose -f docker/docker-compose.yml up --build`) is a lighter option: loopback-only port, no host folders, all Linux capabilities dropped, read-only root filesystem, and memory, CPU and process caps.
