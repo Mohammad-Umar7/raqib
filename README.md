@@ -200,7 +200,7 @@ RAQIB_CT_TILES_PER_MIN=2         # certificate-log tiles read per minute per log
 |---|---|
 | **Command** | The hunt radar, the detection funnel, the always-on sensors, flagged candidates, active campaigns and a world map of hosting infrastructure |
 | **Inbox** | What the radar found that needs an analyst: approve, reject, pause, audit log |
-| **Cases** | Every investigation, newest first. Paste any URL in the top bar (or press `/`) to investigate it live. |
+| **Cases** | Every investigation, newest first. Paste any URL in the top bar (or press `/`) to investigate it live (the public demo opens recorded cases only). |
 | **Case file** | The layout chosen for each case, with follow-up questions |
 | **Campaigns** | Linked sites and the evidence behind every link |
 | **Evaluate** | Batch scans with precision, recall and a confusion matrix |
