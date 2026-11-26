@@ -174,7 +174,7 @@ cd ..\backend
 
 On macOS and Linux use `.venv/bin/...` instead of `.venv\Scripts\...`. For frontend work, `npm run dev` in `frontend/` serves on port 5173 and proxies `/api`.
 
-Optional settings go in a `.env` file at the repository root (see [`.env.example`](.env.example)). The API key can also be pasted in the app's Settings.
+Optional settings go in a `.env` file at the repository root (see [`.env.example`](.env.example)). The API key can also be pasted in the app's Settings. `.env` is git-ignored, the sandbox VM never receives a key, and the public demo runs without one.
 
 ```ini
 ANTHROPIC_API_KEY=sk-ant-...     # Claude features
