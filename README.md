@@ -140,7 +140,7 @@ Opening real scam pages is the risky part, so it happens in layers.
 
 | Layer | What it does |
 |---|---|
-| VM | No shared folders, clipboard, drag and drop, USB, audio or Guest Additions. One NAT adapter, and the VM cannot reach the host's own services. SSH and the dashboard are forwarded to the host's 127.0.0.1 only. |
+| VM | No shared folders, clipboard, drag and drop, USB, audio or Guest Additions. One virtio NAT adapter (the emulated default froze under load), and the VM cannot reach the host's own services. SSH and the dashboard are forwarded to the host's 127.0.0.1 only. |
 | Host firewall | The VirtualBox processes may not connect to private networks, even if the guest is compromised. |
 | Guest firewall | Outbound only TCP 80 and 443 to public addresses, plus DNS and NTP. Private, link-local, carrier-NAT, cloud-metadata and IPv6 traffic is dropped, which also defeats redirects, WebSockets, WebRTC and DNS rebinding. |
 | Browser | Chrome's own sandbox on, a fresh browser process per site, no secrets in its environment, an unprivileged user under systemd limits. |
