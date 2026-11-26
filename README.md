@@ -196,7 +196,7 @@ RAQIB_CT_TILES_PER_MIN=2         # certificate-log tiles read per minute per log
 
 **Public demo link.** `RAQIB_PUBLIC_DEMO=1` serves recorded cases only, with settings and radar changes switched off. [`render.yaml`](render.yaml) deploys exactly that. Real scanning stays in the sandbox VM.
 
-**Tests.** `cd backend` then `.venv\Scripts\python -m pytest` runs 31 tests: detectors on every recorded case, false-positive rules (news articles that mention a brand, old domains, trusted and vetted zones), URL tricks (short links, IP hosts, punycode, `@`, a brand in a sub-domain, free hosting), cloaking, campaign linking, triage, batch metrics, the radar, public demo mode, and the browser executor that must never type into a sensitive field.
+**Tests.** `cd backend` then `.venv\Scripts\python -m pytest` runs 31 tests: detectors on every recorded case, false-positive rules (news articles that mention a brand, old domains, trusted and vetted zones), URL tricks (short links, IP hosts, punycode, `@`, a brand in a sub-domain, free hosting), cloaking, campaign linking, triage, batch metrics, the radar, public demo mode, Chrome launch settings (sandbox on, no secrets passed), dead look-alike links, and the browser executor that must never type into a sensitive field.
 
 ### Using the dashboard
 
