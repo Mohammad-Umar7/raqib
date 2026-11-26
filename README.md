@@ -201,6 +201,7 @@ RAQIB_CT_TILES_PER_MIN=2         # certificate-log tiles read per minute per log
 ### Troubleshooting
 
 - **Claude shows offline:** add `ANTHROPIC_API_KEY` to `.env` or paste it in Settings, then restart the server.
+- **No browser found:** run `.venv\Scripts\python -m playwright install chromium`, or set `RAQIB_BROWSER_CHANNEL=chrome` to use installed Chrome.
 
 ### Using the dashboard
 
