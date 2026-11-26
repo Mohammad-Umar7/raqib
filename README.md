@@ -249,7 +249,7 @@ backend/raqib/     scanner.py        the URL scanner          detectors.py    si
                    claude_service.py, ui_spec.py  case-file writer and layout
                    report.py         PDF and takedown drafts  main.py         the API
 backend/tests/     pytest suite
-backend/tools/     build_seed.py, the fictional demo data
+backend/tools/     build_seed.py (fictional demo data), eval_sets.py and metrics_report.py (accuracy runs)
 frontend/src/      views (Command, Inbox, Cases, Investigation, Campaigns, Evaluate, Brands) and components
 deploy/vm/         the sandbox VM: build, harden, checks, evaluation
 docker/            the hardened container
