@@ -153,7 +153,7 @@ For production, the design is one gVisor or Firecracker micro-VM per site, with 
 
 ## Run it
 
-You need Python 3.11, Node 20 or newer, and Google Chrome (or `playwright install chromium`).
+You need Python 3.11 or newer, Node 20 or newer, and Google Chrome (or `playwright install chromium`).
 
 ```powershell
 # backend
