@@ -8,6 +8,7 @@
 </p>
 
 <p align="center">
+  <a href="https://raqib-ygz3.onrender.com">Live demo</a> ·
   <a href="#how-it-works">How it works</a> ·
   <a href="#accuracy">Accuracy</a> ·
   <a href="#safety">Safety</a> ·
