@@ -215,6 +215,7 @@ RAQIB_CT_TILES_PER_MIN=2         # certificate-log tiles read per minute per log
 | [RDAP](https://rdap.org) | registration date, registrar, name servers, IP owner | no |
 | [SerpAPI](https://serpapi.com) Google and Google Maps engines | live Search results, sponsored ads and Maps listings | `SERPAPI_KEY` |
 | [OpenPhish](https://openphish.com) community feed | live phishing samples for evaluation | no |
+| [Tranco](https://tranco-list.eu) research top-1M list | ordinary websites for the false-positive test | no |
 | Anthropic Messages API | summaries, case-file layout, vision check, browser agent | `ANTHROPIC_API_KEY` |
 
 Bundled data lives in [`backend/raqib/data/`](backend/raqib/data): `registry.json` (53 protected brands with official domains, English and Arabic names and keywords), `trusted_domains.txt`, and the **fictional** demo dataset in `cases/` and `feeds/`. The demo uses reserved `.test` domains, documentation IP ranges and made-up numbers, so the whole flow can be shown safely and offline.
