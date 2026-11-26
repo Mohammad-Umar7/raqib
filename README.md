@@ -238,6 +238,7 @@ Bundled data lives in [`backend/raqib/data/`](backend/raqib/data): `registry.jso
 - **Recall on global phishing is low** (3 of 40 in the latest run). Raqib is built for UAE brands and visible forms, and was tuned to raise no false alarms first.
 - **The demo dataset is fictional** and recorded for safety. Real URLs are scanned live by the scanner, and real accuracy is in [`docs/eval/results.md`](docs/eval/results.md).
 - **Live Search and Maps data needs a SerpAPI key.** Without one, the recorded feed is used. Certificate logs and the new-domain list are live and free.
+- **The public demo runs on a free server** that sleeps after 15 idle minutes; the first visit then takes about a minute.
 - **A hosting country is an infrastructure clue,** never the location of the people behind a scam.
 - **Pages that only show the scam after interaction** are best covered by the Claude browser agent in live mode, which has been tested against a local page with a scripted model but not yet against the real API.
 - **Raqib is decision support.** Officers review every case, and nothing is sent on its own.
